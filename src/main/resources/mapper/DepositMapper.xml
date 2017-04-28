@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dili.formation8.dao.DepositMapper">
+  <resultMap id="BaseResultMap" type="com.dili.formation8.domain.Deposit">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="deposite_number" jdbcType="VARCHAR" property="depositeNumber" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="price" jdbcType="BIGINT" property="price" />
+    <result column="deposite_time" jdbcType="TIMESTAMP" property="depositeTime" />
+    <result column="received_time" jdbcType="TIMESTAMP" property="receivedTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, user_id, deposite_number, status, price, deposite_time, received_time
+  </sql>
+  <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from deposit
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <update id="updateBy" parameterType="com.dili.formation8.domain.Deposit">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update deposit
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="depositeNumber != null">
+        deposite_number = #{depositeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=BIGINT},
+      </if>
+      <if test="depositeTime != null">
+        deposite_time = #{depositeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receivedTime != null">
+        received_time = #{receivedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

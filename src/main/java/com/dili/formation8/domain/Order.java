@@ -1,11 +1,12 @@
 package com.dili.formation8.domain;
 
+import java.util.Date;
 import javax.persistence.*;
 
 /**
  * 由MyBatis Generator工具自动生成
  * 
- * This file was generated on 2017-04-28 10:20:40.
+ * This file was generated on 2017-04-28 21:56:36.
  */
 public class Order {
     @Id
@@ -31,7 +32,7 @@ public class Order {
     private String orderNumber;
 
     /**
-     * 1:众筹中;2:众筹成功;3众筹失败,4:待付款,5:付款成功;6:付款失败
+     * 1:众筹中;2:众筹成功;3众筹失败
      */
     private Integer status;
 
@@ -47,9 +48,16 @@ public class Order {
     private Integer transactionType;
 
     /**
-     * 1:产品, 2:充值
+     * 下单时间
      */
-    private Integer type;
+    @Column(name = "start_time")
+    private Date startTime;
+
+    /**
+     * 结束时间
+     */
+    @Column(name = "end_time")
+    private Date endTime;
 
     /**
      * @return id
@@ -130,18 +138,18 @@ public class Order {
     }
 
     /**
-     * 获取1:众筹中;2:众筹成功;3众筹失败,4:待付款,5:付款成功;6:付款失败
+     * 获取1:众筹中;2:众筹成功;3众筹失败
      *
-     * @return status - 1:众筹中;2:众筹成功;3众筹失败,4:待付款,5:付款成功;6:付款失败
+     * @return status - 1:众筹中;2:众筹成功;3众筹失败
      */
     public Integer getStatus() {
         return status;
     }
 
     /**
-     * 设置1:众筹中;2:众筹成功;3众筹失败,4:待付款,5:付款成功;6:付款失败
+     * 设置1:众筹中;2:众筹成功;3众筹失败
      *
-     * @param status 1:众筹中;2:众筹成功;3众筹失败,4:待付款,5:付款成功;6:付款失败
+     * @param status 1:众筹中;2:众筹成功;3众筹失败
      */
     public void setStatus(Integer status) {
         this.status = status;
@@ -184,20 +192,38 @@ public class Order {
     }
 
     /**
-     * 获取1:产品, 2:充值
+     * 获取下单时间
      *
-     * @return type - 1:产品, 2:充值
+     * @return start_time - 下单时间
      */
-    public Integer getType() {
-        return type;
+    public Date getStartTime() {
+        return startTime;
     }
 
     /**
-     * 设置1:产品, 2:充值
+     * 设置下单时间
      *
-     * @param type 1:产品, 2:充值
+     * @param startTime 下单时间
      */
-    public void setType(Integer type) {
-        this.type = type;
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    /**
+     * 获取结束时间
+     *
+     * @return end_time - 结束时间
+     */
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    /**
+     * 设置结束时间
+     *
+     * @param endTime 结束时间
+     */
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 }

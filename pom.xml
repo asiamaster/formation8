@@ -34,19 +34,36 @@
     </properties>
 
     <!--地利-->
+    <!--<distributionManagement>-->
+    <!--<repository>-->
+    <!--<id>central</id>-->
+    <!--<name>Artifactory Release Repository</name>-->
+    <!--<url>-->
+    <!--http://mvn2.diligrp.com/artifactory/libs-release-local-->
+    <!--</url>-->
+    <!--</repository>-->
+    <!--<snapshotRepository>-->
+    <!--<id>central</id>-->
+    <!--<name>Artifactory Snapshot Repository</name>-->
+    <!--<url>-->
+    <!--http://mvn2.diligrp.com/artifactory/libs-snapshot-local-->
+    <!--</url>-->
+    <!--</snapshotRepository>-->
+    <!--</distributionManagement>-->
+    <!-- 本机-->
     <distributionManagement>
         <repository>
-            <id>central</id>
-            <name>Artifactory Release Repository</name>
+            <id>maven-releases</id>
+            <name>Nexus Release Repository</name>
             <url>
-                http://mvn2.diligrp.com/artifactory/libs-release-local
+                http://localhost:8081/repository/maven-releases/
             </url>
         </repository>
         <snapshotRepository>
-            <id>central</id>
-            <name>Artifactory Snapshot Repository</name>
+            <id>maven-snapshots</id>
+            <name>Nexus Snapshot Repository</name>
             <url>
-                http://mvn2.diligrp.com/artifactory/libs-snapshot-local
+                http://localhost:8081/repository/maven-snapshots/
             </url>
         </snapshotRepository>
     </distributionManagement>
@@ -60,13 +77,13 @@
             </properties>
         </profile>
         <!--<profile>-->
-            <!--<id>test</id>-->
-            <!--<activation>-->
-                <!--<activeByDefault>true</activeByDefault>-->
-            <!--</activation>-->
-            <!--<properties>-->
-                <!--<build.profile.id>test</build.profile.id>-->
-            <!--</properties>-->
+        <!--<id>test</id>-->
+        <!--<activation>-->
+        <!--<activeByDefault>true</activeByDefault>-->
+        <!--</activation>-->
+        <!--<properties>-->
+        <!--<build.profile.id>test</build.profile.id>-->
+        <!--</properties>-->
         <!--</profile>-->
     </profiles>
 
@@ -105,12 +122,12 @@
             </plugin>
 
             <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-surefire-plugin</artifactId>-->
-                <!--<version>2.6</version>-->
-                <!--<configuration>-->
-                    <!--<skipTests>true</skipTests>-->
-                <!--</configuration>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-surefire-plugin</artifactId>-->
+            <!--<version>2.6</version>-->
+            <!--<configuration>-->
+            <!--<skipTests>true</skipTests>-->
+            <!--</configuration>-->
             <!--</plugin>-->
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
@@ -150,13 +167,13 @@
     <dependencies>
 
         <!-- spring boot 基类  -->
-		<dependency>
-			<groupId>com.dili</groupId>
-			<artifactId>springboot-base</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+        <dependency>
+            <groupId>com.dili</groupId>
+            <artifactId>springboot-base</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
             <!--<scope>system</scope>-->
             <!--<systemPath>${project.basedir}/lib/springboot-base-0.0.1-SNAPSHOT.jar</systemPath>-->
-		</dependency>
+        </dependency>
         <dependency>
             <groupId>org.mybatis.generator</groupId>
             <artifactId>mybatis-generator-core</artifactId>
@@ -209,9 +226,9 @@
         </dependency>
         <!-- mariadb -->
         <!--<dependency>-->
-            <!--<groupId>org.mariadb.jdbc</groupId>-->
-            <!--<artifactId>mariadb-java-client</artifactId>-->
-            <!--<version>1.1.7</version>-->
+        <!--<groupId>org.mariadb.jdbc</groupId>-->
+        <!--<artifactId>mariadb-java-client</artifactId>-->
+        <!--<version>1.1.7</version>-->
         <!--</dependency>-->
         <!-- mysql -->
         <dependency>
@@ -291,9 +308,9 @@
         </dependency>
 
         <!--<dependency>-->
-            <!--<groupId>com.github.pagehelper</groupId>-->
-            <!--<artifactId>pagehelper</artifactId>-->
-            <!--<version>5.0.0</version>-->
+        <!--<groupId>com.github.pagehelper</groupId>-->
+        <!--<artifactId>pagehelper</artifactId>-->
+        <!--<version>5.0.0</version>-->
         <!--</dependency>-->
         <!--mapper-->
         <dependency>
@@ -303,8 +320,8 @@
         </dependency>
         <!-- mongo -->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-data-mongodb</artifactId>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-data-mongodb</artifactId>-->
         <!--</dependency>-->
         <!-- redis -->
         <dependency>
@@ -358,54 +375,54 @@
 
         <!-- starter-security -->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-security</artifactId>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-security</artifactId>-->
         <!--</dependency>-->
         <!-- ===========================================spring cloud=========================================== -->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-stream</artifactId>-->
+        <!--<groupId>org.springframework.cloud</groupId>-->
+        <!--<artifactId>spring-cloud-stream</artifactId>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-stream-binder-kafka</artifactId>-->
+        <!--<groupId>org.springframework.cloud</groupId>-->
+        <!--<artifactId>spring-cloud-stream-binder-kafka</artifactId>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-stream-reactive</artifactId>-->
+        <!--<groupId>org.springframework.cloud</groupId>-->
+        <!--<artifactId>spring-cloud-stream-reactive</artifactId>-->
         <!--</dependency>-->
         <!-- eureka-client -->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-starter-eureka</artifactId>-->
+        <!--<groupId>org.springframework.cloud</groupId>-->
+        <!--<artifactId>spring-cloud-starter-eureka</artifactId>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-starter-ribbon</artifactId>-->
+        <!--<groupId>org.springframework.cloud</groupId>-->
+        <!--<artifactId>spring-cloud-starter-ribbon</artifactId>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-starter-feign</artifactId>-->
+        <!--<groupId>org.springframework.cloud</groupId>-->
+        <!--<artifactId>spring-cloud-starter-feign</artifactId>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-starter-hystrix</artifactId>-->
+        <!--<groupId>org.springframework.cloud</groupId>-->
+        <!--<artifactId>spring-cloud-starter-hystrix</artifactId>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-starter-hystrix-dashboard</artifactId>-->
+        <!--<groupId>org.springframework.cloud</groupId>-->
+        <!--<artifactId>spring-cloud-starter-hystrix-dashboard</artifactId>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-freemarker</artifactId>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-freemarker</artifactId>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-starter-config</artifactId>-->
+        <!--<groupId>org.springframework.cloud</groupId>-->
+        <!--<artifactId>spring-cloud-starter-config</artifactId>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-starter-bus-kafka</artifactId>-->
+        <!--<groupId>org.springframework.cloud</groupId>-->
+        <!--<artifactId>spring-cloud-starter-bus-kafka</artifactId>-->
         <!--</dependency>-->
         <!-- springloaded -->
         <!-- https://mvnrepository.com/artifact/org.springframework/springloaded -->

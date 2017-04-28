@@ -1,7 +1,7 @@
 package com.dili.formation8.controller;
 
-import com.dili.formation8.domain.Order;
-import com.dili.formation8.service.OrderService;
+import com.dili.formation8.domain.Deposit;
+import com.dili.formation8.service.DepositService;
 import com.dili.utils.domain.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,35 +12,35 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 由MyBatis Generator工具自动生成
- * This file was generated on 2017-04-28 21:56:36.
+ * This file was generated on 2017-04-28 21:44:28.
  */
 @Controller
-@RequestMapping("/order")
-public class OrderController {
+@RequestMapping("/deposit")
+public class DepositController {
     @Autowired
-    OrderService orderService;
+    DepositService depositService;
 
     @RequestMapping("/list")
-    public String list(ModelMap modelMap, @ModelAttribute Order order) {
-        modelMap.put("list", orderService.list(order));
-        return "order/list";
+    public String list(ModelMap modelMap, @ModelAttribute Deposit deposit) {
+        modelMap.put("list", depositService.list(deposit));
+        return "deposit/list";
     }
 
     @RequestMapping("/insert")
-    public String insert(ModelMap modelMap, @ModelAttribute Order order) {
-        orderService.insertSelective(order);
-        return "order/insert";
+    public String insert(ModelMap modelMap, @ModelAttribute Deposit deposit) {
+        depositService.insertSelective(deposit);
+        return "deposit/insert";
     }
 
     @RequestMapping("/update")
-    public String update(ModelMap modelMap, @ModelAttribute Order order) {
-        orderService.update(order);
-        return "order/update";
+    public String update(ModelMap modelMap, @ModelAttribute Deposit deposit) {
+        depositService.update(deposit);
+        return "deposit/update";
     }
 
     @RequestMapping("/delete")
     public @ResponseBody ResponseMessage delete(ModelMap modelMap, Long id) {
-        orderService.delete(id);
+        depositService.delete(id);
         return ResponseMessage.success();
     }
 }
