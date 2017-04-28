@@ -1,10 +1,12 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2017/4/27 ĞÇÆÚËÄ 9:30:26                        */
+/* Created on:     2017/4/28 æ˜ŸæœŸäº” 10:22:52                       */
 /*==============================================================*/
 
 
 drop table if exists bank_card;
+
+drop table if exists biz_number;
 
 drop table if exists data_dictionary;
 
@@ -30,17 +32,35 @@ drop table if exists withdrawal;
 create table bank_card
 (
    id                   bigint not null,
-   user_id              bigint(20) comment 'ÓÃ»§ID',
-   card_type            integer(2) comment 'Ä¬ÈÏÑ¡ÖĞ´¢Ğî¿¨£¬Ä¿Ç°½ö¡°´¢Ğî¿¨¡±Ò»¸öÏî',
-   account_name         varchar(20) comment '·¨ÈËÒøĞĞÕË»§£ºÏÔÊ¾ÈÏÖ¤Ê±ÌîĞ´µÄ·¨ÈËĞÕÃû£¬ÆóÒµ',
-   id_number            varchar(40) comment '·¨ÈËÒøĞĞÕË»§£ºÏÔÊ¾ÈÏÖ¤Ê±ÌîĞ´µÄ·¨ÈËÉí·İÖ¤ºÅ£¬',
-   subbranch            varchar(40) comment 'Ñ¡Ìî£¬ÔÊĞí5-50Î»ºº×Ö¡¢×ÖÄ¸ºÍÊı×Ö£¬²»ÔÊĞíÌØÊâ',
-   card_number          varchar(30) comment 'ÔÊĞíÌîĞ´8-30Î»´¿Êı×Ö',
-   bank                 integer(2) comment 'Êı¾İ×Öµä:ÖĞ¹úÒøĞĞ£¬½¨ÉèÒøĞĞ£¬ÕĞÉÌÒøĞĞ',
-   is_default           integer(2) comment '1:ÊÇ, 0£º·ñ',
+   user_id              bigint(20) comment 'ç”¨æˆ·ID',
+   card_type            integer(2) comment 'é»˜è®¤é€‰ä¸­å‚¨è“„å¡ï¼Œç›®å‰ä»…â€œå‚¨è“„å¡â€ä¸€ä¸ªé¡¹',
+   account_name         varchar(20) comment 'æ³•äººé“¶è¡Œè´¦æˆ·ï¼šæ˜¾ç¤ºè®¤è¯æ—¶å¡«å†™çš„æ³•äººå§“åï¼Œä¼ä¸š',
+   id_number            varchar(40) comment 'æ³•äººé“¶è¡Œè´¦æˆ·ï¼šæ˜¾ç¤ºè®¤è¯æ—¶å¡«å†™çš„æ³•äººèº«ä»½è¯å·ï¼Œ',
+   subbranch            varchar(40) comment 'é€‰å¡«ï¼Œå…è®¸5-50ä½æ±‰å­—ã€å­—æ¯å’Œæ•°å­—ï¼Œä¸å…è®¸ç‰¹æ®Š',
+   card_number          varchar(30) comment 'å…è®¸å¡«å†™8-30ä½çº¯æ•°å­—',
+   bank                 integer(2) comment 'æ•°æ®å­—å…¸:ä¸­å›½é“¶è¡Œï¼Œå»ºè®¾é“¶è¡Œï¼Œæ‹›å•†é“¶è¡Œ',
+   is_default           integer(2) comment '1:æ˜¯, 0ï¼šå¦',
    add_time             datetime,
    primary key (id)
 );
+
+/*==============================================================*/
+/* Table: biz_number                                            */
+/*==============================================================*/
+create table biz_number
+(
+   id                   bigint not null,
+   type                 varchar(50) not null,
+   value                bigint not null default 1,
+   memo                 varchar(100),
+   version              bigint default 1,
+   primary key (id)
+);
+
+alter table biz_number comment 'è®°å½•æ‰€æœ‰ä¸šåŠ¡çš„ç¼–å·
+å¦‚ï¼š
+å……å€¼è®¢å•:DO20170427000000
+äº§å“è®¢å•:PO';
 
 /*==============================================================*/
 /* Table: data_dictionary                                       */
@@ -57,9 +77,9 @@ create table data_dictionary
    primary key (id)
 );
 
-alter table data_dictionary comment 'Êı¾İ×Öµä
-Àı:
-ÏµÍ³Í¼Æ¬:IMAGE_CODE';
+alter table data_dictionary comment 'æ•°æ®å­—å…¸
+ä¾‹:
+ç³»ç»Ÿå›¾ç‰‡:IMAGE_CODE';
 
 /*==============================================================*/
 /* Table: data_dictionary_value                                 */
@@ -80,7 +100,7 @@ create table data_dictionary_value
    primary key (id)
 );
 
-alter table data_dictionary_value comment 'Êı¾İ×ÖµäÖµ';
+alter table data_dictionary_value comment 'æ•°æ®å­—å…¸å€¼';
 
 /*==============================================================*/
 /* Table: financial_transaction                                 */
@@ -88,18 +108,18 @@ alter table data_dictionary_value comment 'Êı¾İ×ÖµäÖµ';
 create table financial_transaction
 (
    id                   bigint not null auto_increment,
-   transaction_number   varchar(20) comment '½»Ò×±àºÅ,Èç¶©µ¥±àºÅ',
-   transaction_type     integer(2) comment '½»Ò×ÀàĞÍ(1:³äÖµ;2:×ªÕÊ)',
-   user_id              bigint comment 'ËùÊôÓÃ»§ID',
-   transaction_amount   bigint comment '´ò¿î½ğ¶î£¬µ¥Î»·Ö',
-   balance              bigint comment '½»Ò×µ±Ê±ÕË»§µÄÓà¶î£¬µ¥Î»·Ö',
-   payment_time         datetime comment '´ò¿îÊ±¼ä',
-   payment_pattern      integer(2) comment 'Ö§¸¶·½Ê½: 1:Ö§¸¶±¦;2:Î¢ĞÅ',
-   target_user_id       bigint comment 'Ä¿±êÓÃ»§id',
+   transaction_number   varchar(20) comment 'äº¤æ˜“ç¼–å·,å¦‚è®¢å•ç¼–å·',
+   transaction_type     integer(2) comment 'äº¤æ˜“ç±»å‹(1:å……å€¼;2:è½¬å¸)',
+   user_id              bigint comment 'æ‰€å±ç”¨æˆ·ID',
+   transaction_amount   bigint comment 'æ‰“æ¬¾é‡‘é¢ï¼Œå•ä½åˆ†',
+   balance              bigint comment 'äº¤æ˜“å½“æ—¶è´¦æˆ·çš„ä½™é¢ï¼Œå•ä½åˆ†',
+   payment_time         datetime comment 'æ‰“æ¬¾æ—¶é—´',
+   payment_pattern      integer(2) comment 'æ”¯ä»˜æ–¹å¼: 1:æ”¯ä»˜å®;2:å¾®ä¿¡',
+   target_user_id       bigint comment 'ç›®æ ‡ç”¨æˆ·id',
    primary key (id)
 );
 
-alter table financial_transaction comment '½»Ò×Á÷Ë®¼ÇÂ¼±í';
+alter table financial_transaction comment 'äº¤æ˜“æµæ°´è®°å½•è¡¨';
 
 /*==============================================================*/
 /* Table: `order`                                               */
@@ -107,15 +127,18 @@ alter table financial_transaction comment '½»Ò×Á÷Ë®¼ÇÂ¼±í';
 create table `order`
 (
    id                   bigint not null,
-   user_id              bigint,
+   user_id              bigint not null,
    sku_id               bigint,
-   product_id           bigint comment '²úÆ·id£¬ÈßÓàÊı¾İ£¬±ãÓÚ²éÑ¯',
-   `varchar(20)`        bigint comment '¶©µ¥±àºÅ',
-   status               int comment '1:ÖÚ³ïÖĞ;2:ÖÚ³ï³É¹¦;3ÖÚ³ïÊ§°Ü',
-   price                bigint comment 'Í¶×Ê½ğ¶î',
-   transaction_type     int comment '1:Ç®;2:²úÆ·;  ÖÚ³ï³É¹¦ºó¿ÉÒÔÑ¡²úÆ·',
+   product_id           bigint comment 'äº§å“idï¼Œå†—ä½™æ•°æ®ï¼Œä¾¿äºæŸ¥è¯¢',
+   order_number         varchar(20) not null comment 'è®¢å•ç¼–å·',
+   status               int comment '1:ä¼—ç­¹ä¸­;2:ä¼—ç­¹æˆåŠŸ;3ä¼—ç­¹å¤±è´¥,4:å¾…ä»˜æ¬¾,5:ä»˜æ¬¾æˆåŠŸ;6:ä»˜æ¬¾å¤±è´¥',
+   price                bigint comment 'æŠ•èµ„é‡‘é¢',
+   transaction_type     int comment '1:é’±;2:äº§å“;  ä¼—ç­¹æˆåŠŸåå¯ä»¥é€‰äº§å“',
+   type                 int not null comment '1:äº§å“, 2:å……å€¼',
    primary key (id)
 );
+
+alter table `order` comment 'å……å€¼å¿…é¡»è¦è®°å½•è®¢å•ï¼Œç”¨äºæ”¯ä»˜å®å›è°ƒéªŒè¯è®¢å•å·';
 
 /*==============================================================*/
 /* Table: product                                               */
@@ -123,24 +146,24 @@ create table `order`
 create table product
 (
    id                   bigint not null,
-   name                 varchar(40) comment 'Ãû³Æ',
-   image                varchar(40) comment '´ÓÊı¾İ×ÖµäÖµ±íµÄcodeÈ¡£¬×Öµä±àÂëÎªIMAGE_CODE',
-   details              varchar(4095) comment 'ÏêÇé,¸»ÎÄ±¾ÄÚÈİ',
-   type                 varchar(40) comment 'ÎÄ×ÖËµÃ÷£¬Èç:Ê³Æ·£¬µçÆ÷£¬Ò½ÁÆµÈ',
-   publish_time         datetime comment '¼òµ¥´¦Àí£¬·¢²¼Ê±¼ä¾ÍÊÇ´´½¨Ê±¼ä',
-   cutoff_time          datetime comment 'ÖÚ³ï³É¹¦µÄ½ØÖ¹Ê±¼ä',
-   amount               bigint comment 'ÖÚ³ï³É¹¦ÒªÇóµÄ½ğ¶î',
-   drops_time           datetime comment 'ÏÂ¼ÜÊ±¼ä£¬ÏÂ¼ÜÊ±¸üĞÂ',
-   status               int comment '1:ÉÏ¼Ü,2:¹ıÆÚÏÂ¼Ü,3:ÊÖ¶¯ÏÂ¼Ü',
-   seller_name          varchar(40) comment 'ÏîÄ¿·¢ÆğÈË',
-   company_desc         varchar(40) comment 'ÆóÒµÀàĞÍ',
-   refund_rate          int default 0 comment 'Åâ³¥·ÑÂÊ°Ù·Ö±È:Èç120¼´Õâ120%',
-   commission_rate      int comment 'Æ½Ì¨³é³É±ÈÀı°Ù·Ö±È:Èç3¼´Õâ3%',
-   modify_time          datetime comment 'ĞŞ¸Ä²úÆ·Ê±¸üĞÂ',
-   yn                   int comment '0:É¾³ı,,1:¿ÉÓÃ'
+   name                 varchar(40) comment 'åç§°',
+   image                varchar(40) comment 'ä»æ•°æ®å­—å…¸å€¼è¡¨çš„codeå–ï¼Œå­—å…¸ç¼–ç ä¸ºIMAGE_CODE',
+   details              varchar(4095) comment 'è¯¦æƒ…,å¯Œæ–‡æœ¬å†…å®¹',
+   type                 varchar(40) comment 'æ–‡å­—è¯´æ˜ï¼Œå¦‚:é£Ÿå“ï¼Œç”µå™¨ï¼ŒåŒ»ç–—ç­‰',
+   publish_time         datetime comment 'ç®€å•å¤„ç†ï¼Œå‘å¸ƒæ—¶é—´å°±æ˜¯åˆ›å»ºæ—¶é—´',
+   cutoff_time          datetime comment 'ä¼—ç­¹æˆåŠŸçš„æˆªæ­¢æ—¶é—´',
+   amount               bigint comment 'ä¼—ç­¹æˆåŠŸè¦æ±‚çš„é‡‘é¢',
+   drops_time           datetime comment 'ä¸‹æ¶æ—¶é—´ï¼Œä¸‹æ¶æ—¶æ›´æ–°',
+   status               int comment '1:ä¸Šæ¶,2:è¿‡æœŸä¸‹æ¶,3:æ‰‹åŠ¨ä¸‹æ¶',
+   seller_name          varchar(40) comment 'é¡¹ç›®å‘èµ·äºº',
+   company_desc         varchar(40) comment 'ä¼ä¸šç±»å‹',
+   refund_rate          int default 0 comment 'èµ”å¿è´¹ç‡ç™¾åˆ†æ¯”:å¦‚120å³è¿™120%',
+   commission_rate      int comment 'å¹³å°æŠ½æˆæ¯”ä¾‹ç™¾åˆ†æ¯”:å¦‚3å³è¿™3%',
+   modify_time          datetime comment 'ä¿®æ”¹äº§å“æ—¶æ›´æ–°',
+   yn                   int comment '0:åˆ é™¤,,1:å¯ç”¨'
 );
 
-alter table product comment '·´ÕıÊÇÆ½Ì¨·¢²¼£¬Âô¼ÒĞÅÏ¢Ö±½Ó·ÅÕâÀïÁË';
+alter table product comment 'åæ­£æ˜¯å¹³å°å‘å¸ƒï¼Œå–å®¶ä¿¡æ¯ç›´æ¥æ”¾è¿™é‡Œäº†';
 
 /*==============================================================*/
 /* Table: sku                                                   */
@@ -148,18 +171,18 @@ alter table product comment '·´ÕıÊÇÆ½Ì¨·¢²¼£¬Âô¼ÒĞÅÏ¢Ö±½Ó·ÅÕâÀïÁË';
 create table sku
 (
    id                   bigint not null,
-   product_id           bigint comment 'ÉÌÆ·id',
-   details              varchar(4095) comment 'ÏêÇé',
-   price                datetime comment '¼Û¸ñ',
-   modify_time          datetime comment 'ĞŞ¸Ä²úÆ·Ê±¸üĞÂ',
-   yn                   int default 1 comment '0:É¾³ı,,1:¿ÉÓÃ',
-   quota                int comment '×î´ó¹ºÂò·İÊı(ÏŞ¶î)',
-   freight              bigint comment 'ÅäËÍ·ÑÓÃ',
-   image_code           varchar(120) comment 'Ö»ÓĞÒ»ÕÅÍ¼,´ÓÊı¾İ×ÖµäÖµ±íµÄcodeÈ¡£¬×Öµä±àÂëÎªIMAGE_CODE',
-   quantity             int comment 'µ±Ç°ÒÑ¹ºÂò·İÊı'
+   product_id           bigint comment 'å•†å“id',
+   details              varchar(4095) comment 'è¯¦æƒ…',
+   price                datetime comment 'ä»·æ ¼',
+   modify_time          datetime comment 'ä¿®æ”¹äº§å“æ—¶æ›´æ–°',
+   yn                   int default 1 comment '0:åˆ é™¤,,1:å¯ç”¨',
+   quota                int comment 'æœ€å¤§è´­ä¹°ä»½æ•°(é™é¢)',
+   freight              bigint comment 'é…é€è´¹ç”¨',
+   image_code           varchar(120) comment 'åªæœ‰ä¸€å¼ å›¾,ä»æ•°æ®å­—å…¸å€¼è¡¨çš„codeå–ï¼Œå­—å…¸ç¼–ç ä¸ºIMAGE_CODE',
+   quantity             int comment 'å½“å‰å·²è´­ä¹°ä»½æ•°'
 );
 
-alter table sku comment '×îĞ¡ÏúÊÛµ¥Î»';
+alter table sku comment 'æœ€å°é”€å”®å•ä½';
 
 /*==============================================================*/
 /* Table: system_config                                         */
@@ -177,8 +200,8 @@ create table system_config
    primary key (id)
 );
 
-alter table system_config comment 'ÅäÖÃÏµÍ³±äÁ¿,
-ÏµÍ³ÅäÖÃÒ»°ãÊÇËæÏµÍ³Æô¶¯Ê±¼ÓÔØÒ»´Î£¬ĞŞ¸ÄºóĞèÒªÖØÆôÏµÍ³¡£µ±È»²¿·ÖÊôĞÔ¿ÉÒÔ°´¿Í»§ĞèÇó¶¯Ì¬µ÷Õû¡£';
+alter table system_config comment 'é…ç½®ç³»ç»Ÿå˜é‡,
+ç³»ç»Ÿé…ç½®ä¸€èˆ¬æ˜¯éšç³»ç»Ÿå¯åŠ¨æ—¶åŠ è½½ä¸€æ¬¡ï¼Œä¿®æ”¹åéœ€è¦é‡å¯ç³»ç»Ÿã€‚å½“ç„¶éƒ¨åˆ†å±æ€§å¯ä»¥æŒ‰å®¢æˆ·éœ€æ±‚åŠ¨æ€è°ƒæ•´ã€‚';
 
 /*==============================================================*/
 /* Table: user                                                  */
@@ -189,13 +212,13 @@ create table user
    name                 varchar(20),
    password             varchar(20),
    referrer             bigint,
-   ÊÇ·ñÒÑÍ¶                 int,
-   ÊÇ·ñÆ½Ì¨ÓÃ»§               int,
-   balance              bigint default 0 comment '¿ÉÓÃÓà¶î,µ¥Î»·Ö',
-   email                varchar(40) comment 'ÓÊÏä',
+   æ˜¯å¦å·²æŠ•                 int,
+   æ˜¯å¦å¹³å°ç”¨æˆ·               int,
+   balance              bigint default 0 comment 'å¯ç”¨ä½™é¢,å•ä½åˆ†',
+   email                varchar(40) comment 'é‚®ç®±',
    phone                varchar(40),
-   type                 int comment '1:ÆÕÍ¨ÓÃ»§,2:Æ½Ì¨µ±Ç°ÏÖ½ğ,3:Æ½Ì¨³é³É,4:¹É¶«,5:»úÆ÷ÈË',
-   referral_code		varchar(10) comment 'ÍÆ¼öÂë,ÑûÇëÂë',
+   type                 int comment '1:æ™®é€šç”¨æˆ·,2:å¹³å°å½“å‰ç°é‡‘,3:å¹³å°æŠ½æˆ,4:è‚¡ä¸œ,5:æœºå™¨äºº',
+   referral_code        varchar(10) comment 'æ¨èç ,é‚€è¯·ç ',
    primary key (id)
 );
 
@@ -205,15 +228,15 @@ create table user
 create table withdrawal
 (
    id                   bigint not null auto_increment,
-   transaction_number   varchar(20) comment 'ÌáÏÖ±àºÅ',
-   balance              bigint(10) comment 'ÌáÏÖÊ±Óà¶î,µ¥Î»(·Ö)',
-   withdrawal_amount    bigint(20) comment 'ÌáÏÖÉêÇë½ğ¶î',
-   withdrawal_charge    integer(10) comment 'ÌáÏÖÊÖĞø·Ñ',
-   withdrawal_state     integer(10) comment '´ı´¦Àí£¬ÒÑ´¦Àí',
-   application_time     datetime comment 'ÌáÏÖÉêÇëÊ±¼ä',
-   finish_time          datetime comment 'ÌáÏÖÍê³ÉÊ±¼ä',
-   bank_card_id         bigint(20) comment 'ÒøĞĞ¿¨id',
-   user_id              bigint comment 'ÌáÏÖÈËid',
+   transaction_number   varchar(20) comment 'æç°ç¼–å·',
+   balance              bigint(10) comment 'æç°æ—¶ä½™é¢,å•ä½(åˆ†)',
+   withdrawal_amount    bigint(20) comment 'æç°ç”³è¯·é‡‘é¢',
+   withdrawal_charge    integer(10) comment 'æç°æ‰‹ç»­è´¹',
+   withdrawal_state     integer(10) comment 'å¾…å¤„ç†ï¼Œå·²å¤„ç†',
+   application_time     datetime comment 'æç°ç”³è¯·æ—¶é—´',
+   finish_time          datetime comment 'æç°å®Œæˆæ—¶é—´',
+   bank_card_id         bigint(20) comment 'é“¶è¡Œå¡id',
+   user_id              bigint comment 'æç°äººid',
    primary key (id)
 );
 

@@ -1,0 +1,43 @@
+mysql序列功能用法:
+1.先在mysql数据库的mysql.TB_SEQUENCE表中添加数据
+2.函数用法:mysql.NEXTVAL('SEQ_PARTNER_ATTR_ID')
+==============================================================
+--创建TB_SEQUENCE表
+CREATE TABLE `TB_SEQUENCE` (
+  `NAME` varchar(50) COLLATE utf8_bin NOT NULL,
+  `CURRENT_VALUE` int(11) NOT NULL,
+  `_INCREMENT` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+==============================================================
+--创建mysql.NEXTVAL函数
+DROP FUNCTION IF EXISTS mysql.NEXTVAL;
+CREATE FUNCTION mysql.`NEXTVAL`(N VARCHAR(50)) RETURNS int(11)
+BEGIN
+DECLARE _CUR INT;
+SET _CUR=(SELECT CURRENT_VALUE FROM TB_SEQUENCE WHERE lower(NAME)= lower(N));
+UPDATE TB_SEQUENCE
+ SET CURRENT_VALUE = _CUR + _INCREMENT
+ WHERE lower(NAME)=lower(N) ;
+RETURN _CUR;
+END;
+
+--创建mysql.NEXTVAL2函数，支持到达最大值后重置为1
+DROP FUNCTION IF EXISTS mysql.NEXTVAL2;
+CREATE FUNCTION mysql.`NEXTVAL2`(N VARCHAR(50), M int(11)) RETURNS int(11)
+BEGIN
+DECLARE _CUR INT;
+SET _CUR=(SELECT CURRENT_VALUE FROM TB_SEQUENCE WHERE lower(NAME)= lower(N));
+IF _CUR > M then
+set _CUR=1;
+end if;
+UPDATE TB_SEQUENCE
+ SET CURRENT_VALUE = _CUR + _INCREMENT
+ WHERE lower(NAME)=lower(N) ;
+RETURN _CUR;
+END
+
+--需要插入数据：
+insert into TB_SEQUENCE
+(name, CURRENT_VALUE, _INCREMENT)
+values ('SEQ_DEVICE_ID',1,1);
