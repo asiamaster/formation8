@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dili.formation8.dao.WithdrawalMapper">
+  <resultMap id="BaseResultMap" type="com.dili.formation8.domain.Withdrawal">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="transaction_number" jdbcType="VARCHAR" property="transactionNumber" />
+    <result column="balance" jdbcType="BIGINT" property="balance" />
+    <result column="withdrawal_amount" jdbcType="BIGINT" property="withdrawalAmount" />
+    <result column="withdrawal_charge" jdbcType="INTEGER" property="withdrawalCharge" />
+    <result column="withdrawal_state" jdbcType="INTEGER" property="withdrawalState" />
+    <result column="application_time" jdbcType="TIMESTAMP" property="applicationTime" />
+    <result column="finish_time" jdbcType="TIMESTAMP" property="finishTime" />
+    <result column="bank_card_id" jdbcType="BIGINT" property="bankCardId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, transaction_number, balance, withdrawal_amount, withdrawal_charge, withdrawal_state, 
+    application_time, finish_time, bank_card_id, user_id
+  </sql>
+  <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from withdrawal
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <update id="updateBy" parameterType="com.dili.formation8.domain.Withdrawal">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update withdrawal
+    <set>
+      <if test="transactionNumber != null">
+        transaction_number = #{transactionNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null">
+        balance = #{balance,jdbcType=BIGINT},
+      </if>
+      <if test="withdrawalAmount != null">
+        withdrawal_amount = #{withdrawalAmount,jdbcType=BIGINT},
+      </if>
+      <if test="withdrawalCharge != null">
+        withdrawal_charge = #{withdrawalCharge,jdbcType=INTEGER},
+      </if>
+      <if test="withdrawalState != null">
+        withdrawal_state = #{withdrawalState,jdbcType=INTEGER},
+      </if>
+      <if test="applicationTime != null">
+        application_time = #{applicationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishTime != null">
+        finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bankCardId != null">
+        bank_card_id = #{bankCardId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
