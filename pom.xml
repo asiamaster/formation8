@@ -29,7 +29,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.framework.version>1.0-SNAPSHOT</project.framework.version>
         <mapper.version>3.3.9</mapper.version>
-        <mysql.version>5.1.38</mysql.version>
+        <mysql.version>5.1.40</mysql.version>
         <aspectj.version>1.8.10</aspectj.version>
     </properties>
 
@@ -136,8 +136,6 @@
                         <groupId>com.dili</groupId>
                         <artifactId>springboot-base</artifactId>
                         <version>0.0.1-SNAPSHOT</version>
-                        <scope>system</scope>
-                        <systemPath>${project.basedir}/lib/springboot-base-0.0.1-SNAPSHOT.jar</systemPath>
                     </dependency>
                     <dependency>
                         <groupId>org.beetl</groupId>
@@ -156,8 +154,8 @@
 			<groupId>com.dili</groupId>
 			<artifactId>springboot-base</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/springboot-base-0.0.1-SNAPSHOT.jar</systemPath>
+            <!--<scope>system</scope>-->
+            <!--<systemPath>${project.basedir}/lib/springboot-base-0.0.1-SNAPSHOT.jar</systemPath>-->
 		</dependency>
         <dependency>
             <groupId>org.mybatis.generator</groupId>
@@ -264,6 +262,13 @@
             <version>2.2.1</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-email -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-email</artifactId>
+            <version>1.4</version>
+        </dependency>
+
 
         <!-- ===============  spring boot starters  =============== -->
         <dependency>
@@ -338,6 +343,17 @@
             <groupId>org.jasypt</groupId>
             <artifactId>jasypt-spring31</artifactId>
             <version>1.9.2</version>
+        </dependency>
+        <!-- zxing -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.3.0</version>
         </dependency>
 
         <!-- starter-security -->
