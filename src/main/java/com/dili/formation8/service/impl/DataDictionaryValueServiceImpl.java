@@ -3,8 +3,11 @@ package com.dili.formation8.service.impl;
 import com.dili.formation8.dao.DataDictionaryValueMapper;
 import com.dili.formation8.domain.DataDictionaryValue;
 import com.dili.formation8.service.DataDictionaryValueService;
+import com.dili.formation8.vo.DataDictionaryValueCondition;
 import com.dili.utils.base.BaseServiceImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -15,5 +18,10 @@ public class DataDictionaryValueServiceImpl extends BaseServiceImpl<DataDictiona
 
     public DataDictionaryValueMapper getActualDao() {
         return (DataDictionaryValueMapper)getDao();
+    }
+
+    @Override
+    public List<DataDictionaryValue> selectByCondition(DataDictionaryValueCondition condition) {
+        return getActualDao().selectByCondition(condition);
     }
 }

@@ -2,12 +2,14 @@ package com.dili.formation8.controller;
 
 import com.dili.formation8.domain.DataDictionaryValue;
 import com.dili.formation8.service.DataDictionaryValueService;
+import com.dili.formation8.vo.DataDictionaryValueCondition;
 import com.dili.utils.domain.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -19,6 +21,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class DataDictionaryValueController {
     @Autowired
     DataDictionaryValueService dataDictionaryValueService;
+
+    /**
+     * 根据数据字典编码和数据字典值条件查询字典值列表
+     * @param modelMap
+     * @param ddCode
+     * @return
+     */
+    @RequestMapping("/selectByCondition.aspx")
+    public String selectByCondition(ModelMap modelMap, @ModelAttribute DataDictionaryValueCondition condition) {
+        modelMap.put("list", dataDictionaryValueService.selectByCondition(condition));
+        return "dataDictionaryValue/list";
+    }
+
 
     @RequestMapping("/list")
     public String list(ModelMap modelMap, @ModelAttribute DataDictionaryValue dataDictionaryValue) {

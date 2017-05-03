@@ -21,17 +21,23 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, dd_id, sort, code, value, remark, period_begin, period_end, created, modified, 
-    yn
+    t.id, t.dd_id, t.sort, t.code, t.value, t.remark, t.period_begin, t.period_end, t.created, t.modified, t.yn
   </sql>
-  <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <!-- 根据数据字典编码查询编码值列表-->
+  <select id="selectByCondition" parameterType="com.dili.formation8.vo.DataDictionaryValueCondition" resultMap="BaseResultMap">
     <!--
       WARNING - @mbg.generated
     -->
     select 
     <include refid="Base_Column_List" />
-    from data_dictionary_value
-    where id = #{id,jdbcType=BIGINT}
+    from data_dictionary_value t, data_dictionary dd
+    where t.dd_id = dd.id and t.yn=1 and dd.yn=1 and dd.code = #{ddCode}
+    <if test="id != null">
+      and t.id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="code != null">
+      and t.code = #{code,jdbcType=VARCHAR}
+    </if>
   </select>
   <update id="updateBy" parameterType="com.dili.formation8.domain.DataDictionaryValue">
     <!--

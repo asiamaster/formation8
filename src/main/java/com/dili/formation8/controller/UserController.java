@@ -68,7 +68,7 @@ public class UserController {
     /**
      * url:http://localhost:8080/user/referralCode.aspx?str=1&width=320&height=240
      * 四个参数:
-     * 条形码字符串str,
+     * 二维码字符串str,
      * 宽度:width,
      * 高度：height,
      * 图片类型(默认为jpg, 如:jpg, png, gif等):fmt
@@ -91,7 +91,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping("/list")
+    @RequestMapping("/list.aspx")
     public String list(ModelMap modelMap, @ModelAttribute User user) {
         modelMap.put("list", userService.list(user));
         return "user/list";
@@ -99,13 +99,13 @@ public class UserController {
 
 
 
-    @RequestMapping("/update")
+    @RequestMapping("/update.aspx")
     public String update(ModelMap modelMap, @ModelAttribute User user) {
         userService.update(user);
         return "user/update";
     }
 
-    @RequestMapping("/delete")
+    @RequestMapping("/delete.aspx")
     public @ResponseBody ResponseMessage delete(ModelMap modelMap, Long id) {
         userService.delete(id);
         return ResponseMessage.success();
