@@ -81,6 +81,10 @@
             <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
         <!-- 生成指定表模型 -->
+        <!--<table tableName="order">-->
+            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
+
         <table tableName="order">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>

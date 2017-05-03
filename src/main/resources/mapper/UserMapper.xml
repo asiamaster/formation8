@@ -8,6 +8,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="payment_code" jdbcType="VARCHAR" property="paymentCode" />
     <result column="referrer" jdbcType="BIGINT" property="referrer" />
     <result column="是否已投" jdbcType="INTEGER" property="是否已投" />
     <result column="是否平台用户" jdbcType="INTEGER" property="是否平台用户" />
@@ -21,7 +22,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, password, referrer, 是否已投, 是否平台用户, balance, email, phone, type, referral_code
+    id, name, password, payment_code, referrer, 是否已投, 是否平台用户, balance, email, phone, type, referral_code
   </sql>
   <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
     <!--
@@ -44,6 +45,10 @@
       <if test="password != null">
         password = #{password,jdbcType=VARCHAR},
       </if>
+      <if test="paymentCode != null">
+        payment_code = #{paymentCode,jdbcType=VARCHAR},
+      </if>
+
       <if test="referrer != null">
         referrer = #{referrer,jdbcType=BIGINT},
       </if>

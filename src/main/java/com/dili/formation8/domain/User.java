@@ -1,6 +1,7 @@
 package com.dili.formation8.domain;
 
 import javax.persistence.*;
+//import javax.validation.constraints.NotNull;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -12,9 +13,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+//    @NotNull(message="name不能为空")
     private String name;
 
     private String password;
+
+    private String payment_code;
 
     private Long referrer;
 
@@ -213,5 +217,13 @@ public class User {
      */
     public void setReferralCode(String referralCode) {
         this.referralCode = referralCode;
+    }
+
+    public String getPayment_code() {
+        return payment_code;
+    }
+
+    public void setPayment_code(String payment_code) {
+        this.payment_code = payment_code;
     }
 }
