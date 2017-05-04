@@ -213,8 +213,6 @@ create table user
    password             varchar(20) comment '密码',
    payment_code         varchar(20) comment '支付密码',
    referrer             bigint,
-   是否已投                 int,
-   是否平台用户               int,
    balance              bigint default 0 comment '可用余额,单位分',
    email                varchar(40) comment '邮箱',
    phone                varchar(40),
