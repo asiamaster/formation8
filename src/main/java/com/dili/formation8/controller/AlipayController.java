@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,8 +22,26 @@ import java.util.Map;
 public class AlipayController {
 
     protected static final Logger log = LoggerFactory.getLogger(AlipayController.class);
+
+    /**
+     * <B>服务器异步通知页面特性</B><br/>
+     * 1. 必须保证服务器异步通知页面（notify_url）上无任何字符，如空格、HTML标签、开发系统自带抛出的异常提示信息等；<br/>
+     * 2. 支付宝是用POST方式发送通知信息，因此该页面中获取参数的方式，如：request.Form(“out_trade_no”)、$_POST[‘out_trade_no’]；<br/>
+     * 3. 支付宝主动发起通知，该方式才会被启用；<br/>
+     * 4. 只有在支付宝的交易管理中存在该笔交易，且发生了交易状态的改变，支付宝才会通过该方式发起服务器通知（即时到账中交易状态为“等待买家付款”的状态默认是不会发送通知的）；<br/>
+     * 5. 服务器间的交互，不像页面跳转同步通知可以在页面上显示出来，这种交互方式是不可见的；<br/>
+     * 6. 第一次交易状态改变（即时到账中此时交易状态是交易完成）时，不仅会返回同步处理结果，而且服务器异步通知页面也会收到支付宝发来的处理结果通知；<br/>
+     * 7. 程序执行完后必须打印输出“success”（不包含引号）。如果商户反馈给支付宝的字符不是success这7个字符，支付宝服务器会不断重发通知，直到超过24小时22分钟。一般情况下，25小时以内完成8次通知（通知的间隔频率一般是：4m,10m,10m,1h,2h,6h,15h）；<br/>
+     * 8. 程序执行完成后，该页面不能执行页面跳转。如果执行页面跳转，支付宝会收不到success字符，会被支付宝服务器判定为该页面程序运行出现异常，而重发处理结果通知；<br/>
+     * 9. ookies、session等在此页面会失效，即无法获取这些数据；<br/>
+     * 10.该方式的调试与运行必须在服务器上，即互联网上能访问；<br/>
+     * 11.该方式的作用主要防止订单丢失，即页面跳转同步通知没有处理订单更新，它则去处理；<br/>
+     * 12.当商户收到服务器异步通知并打印出success时，服务器异步通知参数notify_id才会失效。也就是说在支付宝发送同一条异步通知时（包含商户并未成功打印出success导致支付宝重发数次通知），服务器异步通知参数notify_id是不变的
+     * 参考:https://doc.open.alipay.com/docs/doc.htm?treeId=194&articleId=103296&docType=1
+     */
     @RequestMapping(value = "/pay/notify", method = RequestMethod.POST)
-    public String notifyResult(HttpServletRequest request, HttpServletResponse response) {
+    public @ResponseBody
+    String notifyResult(HttpServletRequest request, HttpServletResponse response) {
         log.info("收到支付宝异步通知！");
         Map<String, String> params = new HashMap<String, String>();
 

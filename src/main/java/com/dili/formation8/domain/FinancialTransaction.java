@@ -39,7 +39,7 @@ public class FinancialTransaction {
     private Long transactionAmount;
 
     /**
-     * 交易当时账户的余额，单位分
+     * 交易当时账户的余额，单位分，转帐不记录
      */
     private Long balance;
 

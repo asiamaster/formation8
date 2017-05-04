@@ -10,8 +10,6 @@
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="payment_code" jdbcType="VARCHAR" property="paymentCode" />
     <result column="referrer" jdbcType="BIGINT" property="referrer" />
-    <result column="是否已投" jdbcType="INTEGER" property="是否已投" />
-    <result column="是否平台用户" jdbcType="INTEGER" property="是否平台用户" />
     <result column="balance" jdbcType="BIGINT" property="balance" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
@@ -22,7 +20,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, password, payment_code, referrer, 是否已投, 是否平台用户, balance, email, phone, type, referral_code
+    id, name, password, payment_code, referrer, balance, email, phone, type, referral_code
   </sql>
   <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
     <!--
@@ -33,6 +31,12 @@
     from user
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <!-- 转帐 -->
+  <update id="transfer" parameterType="com.dili.formation8.vo.UserVo">
+    update user set balance = balance+${transferAmount}
+    where id=#{id,jdbcType=BIGINT}
+  </update>
+
   <update id="updateBy" parameterType="com.dili.formation8.domain.User">
     <!--
       WARNING - @mbg.generated
@@ -51,12 +55,6 @@
 
       <if test="referrer != null">
         referrer = #{referrer,jdbcType=BIGINT},
-      </if>
-      <if test="是否已投 != null">
-        是否已投 = #{是否已投,jdbcType=INTEGER},
-      </if>
-      <if test="是否平台用户 != null">
-        是否平台用户 = #{是否平台用户,jdbcType=INTEGER},
       </if>
       <if test="balance != null">
         balance = #{balance,jdbcType=BIGINT},

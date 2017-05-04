@@ -1,12 +1,22 @@
 package com.dili.formation8.service.impl;
 
+import com.dili.formation8.dao.FinancialTransactionMapper;
 import com.dili.formation8.dao.UserMapper;
+import com.dili.formation8.domain.FinancialTransaction;
 import com.dili.formation8.domain.User;
+import com.dili.formation8.service.BizNumberService;
 import com.dili.formation8.service.UserService;
 import com.dili.formation8.utils.ShortUrlGenerator;
+import com.dili.formation8.vo.Formation8Constants;
+import com.dili.formation8.vo.UserVo;
 import com.dili.utils.base.BaseServiceImpl;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -14,6 +24,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserServiceImpl extends BaseServiceImpl<User, Long> implements UserService {
+
+    @Autowired
+    private FinancialTransactionMapper financialTransactionMapper;
+
+    @Autowired
+    private BizNumberService bizNumberService;
 
     public UserMapper getActualDao() {
         return (UserMapper)getDao();
@@ -35,6 +51,34 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
             return "密码长度不能多于20个字符";
         }
         return null;
+    }
+
+    @Override
+    @Transactional(propagation= Propagation.REQUIRED,rollbackFor=Exception.class)
+    public void transfer(Long sourceUserId, Long targetUserId, Long amount) {
+        transferQuietly(sourceUserId, targetUserId, amount);
+        //记录转帐日志
+        FinancialTransaction financialTransaction = new FinancialTransaction();
+        financialTransaction.setUserId(sourceUserId);
+        financialTransaction.setPaymentTime(new Date());
+        financialTransaction.setTransactionType(Formation8Constants.FinanciaTransactionType.TRANSFER.getCode());
+        financialTransaction.setPaymentPattern(Formation8Constants.PaymentPattern.ALIPAY.getCode());
+        financialTransaction.setTransactionAmount(amount);
+        financialTransaction.setTargetUserId(targetUserId);
+        financialTransaction.setTransactionNumber(bizNumberService.getTransferOrderCode());
+        financialTransactionMapper.insert(financialTransaction);
+    }
+
+    @Override
+    public void transferQuietly(Long sourceUserId, Long targetUserId, Long amount) {
+        UserVo user = new UserVo();
+        user.setId(sourceUserId);
+        user.setTransferAmount(-amount);
+        getActualDao().transfer(user);
+        user = new UserVo();
+        user.setId(targetUserId);
+        user.setTransferAmount(amount);
+        getActualDao().transfer(user);
     }
 
     @Override

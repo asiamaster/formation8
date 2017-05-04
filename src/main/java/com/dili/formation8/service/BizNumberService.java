@@ -21,4 +21,10 @@ public interface BizNumberService extends BaseService<BizNumber, Long> {
      */
     public String getProductOrderCode();
 
+    /**
+     * 获取转帐订单号
+     * @return
+     */
+    public String getTransferOrderCode();
+
 }

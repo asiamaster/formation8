@@ -22,10 +22,6 @@ public class User {
 
     private Long referrer;
 
-    private Integer 是否已投;
-
-    private Integer 是否平台用户;
-
     /**
      * 可用余额,单位分
      */
@@ -103,34 +99,6 @@ public class User {
      */
     public void setReferrer(Long referrer) {
         this.referrer = referrer;
-    }
-
-    /**
-     * @return 是否已投
-     */
-    public Integer get是否已投() {
-        return 是否已投;
-    }
-
-    /**
-     * @param 是否已投
-     */
-    public void set是否已投(Integer 是否已投) {
-        this.是否已投 = 是否已投;
-    }
-
-    /**
-     * @return 是否平台用户
-     */
-    public Integer get是否平台用户() {
-        return 是否平台用户;
-    }
-
-    /**
-     * @param 是否平台用户
-     */
-    public void set是否平台用户(Integer 是否平台用户) {
-        this.是否平台用户 = 是否平台用户;
     }
 
     /**

@@ -66,6 +66,18 @@ public class UserController {
     }
 
     /**
+     *  转帐
+     * @param sourceUserId  转出用户id
+     * @param targetUserId  转入用户id
+     * @param amount    转帐金额
+     */
+    @RequestMapping("/transfer.aspx")
+    public @ResponseBody String transfer(Long sourceUserId, Long targetUserId, Long amount){
+        userService.transfer(sourceUserId, targetUserId, amount);
+        return "转帐成功!";
+    }
+
+    /**
      * url:http://localhost:8080/user/referralCode.aspx?str=1&width=320&height=240
      * 四个参数:
      * 二维码字符串str,

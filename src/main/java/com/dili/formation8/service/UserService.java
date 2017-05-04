@@ -18,4 +18,20 @@ public interface UserService extends BaseService<User, Long> {
      * @return
      */
     public String loginPreCheck(String username, String password);
+
+    /**
+     *  转帐
+     * @param sourceUserId  转出用户id
+     * @param targetUserId  转入用户id
+     * @param amount    转帐金额
+     */
+    public void transfer(Long sourceUserId, Long targetUserId, Long amount);
+
+    /**
+     *  无日志转帐
+     * @param sourceUserId  转出用户id
+     * @param targetUserId  转入用户id
+     * @param amount    转帐金额
+     */
+    public void transferQuietly(Long sourceUserId, Long targetUserId, Long amount);
 }

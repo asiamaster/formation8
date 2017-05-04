@@ -28,6 +28,11 @@ public class BizNumberServiceImpl extends BaseServiceImpl<BizNumber, Long> imple
         return (BizNumberMapper)getDao();
     }
 
+    @Override
+    @Transactional(propagation= Propagation.REQUIRED)
+    public String getTransferOrderCode() {
+        return getCode(BIZ_NUMBER_PREFIX.TRANSFER_ORDER_CODE);
+    }
 
     @Override
     @Transactional(propagation= Propagation.REQUIRED)
@@ -134,7 +139,9 @@ public class BizNumberServiceImpl extends BaseServiceImpl<BizNumber, Long> imple
         // 充值订单编码前缀
         DEPOSIT_ORDER_CODE("DO"),
         // 产品订单编码前缀
-        PRODUCT_ORDER_CODE("PO");
+        PRODUCT_ORDER_CODE("PO"),
+        //转帐订单编码前缀
+        TRANSFER_ORDER_CODE("TO");
 
         private String prefix;
 
