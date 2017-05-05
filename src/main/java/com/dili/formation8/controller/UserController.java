@@ -3,7 +3,7 @@ package com.dili.formation8.controller;
 import com.dili.formation8.domain.User;
 import com.dili.formation8.service.UserService;
 import com.dili.formation8.utils.ZxingUtils;
-import com.dili.utils.domain.ResponseMessage;
+import com.dili.utils.domain.BaseOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -118,8 +118,9 @@ public class UserController {
     }
 
     @RequestMapping("/delete.aspx")
-    public @ResponseBody ResponseMessage delete(ModelMap modelMap, Long id) {
+    public @ResponseBody
+    BaseOutput delete(ModelMap modelMap, Long id) {
         userService.delete(id);
-        return ResponseMessage.success();
+        return BaseOutput.success();
     }
 }

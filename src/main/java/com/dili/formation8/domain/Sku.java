@@ -6,9 +6,10 @@ import javax.persistence.*;
 /**
  * 由MyBatis Generator工具自动生成
  * 
- * This file was generated on 2017-04-27 10:56:44.
+ * This file was generated on 2017-05-05 09:58:38.
  */
 public class Sku {
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -45,6 +46,29 @@ public class Sku {
     private Integer quota;
 
     /**
+     * 当前已购买总份数
+     */
+    private Integer quantity;
+
+    /**
+     * 每日限额xxx份
+     */
+    @Column(name = "daily_quota")
+    private Integer dailyQuota;
+
+    /**
+     * 每日购买xxx份
+     */
+    @Column(name = "daily_quantity")
+    private Integer dailyQuantity;
+
+    /**
+     * 当前购买日期串,用于计算每日购买份数,如:2017-05-05
+     */
+    @Column(name = "current_date")
+    private String currentDate;
+
+    /**
      * 配送费用
      */
     private Long freight;
@@ -54,11 +78,6 @@ public class Sku {
      */
     @Column(name = "image_code")
     private String imageCode;
-
-    /**
-     * 当前已购买份数
-     */
-    private Integer quantity;
 
     /**
      * @return id
@@ -183,6 +202,78 @@ public class Sku {
     }
 
     /**
+     * 获取当前已购买总份数
+     *
+     * @return quantity - 当前已购买总份数
+     */
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    /**
+     * 设置当前已购买总份数
+     *
+     * @param quantity 当前已购买总份数
+     */
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    /**
+     * 获取每日限额xxx份
+     *
+     * @return daily_quota - 每日限额xxx份
+     */
+    public Integer getDailyQuota() {
+        return dailyQuota;
+    }
+
+    /**
+     * 设置每日限额xxx份
+     *
+     * @param dailyQuota 每日限额xxx份
+     */
+    public void setDailyQuota(Integer dailyQuota) {
+        this.dailyQuota = dailyQuota;
+    }
+
+    /**
+     * 获取每日购买xxx份
+     *
+     * @return daily_quantity - 每日购买xxx份
+     */
+    public Integer getDailyQuantity() {
+        return dailyQuantity;
+    }
+
+    /**
+     * 设置每日购买xxx份
+     *
+     * @param dailyQuantity 每日购买xxx份
+     */
+    public void setDailyQuantity(Integer dailyQuantity) {
+        this.dailyQuantity = dailyQuantity;
+    }
+
+    /**
+     * 获取当前购买日期串,用于计算每日购买份数,如:2017-05-05
+     *
+     * @return current_date - 当前购买日期串,用于计算每日购买份数,如:2017-05-05
+     */
+    public String getCurrentDate() {
+        return currentDate;
+    }
+
+    /**
+     * 设置当前购买日期串,用于计算每日购买份数,如:2017-05-05
+     *
+     * @param currentDate 当前购买日期串,用于计算每日购买份数,如:2017-05-05
+     */
+    public void setCurrentDate(String currentDate) {
+        this.currentDate = currentDate;
+    }
+
+    /**
      * 获取配送费用
      *
      * @return freight - 配送费用
@@ -216,23 +307,5 @@ public class Sku {
      */
     public void setImageCode(String imageCode) {
         this.imageCode = imageCode;
-    }
-
-    /**
-     * 获取当前已购买份数
-     *
-     * @return quantity - 当前已购买份数
-     */
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    /**
-     * 设置当前已购买份数
-     *
-     * @param quantity 当前已购买份数
-     */
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
     }
 }

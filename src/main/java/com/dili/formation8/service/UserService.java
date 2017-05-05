@@ -1,6 +1,7 @@
 package com.dili.formation8.service;
 
 import com.dili.formation8.domain.User;
+import com.dili.formation8.vo.UserVo;
 import com.dili.utils.base.BaseService;
 
 /**
@@ -34,4 +35,14 @@ public interface UserService extends BaseService<User, Long> {
      * @param amount    转帐金额
      */
     public void transferQuietly(Long sourceUserId, Long targetUserId, Long amount);
+
+    /**
+     * 余额调整
+     * @param userId
+     * @param balanceAdjust 正为加，负为减
+     */
+    public void balanceAdjust(Long userId, Long balanceAdjust);
+
+    //查询指定层级的推荐人
+    public Long getParentReferrer(UserVo userVo);
 }

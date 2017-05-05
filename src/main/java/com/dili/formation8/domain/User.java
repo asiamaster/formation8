@@ -46,6 +46,11 @@ public class User {
     private String referralCode;
 
     /**
+     * 收货地址
+     */
+    private String address;
+
+    /**
      * @return id
      */
     public Long getId() {
@@ -193,5 +198,13 @@ public class User {
 
     public void setPayment_code(String payment_code) {
         this.payment_code = payment_code;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

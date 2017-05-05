@@ -5,6 +5,17 @@ package com.dili.formation8.vo;
  * Created by asiam on 2017/5/4 0004.
  */
 public class Formation8Constants {
+//    引领人费率
+    public static final String SYSTEM_CONFIG_REFERRAL_RATE1 = "REFERRAL_RATE1";
+//    引荐人费率
+    public static final String SYSTEM_CONFIG_REFERRAL_RATE2 = "REFERRAL_RATE2";
+//    提现金额下限
+    public static final String SYSTEM_CONFIG_WITHDRAW_DEPOSIT_AMOUNT_FLOOR = "WITHDRAW_DEPOSIT_AMOUNT_FLOOR";
+//    提现费率
+    public static final String SYSTEM_CONFIG_WITHDRAW_DEPOSIT_RATE = "WITHDRAW_DEPOSIT_RATE";
+//    平台用户id
+    public static final Long PLATFORM_USER_ID = 1l;
+
 
     /**
      * 是否可用

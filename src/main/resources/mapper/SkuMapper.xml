@@ -1,25 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dili.formation8.dao.SkuMapper">
+<mapper namespace="mapper.SkuMapper">
   <resultMap id="BaseResultMap" type="com.dili.formation8.domain.Sku">
     <!--
       WARNING - @mbg.generated
     -->
-    <result column="id" jdbcType="BIGINT" property="id" />
+    <id column="id" jdbcType="BIGINT" property="id" />
     <result column="product_id" jdbcType="BIGINT" property="productId" />
     <result column="details" jdbcType="VARCHAR" property="details" />
     <result column="price" jdbcType="TIMESTAMP" property="price" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
     <result column="yn" jdbcType="INTEGER" property="yn" />
     <result column="quota" jdbcType="INTEGER" property="quota" />
+    <result column="quantity" jdbcType="INTEGER" property="quantity" />
+    <result column="daily_quota" jdbcType="INTEGER" property="dailyQuota" />
+    <result column="daily_quantity" jdbcType="INTEGER" property="dailyQuantity" />
+    <result column="current_date" jdbcType="VARCHAR" property="currentDate" />
     <result column="freight" jdbcType="BIGINT" property="freight" />
     <result column="image_code" jdbcType="VARCHAR" property="imageCode" />
-    <result column="quantity" jdbcType="INTEGER" property="quantity" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, product_id, details, price, modify_time, yn, quota, freight, image_code, quantity
+    id, product_id, details, price, modify_time, yn, quota, quantity, daily_quota, daily_quantity, 
+    current_date, freight, image_code
   </sql>
+  <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from sku
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <update id="updateBy" parameterType="com.dili.formation8.domain.Sku">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update sku
+    <set>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="details != null">
+        details = #{details,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yn != null">
+        yn = #{yn,jdbcType=INTEGER},
+      </if>
+      <if test="quota != null">
+        quota = #{quota,jdbcType=INTEGER},
+      </if>
+      <if test="quantity != null">
+        quantity = #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="dailyQuota != null">
+        daily_quota = #{dailyQuota,jdbcType=INTEGER},
+      </if>
+      <if test="dailyQuantity != null">
+        daily_quantity = #{dailyQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="currentDate != null">
+        current_date = #{currentDate,jdbcType=VARCHAR},
+      </if>
+      <if test="freight != null">
+        freight = #{freight,jdbcType=BIGINT},
+      </if>
+      <if test="imageCode != null">
+        image_code = #{imageCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
 </mapper>

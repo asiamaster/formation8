@@ -15,28 +15,38 @@
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="referral_code" jdbcType="VARCHAR" property="referralCode" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, password, payment_code, referrer, balance, email, phone, type, referral_code
+    id, name, password, payment_code, referrer, balance, email, phone, type, referral_code,address
   </sql>
-  <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    select 
-    <include refid="Base_Column_List" />
-    from user
-    where id = #{id,jdbcType=BIGINT}
+
+  <!-- 查询指定层级的推荐人 -->
+  <select id="getParentReferrer" resultType="java.lang.Long" parameterType="com.dili.formation8.vo.UserVo">
+    SELECT `getParentReferrer`(#{id}, #{level})
   </select>
-  <!-- 转帐 -->
+  <!-- 余额调整, 转帐 -->
   <update id="transfer" parameterType="com.dili.formation8.vo.UserVo">
     update user set balance = balance+${transferAmount}
     where id=#{id,jdbcType=BIGINT}
   </update>
 
+
+
+
+
+  <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
   <update id="updateBy" parameterType="com.dili.formation8.domain.User">
     <!--
       WARNING - @mbg.generated
@@ -71,6 +81,10 @@
       <if test="referralCode != null">
         referral_code = #{referralCode,jdbcType=VARCHAR},
       </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>

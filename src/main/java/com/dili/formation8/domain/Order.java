@@ -6,7 +6,7 @@ import javax.persistence.*;
 /**
  * 由MyBatis Generator工具自动生成
  * 
- * This file was generated on 2017-04-28 21:56:36.
+ * This file was generated on 2017-05-05 09:58:38.
  */
 public class Order {
     @Id
@@ -24,6 +24,11 @@ public class Order {
      */
     @Column(name = "product_id")
     private Long productId;
+
+    /**
+     * 购买SKU的数量
+     */
+    private Integer count;
 
     /**
      * 订单编号
@@ -117,6 +122,24 @@ public class Order {
      */
     public void setProductId(Long productId) {
         this.productId = productId;
+    }
+
+    /**
+     * 获取购买数量
+     *
+     * @return count - 购买数量
+     */
+    public Integer getCount() {
+        return count;
+    }
+
+    /**
+     * 设置购买数量
+     *
+     * @param count 购买数量
+     */
+    public void setCount(Integer count) {
+        this.count = count;
     }
 
     /**

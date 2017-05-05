@@ -6,9 +6,10 @@ import javax.persistence.*;
 /**
  * 由MyBatis Generator工具自动生成
  * 
- * This file was generated on 2017-04-27 10:56:44.
+ * This file was generated on 2017-05-05 10:49:23.
  */
 public class Product {
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -47,7 +48,14 @@ public class Product {
     /**
      * 众筹成功要求的金额
      */
-    private Long amount;
+    @Column(name = "success_amount")
+    private Long successAmount;
+
+    /**
+     * 已筹金额
+     */
+    @Column(name = "current_amount")
+    private Long currentAmount;
 
     /**
      * 下架时间，下架时更新
@@ -73,7 +81,7 @@ public class Product {
     private String companyDesc;
 
     /**
-     * 赔偿费率百分比:如120即这120%
+     * 赔偿费率百分比:如7天赔偿3%
      */
     @Column(name = "refund_rate")
     private Integer refundRate;
@@ -91,7 +99,7 @@ public class Product {
     private Date modifyTime;
 
     /**
-     * 0:删除,,1:可用
+     * 0:删除,1:可用
      */
     private Integer yn;
 
@@ -220,19 +228,37 @@ public class Product {
     /**
      * 获取众筹成功要求的金额
      *
-     * @return amount - 众筹成功要求的金额
+     * @return success_amount - 众筹成功要求的金额
      */
-    public Long getAmount() {
-        return amount;
+    public Long getSuccessAmount() {
+        return successAmount;
     }
 
     /**
      * 设置众筹成功要求的金额
      *
-     * @param amount 众筹成功要求的金额
+     * @param successAmount 众筹成功要求的金额
      */
-    public void setAmount(Long amount) {
-        this.amount = amount;
+    public void setSuccessAmount(Long successAmount) {
+        this.successAmount = successAmount;
+    }
+
+    /**
+     * 获取已筹金额
+     *
+     * @return current_amount - 已筹金额
+     */
+    public Long getCurrentAmount() {
+        return currentAmount;
+    }
+
+    /**
+     * 设置已筹金额
+     *
+     * @param currentAmount 已筹金额
+     */
+    public void setCurrentAmount(Long currentAmount) {
+        this.currentAmount = currentAmount;
     }
 
     /**
@@ -308,18 +334,18 @@ public class Product {
     }
 
     /**
-     * 获取赔偿费率百分比:如120即这120%
+     * 获取赔偿费率百分比:如7天赔偿3%
      *
-     * @return refund_rate - 赔偿费率百分比:如120即这120%
+     * @return refund_rate - 赔偿费率百分比:如7天赔偿3%
      */
     public Integer getRefundRate() {
         return refundRate;
     }
 
     /**
-     * 设置赔偿费率百分比:如120即这120%
+     * 设置赔偿费率百分比:如7天赔偿3%
      *
-     * @param refundRate 赔偿费率百分比:如120即这120%
+     * @param refundRate 赔偿费率百分比:如7天赔偿3%
      */
     public void setRefundRate(Integer refundRate) {
         this.refundRate = refundRate;
@@ -362,18 +388,18 @@ public class Product {
     }
 
     /**
-     * 获取0:删除,,1:可用
+     * 获取0:删除,1:可用
      *
-     * @return yn - 0:删除,,1:可用
+     * @return yn - 0:删除,1:可用
      */
     public Integer getYn() {
         return yn;
     }
 
     /**
-     * 设置0:删除,,1:可用
+     * 设置0:删除,1:可用
      *
-     * @param yn 0:删除,,1:可用
+     * @param yn 0:删除,1:可用
      */
     public void setYn(Integer yn) {
         this.yn = yn;

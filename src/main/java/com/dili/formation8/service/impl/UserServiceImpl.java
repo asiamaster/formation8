@@ -10,6 +10,7 @@ import com.dili.formation8.utils.ShortUrlGenerator;
 import com.dili.formation8.vo.Formation8Constants;
 import com.dili.formation8.vo.UserVo;
 import com.dili.utils.base.BaseServiceImpl;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -79,6 +81,19 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
         user.setId(targetUserId);
         user.setTransferAmount(amount);
         getActualDao().transfer(user);
+    }
+
+    @Override
+    public void balanceAdjust(Long userId, Long balanceAdjust) {
+        UserVo user = new UserVo();
+        user.setId(userId);
+        user.setTransferAmount(balanceAdjust);
+        getActualDao().transfer(user);
+    }
+
+    @Override
+    public Long getParentReferrer(UserVo userVo) {
+        return getActualDao().getParentReferrer(userVo);
     }
 
     @Override

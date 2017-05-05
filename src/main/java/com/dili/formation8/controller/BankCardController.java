@@ -2,7 +2,7 @@ package com.dili.formation8.controller;
 
 import com.dili.formation8.domain.BankCard;
 import com.dili.formation8.service.BankCardService;
-import com.dili.utils.domain.ResponseMessage;
+import com.dili.utils.domain.BaseOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -39,8 +39,8 @@ public class BankCardController {
     }
 
     @RequestMapping("/delete")
-    public @ResponseBody ResponseMessage delete(ModelMap modelMap, Long id) {
+    public @ResponseBody BaseOutput delete(ModelMap modelMap, Long id) {
         bankCardService.delete(id);
-        return ResponseMessage.success();
+        return BaseOutput.success();
     }
 }

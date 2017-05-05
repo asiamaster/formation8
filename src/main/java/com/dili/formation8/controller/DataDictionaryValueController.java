@@ -3,7 +3,7 @@ package com.dili.formation8.controller;
 import com.dili.formation8.domain.DataDictionaryValue;
 import com.dili.formation8.service.DataDictionaryValueService;
 import com.dili.formation8.vo.DataDictionaryValueCondition;
-import com.dili.utils.domain.ResponseMessage;
+import com.dili.utils.domain.BaseOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,7 +25,7 @@ public class DataDictionaryValueController {
     /**
      * 根据数据字典编码和数据字典值条件查询字典值列表
      * @param modelMap
-     * @param ddCode
+     * @param condition
      * @return
      */
     @RequestMapping("/selectByCondition.aspx")
@@ -54,8 +54,9 @@ public class DataDictionaryValueController {
     }
 
     @RequestMapping("/delete")
-    public @ResponseBody ResponseMessage delete(ModelMap modelMap, Long id) {
+    public @ResponseBody
+    BaseOutput delete(ModelMap modelMap, Long id) {
         dataDictionaryValueService.delete(id);
-        return ResponseMessage.success();
+        return BaseOutput.success();
     }
 }
