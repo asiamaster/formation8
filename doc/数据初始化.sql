@@ -20,3 +20,8 @@ INSERT INTO `data_dictionary` (`id`, `code`, `name`, `remark`, `created`, `modif
 	(1, 'IMAGE_CODE', '图片编码', '图片编码', now(), now(), 1);
 INSERT INTO `data_dictionary_value` (`id`, `dd_id`, `sort`, `code`, `value`, `remark`, `period_begin`, `period_end`, `created`, `modified`, `yn`) VALUES
 	(1, 1, 1, 'default_head', '/images/default_head.png', '用户默认头像', NULL, NULL, now(), now(), 1);
+
+##用户
+insert into user
+(id, name, password, payment_code, referrer, balance, email, phone, type, referral_code,address)
+values(1, 'admin', 'fmt81234','fmt85678',null, 0, '','',3,'','')
