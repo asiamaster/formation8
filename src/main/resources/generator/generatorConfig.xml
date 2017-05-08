@@ -13,6 +13,8 @@
         <!-- Mapper插件 -->
         <!-- mappers属性为*Mapper.java要继承的接口全名 -->
         <plugin type="${mapper.plugin}">
+            <property name="beginningDelimiter" value="`"/>
+            <property name="endingDelimiter" value="`"/>
             <property name="mappers" value="${mapper.Mapper}"/>
         </plugin>
 
@@ -72,7 +74,7 @@
 
         <javaModelGenerator targetPackage="${targetModelPackage}" targetProject="${targetJavaProject}"/>
 
-        <sqlMapGenerator targetPackage="${targetXMLPackage}"  targetProject="${targetResourcesProject}"/>
+        <!--<sqlMapGenerator targetPackage="${targetXMLPackage}"  targetProject="${targetResourcesProject}"/>-->
 
         <!--<javaClientGenerator targetPackage="${targetMapperPackage}" targetProject="${targetJavaProject}" type="XMLMAPPER" />-->
 
@@ -81,7 +83,7 @@
             <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
         <!-- 生成指定表模型 -->
-        <table tableName="product">
+        <table tableName="withdrawal">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
 

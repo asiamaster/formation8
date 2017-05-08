@@ -6,59 +6,61 @@ import javax.persistence.*;
 /**
  * 由MyBatis Generator工具自动生成
  * 
- * This file was generated on 2017-04-27 10:56:44.
+ * This file was generated on 2017-05-08 12:46:18.
  */
-@Table(name = "financial_transaction")
+@Table(name = "`financial_transaction`")
 public class FinancialTransaction {
     @Id
+    @Column(name = "`id`")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
      * 交易编号,如订单编号
      */
-    @Column(name = "transaction_number")
+    @Column(name = "`transaction_number`")
     private String transactionNumber;
 
     /**
      * 交易类型(1:充值;2:转帐)
      */
-    @Column(name = "transaction_type")
+    @Column(name = "`transaction_type`")
     private Integer transactionType;
 
     /**
      * 所属用户ID
      */
-    @Column(name = "user_id")
+    @Column(name = "`user_id`")
     private Long userId;
 
     /**
      * 打款金额，单位分
      */
-    @Column(name = "transaction_amount")
+    @Column(name = "`transaction_amount`")
     private Long transactionAmount;
 
     /**
-     * 交易当时账户的余额，单位分，转帐不记录
+     * 交易当时账户的余额，单位分
      */
+    @Column(name = "`balance`")
     private Long balance;
 
     /**
      * 打款时间
      */
-    @Column(name = "payment_time")
+    @Column(name = "`payment_time`")
     private Date paymentTime;
 
     /**
      * 支付方式: 1:支付宝;2:微信
      */
-    @Column(name = "payment_pattern")
+    @Column(name = "`payment_pattern`")
     private Integer paymentPattern;
 
     /**
      * 目标用户id
      */
-    @Column(name = "target_user_id")
+    @Column(name = "`target_user_id`")
     private Long targetUserId;
 
     /**

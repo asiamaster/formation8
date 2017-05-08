@@ -5,20 +5,25 @@ import javax.persistence.*;
 /**
  * 由MyBatis Generator工具自动生成
  * 
- * This file was generated on 2017-04-28 10:10:06.
+ * This file was generated on 2017-05-08 12:46:19.
  */
-@Table(name = "biz_number")
+@Table(name = "`biz_number`")
 public class BizNumber {
     @Id
+    @Column(name = "`id`")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "`type`")
     private String type;
 
+    @Column(name = "`value`")
     private Long value;
 
+    @Column(name = "`memo`")
     private String memo;
 
+    @Column(name = "`version`")
     private Long version;
 
     /**

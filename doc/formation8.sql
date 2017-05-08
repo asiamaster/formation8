@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `biz_number` (
 /*!40000 ALTER TABLE `biz_number` DISABLE KEYS */;
 INSERT INTO `biz_number` (`id`, `type`, `value`, `memo`, `version`) VALUES
 	(1, 'DEPOSIT_ORDER_CODE', 20170428105350, '充值订单编号', 1),
-	(2, 'PRODUCT_ORDER_CODE', 20170427000000, '产品订单编号', 1),
+	(2, 'PRODUCT_ORDER_CODE', 20170508000250, '产品订单编号', 1),
 	(3, 'TRANSFER_ORDER_CODE', 20170504000050, '转帐订单编号', 1);
 /*!40000 ALTER TABLE `biz_number` ENABLE KEYS */;
 
@@ -121,12 +121,10 @@ CREATE TABLE IF NOT EXISTS `financial_transaction` (
   `payment_pattern` int(2) DEFAULT NULL COMMENT '支付方式: 1:支付宝;2:微信',
   `target_user_id` bigint(20) DEFAULT NULL COMMENT '目标用户id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='交易流水记录表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='交易流水记录表';
 
 -- 正在导出表  formation8.financial_transaction 的数据：~0 rows (大约)
 /*!40000 ALTER TABLE `financial_transaction` DISABLE KEYS */;
-INSERT INTO `financial_transaction` (`id`, `transaction_number`, `transaction_type`, `user_id`, `transaction_amount`, `balance`, `payment_time`, `payment_pattern`, `target_user_id`) VALUES
-	(1, 'TO20170504000000', 2, 1, 100, NULL, '2017-05-04 17:08:55', 1, 2);
 /*!40000 ALTER TABLE `financial_transaction` ENABLE KEYS */;
 
 -- 导出  函数 formation8.getParentReferrer 结构
@@ -167,7 +165,7 @@ CREATE TABLE IF NOT EXISTS `order` (
   `start_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '下单时间',
   `end_time` datetime DEFAULT NULL COMMENT '结束时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- 正在导出表  formation8.order 的数据：~0 rows (大约)
 /*!40000 ALTER TABLE `order` DISABLE KEYS */;
@@ -198,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `product` (
 -- 正在导出表  formation8.product 的数据：~1 rows (大约)
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
 INSERT INTO `product` (`id`, `name`, `image`, `details`, `type`, `publish_time`, `cutoff_time`, `success_amount`, `current_amount`, `drops_time`, `status`, `seller_name`, `company_desc`, `refund_rate`, `commission_rate`, `modify_time`, `yn`) VALUES
-	(1, 'VR眼镜', NULL, 'VR眼镜Detail', '电器', '2017-05-08 09:11:26', '2017-06-08 09:11:32', 500000, 0, NULL, 1, '博瑞天辰科技', '博瑞天辰科技有限公司', 4, 2, '2017-05-08 09:14:00', 1);
+	(1, 'VR眼镜', NULL, 'VR眼镜Detail', '电器', '2017-05-08 09:11:26', '2017-06-08 09:11:32', 500000, 40000, NULL, 1, '博瑞天辰科技', '博瑞天辰科技有限公司', 4, 2, '2017-05-08 09:14:00', 1);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 
 -- 导出  表 formation8.sku 结构
@@ -223,7 +221,7 @@ CREATE TABLE IF NOT EXISTS `sku` (
 /*!40000 ALTER TABLE `sku` DISABLE KEYS */;
 INSERT INTO `sku` (`id`, `product_id`, `details`, `price`, `modify_time`, `yn`, `quota`, `quantity`, `daily_quota`, `daily_quantity`, `current_date_str`, `freight`, `image_code`) VALUES
 	(1, 1, '感谢您对博瑞的支持， 您可以获得VR手机眼镜一套 （由博瑞天辰发货）。', 200, '2017-05-08 09:20:01', 1, 50, 0, 10, 0, '2017-05-08', 0, NULL),
-	(2, 1, '感谢您对博瑞的支持， 您可以获得VR眼镜显示器一套 （由博瑞天辰发货）。', 4000, '2017-05-08 09:23:05', 1, 50, 0, 10, 0, '2017-05-08', 0, NULL),
+	(2, 1, '感谢您对博瑞的支持， 您可以获得VR眼镜显示器一套 （由博瑞天辰发货）。', 4000, '2017-05-08 16:01:23', 1, 50, 0, 10, 0, '2017-05-08', 0, NULL),
 	(3, 1, '感谢您对博瑞的支持， 您可以获得VR顶配眼镜显示器一套 （由博瑞天辰发货）。', 6000, '2017-05-08 09:24:47', 1, 50, 0, 10, 0, '2017-05-08', 0, NULL);
 /*!40000 ALTER TABLE `sku` ENABLE KEYS */;
 
@@ -269,24 +267,24 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- 正在导出表  formation8.user 的数据：~5 rows (大约)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` (`id`, `name`, `password`, `payment_code`, `referrer`, `balance`, `email`, `phone`, `type`, `referral_code`, `address`) VALUES
-	(1, 'admin', 'fmt81234', 'fmt85678', NULL, 1000000, NULL, NULL, 3, NULL, NULL),
-	(2, 'wangmi', '123456', NULL, 1, 50, NULL, NULL, 1, 'emUFVf', NULL),
-	(3, 'hujun', '123456', NULL, 2, 0, NULL, NULL, 1, NULL, NULL),
-	(4, 'laozhang', '123456', NULL, 3, 0, NULL, NULL, 1, NULL, NULL);
+	(1, 'admin', 'fmt81234', 'fmt85678', NULL, 100000000, NULL, NULL, 3, NULL, NULL),
+	(2, 'wangmi', '123456', NULL, 1, 1000000, NULL, NULL, 1, 'emUFVf', NULL),
+	(3, 'hujun', '123456', NULL, 2, 1000000, NULL, NULL, 1, NULL, NULL),
+	(4, 'laozhang', '123456', NULL, 3, 1000000, NULL, NULL, 1, NULL, NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 -- 导出  表 formation8.withdrawal 结构
 CREATE TABLE IF NOT EXISTS `withdrawal` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `transaction_number` varchar(20) DEFAULT NULL COMMENT '提现编号',
+  `transaction_number` varchar(20) NOT NULL COMMENT '提现编号',
   `balance` bigint(10) DEFAULT NULL COMMENT '提现时余额,单位(分)',
-  `withdrawal_amount` bigint(20) DEFAULT NULL COMMENT '提现申请金额',
-  `withdrawal_charge` int(10) DEFAULT NULL COMMENT '提现手续费',
+  `withdrawal_amount` bigint(20) NOT NULL COMMENT '提现申请金额',
+  `withdrawal_charge` bigint(20) DEFAULT NULL COMMENT '提现手续费',
   `withdrawal_state` int(10) DEFAULT NULL COMMENT '待处理，已处理',
   `application_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '提现申请时间',
   `finish_time` datetime DEFAULT NULL COMMENT '提现完成时间',
-  `bank_card_id` bigint(20) DEFAULT NULL COMMENT '银行卡id',
-  `user_id` bigint(20) DEFAULT NULL COMMENT '提现人id',
+  `card_number` varchar(40) NOT NULL COMMENT '银行卡号',
+  `user_id` bigint(20) NOT NULL COMMENT '提现人id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

@@ -15,7 +15,7 @@
     <result column="quantity" jdbcType="INTEGER" property="quantity" />
     <result column="daily_quota" jdbcType="INTEGER" property="dailyQuota" />
     <result column="daily_quantity" jdbcType="INTEGER" property="dailyQuantity" />
-    <result column="current_date" jdbcType="VARCHAR" property="currentDate" />
+    <result column="current_date_str" jdbcType="VARCHAR" property="currentDateStr" />
     <result column="freight" jdbcType="BIGINT" property="freight" />
     <result column="image_code" jdbcType="VARCHAR" property="imageCode" />
   </resultMap>
@@ -24,7 +24,7 @@
       WARNING - @mbg.generated
     -->
     id, product_id, details, price, modify_time, yn, quota, quantity, daily_quota, daily_quantity, 
-    current_date, freight, image_code
+    current_date_str, freight, image_code
   </sql>
   <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
     <!--
@@ -68,8 +68,8 @@
       <if test="dailyQuantity != null">
         daily_quantity = #{dailyQuantity,jdbcType=INTEGER},
       </if>
-      <if test="currentDate != null">
-        current_date = #{currentDate,jdbcType=VARCHAR},
+      <if test="currentDateStr != null">
+        current_date_str = #{currentDateStr,jdbcType=VARCHAR},
       </if>
       <if test="freight != null">
         freight = #{freight,jdbcType=BIGINT},

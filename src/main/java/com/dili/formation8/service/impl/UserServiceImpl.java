@@ -57,8 +57,9 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
 
     @Override
     @Transactional(propagation= Propagation.REQUIRED,rollbackFor=Exception.class)
-    public void transfer(Long sourceUserId, Long targetUserId, Long amount) {
-        transferQuietly(sourceUserId, targetUserId, amount);
+    public Boolean transfer(Long sourceUserId, Long targetUserId, Long amount) {
+        Boolean result = transferQuietly(sourceUserId, targetUserId, amount);
+        if(!result) return false;
         //记录转帐日志
         FinancialTransaction financialTransaction = new FinancialTransaction();
         financialTransaction.setUserId(sourceUserId);
@@ -69,10 +70,17 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
         financialTransaction.setTargetUserId(targetUserId);
         financialTransaction.setTransactionNumber(bizNumberService.getTransferOrderCode());
         financialTransactionMapper.insert(financialTransaction);
+        return true;
     }
 
     @Override
-    public void transferQuietly(Long sourceUserId, Long targetUserId, Long amount) {
+    @Transactional(propagation= Propagation.REQUIRED,rollbackFor=Exception.class)
+    public Boolean transferQuietly(Long sourceUserId, Long targetUserId, Long amount) {
+        User sourceUser = get(sourceUserId);
+        //如果余额不足
+        if( sourceUser.getBalance()<amount){
+            return false;
+        }
         UserVo user = new UserVo();
         user.setId(sourceUserId);
         user.setTransferAmount(-amount);
@@ -81,14 +89,24 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
         user.setId(targetUserId);
         user.setTransferAmount(amount);
         getActualDao().transfer(user);
+        return true;
     }
 
     @Override
-    public void balanceAdjust(Long userId, Long balanceAdjust) {
-        UserVo user = new UserVo();
-        user.setId(userId);
-        user.setTransferAmount(balanceAdjust);
-        getActualDao().transfer(user);
+    public Boolean balanceAdjust(Long userId, Long balanceAdjust) {
+        User user = get(userId);
+        if(user == null){
+            throw new RuntimeException("用户户id["+userId+"]不存在");
+        }
+        //如果是扣款，并且余额不足
+        if(balanceAdjust<0 && user.getBalance()+balanceAdjust<0){
+            return false;
+        }
+        UserVo userVo = new UserVo();
+        userVo.setId(userId);
+        userVo.setTransferAmount(balanceAdjust);
+        getActualDao().transfer(userVo);
+        return true;
     }
 
     @Override

@@ -10,7 +10,11 @@ import com.dili.utils.base.BaseServiceImpl;
 import com.dili.utils.domain.BaseOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.Assert;
 
 import java.util.Date;
@@ -33,6 +37,8 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
     private UserService userService;
     @Autowired
     private SystemConfigService systemConfigService;
+    @Autowired
+    private PlatformTransactionManager platformTransactionManager;
 
     public OrderMapper getActualDao() {
         return (OrderMapper)getDao();
@@ -47,18 +53,20 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
      * 5. 根据情况更新SKU的当前日期串、购买份数和当日购买份数
      * 6. 查询产品信息,判断产品是否已截止
      * 7. 更新产品的已筹金额
-     * 8. 设置产品订单编号，设置订单状态为1:众筹中，设置订单产品id，设置下单时间，<br/>
-     * 9. 数据库新增订单
-     * 10. 用户余额扣款
+     * 8. 用户余额扣款
+     * 9. 设置产品订单编号，设置订单状态为1:众筹中，设置订单产品id，设置下单时间，<br/>
+     * 10. 数据库新增订单
      * 11.(烧伤机制)判断用户的引领人是否有投资，有的话根据木桶原则和系统配置表的引领费率，直接凭空增加对方的余额(引荐人在用户订单完成时才返款)
      * 12. 根据产品信息里的平台抽成比例，向平台帐户隐式转帐
      * 13.返回最新的BaseOutput订单信息
      * @param order
      * @return
      */
-    @Transactional(rollbackFor=Exception.class)
+    @Transactional(propagation= Propagation.REQUIRED)
     @Override
     public BaseOutput<Order> submitOrder(Order order) {
+        System.out.println(platformTransactionManager.getClass().getName());;
+
         BaseOutput<Order> output = null;
         try {
 //        流程1-7
@@ -66,17 +74,24 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
             if (!output.isSuccess()) {
                 return output;
             }
-//        流程8-9
+//        流程8:用户余额扣款
+            Boolean result = userService.balanceAdjust(order.getUserId(), -order.getPrice());
+            if(!result){
+                return BaseOutput.failure("余额不足");
+            }
+//        流程9-10
             output.setData(saveOrder(order));
-//        流程10:用户余额扣款
-            userService.balanceAdjust(order.getUserId(), -order.getPrice());
 //        流程11:增加引领人余额
             referralBalanceAdjust(order);
+//            if(true){
+//                throw new RuntimeException("测试事务");
+//            }
 //        流程12:向平台用户转帐(凭空增加)
             transferToPlatform(order);
         }catch(Exception e){
             e.printStackTrace();
-            output = BaseOutput.failure(e.getMessage());
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            throw new RuntimeException(e.getMessage());
         }
         return output;
     }
@@ -142,7 +157,18 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
      */
     private BaseOutput preSubmitCheck(Order order){
         Assert.notNull(order, "入参Order为空");
-        Assert.notNull(order.getSkuId(), "订单的skuId不能为空");
+        if(order.getSkuId() == null){
+            return BaseOutput.failure("订单参数skuId为空");
+        }
+        if(order.getCount() == null){
+            return BaseOutput.failure("订单参数count为空");
+        }
+        if(order.getPrice() == null){
+            return BaseOutput.failure("订单参数price为空");
+        }
+        if(order.getUserId() == null){
+            return BaseOutput.failure("订单参数userId为空");
+        }
 //        根据skuId查询sku信息
         Sku sku = skuService.get(order.getSkuId());
         Assert.notNull(sku,"订单SKU["+order.getSkuId()+"]不存在");
@@ -155,10 +181,10 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
         }
 //        比对SKU当前日期串是否和当前日期相等，不相等则更新当前日期串，并将当日购买份数清0
         String currentDate = DateUtils.format(new Date(),"yyyy-MM-dd");
-        if(sku.getCurrentDate()!= null && sku.getCurrentDate().equals(currentDate)){
+        if(sku.getCurrentDateStr()!= null && sku.getCurrentDateStr().equals(currentDate)){
             sku.setDailyQuantity(sku.getDailyQuantity()+order.getCount());
         }else{
-            sku.setCurrentDate(currentDate);
+            sku.setCurrentDateStr(currentDate);
             sku.setDailyQuantity(order.getCount());
         }
 //        判断sku是否达到当日限额份数，超过限额则不生成订单,没超则增加当日购买份数

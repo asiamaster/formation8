@@ -1,7 +1,7 @@
 ##业务编号
-insert into biz_number values('1', 'DEPOSIT_ORDER_CODE', '201704270050', '充值订单编号', '1');
-insert into biz_number values('2', 'PRODUCT_ORDER_CODE', '201704270050', '产品订单编号', '1');
-insert into biz_number values('3', 'TRANSFER_ORDER_CODE', '201704270050', '转帐订单编号', '1');
+insert into biz_number values('1', 'DEPOSIT_ORDER_CODE', '201704270000', '充值订单编号', '1');
+insert into biz_number values('2', 'PRODUCT_ORDER_CODE', '201704270000', '产品订单编号', '1');
+insert into biz_number values('3', 'TRANSFER_ORDER_CODE', '201704270000', '转帐订单编号', '1');
 
 ##系统配置
 insert into system_config (name, code,value, `desc`, created, modified, yn) values
@@ -18,13 +18,15 @@ insert into system_config (name, code,value, `desc`, created, modified, yn) valu
 ##数据字典
 INSERT INTO `data_dictionary` (`id`, `code`, `name`, `remark`, `created`, `modified`, `yn`) VALUES
 	(1, 'IMAGE_CODE', '图片编码', '图片编码', now(), now(), 1);
+##数据字典值
 INSERT INTO `data_dictionary_value` (`id`, `dd_id`, `sort`, `code`, `value`, `remark`, `period_begin`, `period_end`, `created`, `modified`, `yn`) VALUES
 	(1, 1, 1, 'default_head', '/images/default_head.png', '用户默认头像', NULL, NULL, now(), now(), 1);
 
 ##用户
-insert into user
-(id, name, password, payment_code, referrer, balance, email, phone, type, referral_code,address)
-values(1, 'admin', 'fmt81234','fmt85678',null, 0, '','',3,'','')
+INSERT INTO `user` (`id`, `name`, `password`, `payment_code`, `referrer`, `balance`, `email`, `phone`, `type`, `referral_code`, `address`) VALUES (1, 'admin', 'fmt81234', 'fmt85678', NULL, 100000000, NULL, NULL, 3, NULL, NULL);
+INSERT INTO `user` (`id`, `name`, `password`, `payment_code`, `referrer`, `balance`, `email`, `phone`, `type`, `referral_code`, `address`) VALUES (2, 'wangmi', '123456', NULL, 1, 1000000, NULL, NULL, 1, 'emUFVf', NULL);
+INSERT INTO `user` (`id`, `name`, `password`, `payment_code`, `referrer`, `balance`, `email`, `phone`, `type`, `referral_code`, `address`) VALUES (3, 'hujun', '123456', NULL, 2, 1000000, NULL, NULL, 1, NULL, NULL);
+INSERT INTO `user` (`id`, `name`, `password`, `payment_code`, `referrer`, `balance`, `email`, `phone`, `type`, `referral_code`, `address`) VALUES (4, 'laozhang', '123456', NULL, 3, 1000000, NULL, NULL, 1, NULL, NULL);
 
 ##产品
 INSERT INTO `product` (`id`, `name`, `image`, `details`, `type`, `publish_time`, `cutoff_time`, `success_amount`, `current_amount`, `drops_time`, `status`, `seller_name`, `company_desc`, `refund_rate`, `commission_rate`, `modify_time`, `yn`) VALUES (1, 'VR眼镜', NULL, 'VR眼镜Detail', '电器', '2017-05-08 09:11:26', '2017-06-08 09:11:32', 500000, 0, NULL, 1, '博瑞天辰科技', '博瑞天辰科技有限公司', 4, 2, '2017-05-08 09:14:00', 1);

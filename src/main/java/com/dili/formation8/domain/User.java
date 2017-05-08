@@ -1,53 +1,71 @@
 package com.dili.formation8.domain;
 
 import javax.persistence.*;
-//import javax.validation.constraints.NotNull;
 
 /**
  * 由MyBatis Generator工具自动生成
  * 
- * This file was generated on 2017-04-27 10:56:44.
+ * This file was generated on 2017-05-08 12:46:19.
  */
+@Table(name = "`user`")
 public class User {
     @Id
+    @Column(name = "`id`")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @NotNull(message="name不能为空")
+    /**
+     * 用户名
+     */
+    @Column(name = "`name`")
     private String name;
 
+    /**
+     * 密码
+     */
+    @Column(name = "`password`")
     private String password;
 
-    private String payment_code;
+    /**
+     * 支付密码
+     */
+    @Column(name = "`payment_code`")
+    private String paymentCode;
 
+    @Column(name = "`referrer`")
     private Long referrer;
 
     /**
      * 可用余额,单位分
      */
+    @Column(name = "`balance`")
     private Long balance;
 
     /**
      * 邮箱
      */
+    @Column(name = "`email`")
     private String email;
 
+    @Column(name = "`phone`")
     private String phone;
 
     /**
      * 1:普通用户,2:平台当前现金,3:平台抽成,4:股东,5:机器人
      */
+    @Column(name = "`type`")
     private Integer type;
 
     /**
      * 推荐码,邀请码
      */
-    @Column(name = "referral_code")
+    @Column(name = "`referral_code`")
     private String referralCode;
 
     /**
      * 收货地址
      */
+    @Column(name = "`address`")
     private String address;
 
     /**
@@ -65,31 +83,57 @@ public class User {
     }
 
     /**
-     * @return name
+     * 获取用户名
+     *
+     * @return name - 用户名
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @param name
+     * 设置用户名
+     *
+     * @param name 用户名
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * @return password
+     * 获取密码
+     *
+     * @return password - 密码
      */
     public String getPassword() {
         return password;
     }
 
     /**
-     * @param password
+     * 设置密码
+     *
+     * @param password 密码
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * 获取支付密码
+     *
+     * @return payment_code - 支付密码
+     */
+    public String getPaymentCode() {
+        return paymentCode;
+    }
+
+    /**
+     * 设置支付密码
+     *
+     * @param paymentCode 支付密码
+     */
+    public void setPaymentCode(String paymentCode) {
+        this.paymentCode = paymentCode;
     }
 
     /**
@@ -192,18 +236,20 @@ public class User {
         this.referralCode = referralCode;
     }
 
-    public String getPayment_code() {
-        return payment_code;
-    }
-
-    public void setPayment_code(String payment_code) {
-        this.payment_code = payment_code;
-    }
-
+    /**
+     * 获取收货地址
+     *
+     * @return address - 收货地址
+     */
     public String getAddress() {
         return address;
     }
 
+    /**
+     * 设置收货地址
+     *
+     * @param address 收货地址
+     */
     public void setAddress(String address) {
         this.address = address;
     }

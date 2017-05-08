@@ -6,26 +6,34 @@ import javax.persistence.*;
 /**
  * 由MyBatis Generator工具自动生成
  * 
- * This file was generated on 2017-04-27 10:56:44.
+ * This file was generated on 2017-05-08 12:46:19.
  */
-@Table(name = "system_config")
+@Table(name = "`system_config`")
 public class SystemConfig {
     @Id
+    @Column(name = "`id`")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "`name`")
     private String name;
 
+    @Column(name = "`code`")
     private String code;
 
+    @Column(name = "`value`")
     private String value;
 
+    @Column(name = "`desc`")
     private String desc;
 
+    @Column(name = "`created`")
     private Date created;
 
+    @Column(name = "`modified`")
     private Date modified;
 
+    @Column(name = "`yn`")
     private Integer yn;
 
     /**

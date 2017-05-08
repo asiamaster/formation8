@@ -6,35 +6,43 @@ import javax.persistence.*;
 /**
  * 由MyBatis Generator工具自动生成
  * 
- * This file was generated on 2017-04-27 10:56:44.
+ * This file was generated on 2017-05-08 12:46:18.
  */
-@Table(name = "data_dictionary_value")
+@Table(name = "`data_dictionary_value`")
 public class DataDictionaryValue {
     @Id
+    @Column(name = "`id`")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "dd_id")
+    @Column(name = "`dd_id`")
     private Long ddId;
 
+    @Column(name = "`sort`")
     private Integer sort;
 
+    @Column(name = "`code`")
     private String code;
 
+    @Column(name = "`value`")
     private String value;
 
+    @Column(name = "`remark`")
     private String remark;
 
-    @Column(name = "period_begin")
+    @Column(name = "`period_begin`")
     private Date periodBegin;
 
-    @Column(name = "period_end")
+    @Column(name = "`period_end`")
     private Date periodEnd;
 
+    @Column(name = "`created`")
     private Date created;
 
+    @Column(name = "`modified`")
     private Date modified;
 
+    @Column(name = "`yn`")
     private Integer yn;
 
     /**

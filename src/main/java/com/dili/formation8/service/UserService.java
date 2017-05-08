@@ -26,7 +26,7 @@ public interface UserService extends BaseService<User, Long> {
      * @param targetUserId  转入用户id
      * @param amount    转帐金额
      */
-    public void transfer(Long sourceUserId, Long targetUserId, Long amount);
+    public Boolean transfer(Long sourceUserId, Long targetUserId, Long amount);
 
     /**
      *  无日志转帐
@@ -34,14 +34,14 @@ public interface UserService extends BaseService<User, Long> {
      * @param targetUserId  转入用户id
      * @param amount    转帐金额
      */
-    public void transferQuietly(Long sourceUserId, Long targetUserId, Long amount);
+    public Boolean transferQuietly(Long sourceUserId, Long targetUserId, Long amount);
 
     /**
      * 余额调整
      * @param userId
      * @param balanceAdjust 正为加，负为减
      */
-    public void balanceAdjust(Long userId, Long balanceAdjust);
+    public Boolean balanceAdjust(Long userId, Long balanceAdjust);
 
     //查询指定层级的推荐人
     public Long getParentReferrer(UserVo userVo);

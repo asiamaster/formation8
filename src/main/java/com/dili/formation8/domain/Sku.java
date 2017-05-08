@@ -6,77 +6,85 @@ import javax.persistence.*;
 /**
  * 由MyBatis Generator工具自动生成
  * 
- * This file was generated on 2017-05-05 09:58:38.
+ * This file was generated on 2017-05-08 12:46:19.
  */
+@Table(name = "`sku`")
 public class Sku {
     @Id
+    @Column(name = "`id`")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
      * 商品id
      */
-    @Column(name = "product_id")
+    @Column(name = "`product_id`")
     private Long productId;
 
     /**
      * 详情
      */
+    @Column(name = "`details`")
     private String details;
 
     /**
      * 价格
      */
-    private Date price;
+    @Column(name = "`price`")
+    private Long price;
 
     /**
      * 修改产品时更新
      */
-    @Column(name = "modify_time")
+    @Column(name = "`modify_time`")
     private Date modifyTime;
 
     /**
      * 0:删除,,1:可用
      */
+    @Column(name = "`yn`")
     private Integer yn;
 
     /**
      * 最大购买份数(限额)
      */
+    @Column(name = "`quota`")
     private Integer quota;
 
     /**
      * 当前已购买总份数
      */
+    @Column(name = "`quantity`")
     private Integer quantity;
 
     /**
      * 每日限额xxx份
      */
-    @Column(name = "daily_quota")
+    @Column(name = "`daily_quota`")
     private Integer dailyQuota;
 
     /**
      * 每日购买xxx份
      */
-    @Column(name = "daily_quantity")
+    @Column(name = "`daily_quantity`")
     private Integer dailyQuantity;
 
     /**
      * 当前购买日期串,用于计算每日购买份数,如:2017-05-05
      */
-    @Column(name = "current_date")
-    private String currentDate;
+    @Column(name = "`current_date_str`")
+    private String currentDateStr;
 
     /**
      * 配送费用
      */
+    @Column(name = "`freight`")
     private Long freight;
 
     /**
      * 只有一张图,从数据字典值表的code取，字典编码为IMAGE_CODE
      */
-    @Column(name = "image_code")
+    @Column(name = "`image_code`")
     private String imageCode;
 
     /**
@@ -134,7 +142,7 @@ public class Sku {
      *
      * @return price - 价格
      */
-    public Date getPrice() {
+    public Long getPrice() {
         return price;
     }
 
@@ -143,7 +151,7 @@ public class Sku {
      *
      * @param price 价格
      */
-    public void setPrice(Date price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 
@@ -258,19 +266,19 @@ public class Sku {
     /**
      * 获取当前购买日期串,用于计算每日购买份数,如:2017-05-05
      *
-     * @return current_date - 当前购买日期串,用于计算每日购买份数,如:2017-05-05
+     * @return current_date_str - 当前购买日期串,用于计算每日购买份数,如:2017-05-05
      */
-    public String getCurrentDate() {
-        return currentDate;
+    public String getCurrentDateStr() {
+        return currentDateStr;
     }
 
     /**
      * 设置当前购买日期串,用于计算每日购买份数,如:2017-05-05
      *
-     * @param currentDate 当前购买日期串,用于计算每日购买份数,如:2017-05-05
+     * @param currentDateStr 当前购买日期串,用于计算每日购买份数,如:2017-05-05
      */
-    public void setCurrentDate(String currentDate) {
-        this.currentDate = currentDate;
+    public void setCurrentDateStr(String currentDateStr) {
+        this.currentDateStr = currentDateStr;
     }
 
     /**

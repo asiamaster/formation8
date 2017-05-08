@@ -72,9 +72,9 @@ public class UserController {
      * @param amount    转帐金额
      */
     @RequestMapping("/transfer.aspx")
-    public @ResponseBody String transfer(Long sourceUserId, Long targetUserId, Long amount){
-        userService.transfer(sourceUserId, targetUserId, amount);
-        return "转帐成功!";
+    public @ResponseBody BaseOutput<Boolean> transfer(Long sourceUserId, Long targetUserId, Long amount){
+        Boolean result = userService.transfer(sourceUserId, targetUserId, amount);
+        return result?BaseOutput.success("转帐成功"):BaseOutput.failure("余额不足");
     }
 
     /**

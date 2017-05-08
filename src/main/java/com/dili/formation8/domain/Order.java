@@ -6,62 +6,67 @@ import javax.persistence.*;
 /**
  * 由MyBatis Generator工具自动生成
  * 
- * This file was generated on 2017-05-05 09:58:38.
+ * This file was generated on 2017-05-08 12:46:19.
  */
+@Table(name = "`order`")
 public class Order {
     @Id
+    @Column(name = "`id`")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id")
+    @Column(name = "`user_id`")
     private Long userId;
 
-    @Column(name = "sku_id")
+    @Column(name = "`sku_id`")
     private Long skuId;
 
     /**
      * 产品id，冗余数据，便于查询
      */
-    @Column(name = "product_id")
+    @Column(name = "`product_id`")
     private Long productId;
 
     /**
-     * 购买SKU的数量
+     * 购买数量
      */
+    @Column(name = "`count`")
     private Integer count;
 
     /**
      * 订单编号
      */
-    @Column(name = "order_number")
+    @Column(name = "`order_number`")
     private String orderNumber;
 
     /**
      * 1:众筹中;2:众筹成功;3众筹失败
      */
+    @Column(name = "`status`")
     private Integer status;
 
     /**
      * 投资金额
      */
+    @Column(name = "`price`")
     private Long price;
 
     /**
      * 1:钱;2:产品;  众筹成功后可以选产品
      */
-    @Column(name = "transaction_type")
+    @Column(name = "`transaction_type`")
     private Integer transactionType;
 
     /**
      * 下单时间
      */
-    @Column(name = "start_time")
+    @Column(name = "`start_time`")
     private Date startTime;
 
     /**
      * 结束时间
      */
-    @Column(name = "end_time")
+    @Column(name = "`end_time`")
     private Date endTime;
 
     /**

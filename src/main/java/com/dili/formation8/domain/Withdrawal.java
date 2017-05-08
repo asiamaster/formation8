@@ -6,64 +6,67 @@ import javax.persistence.*;
 /**
  * 由MyBatis Generator工具自动生成
  * 
- * This file was generated on 2017-04-27 10:56:44.
+ * This file was generated on 2017-05-08 17:05:45.
  */
+@Table(name = "`withdrawal`")
 public class Withdrawal {
     @Id
+    @Column(name = "`id`")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
      * 提现编号
      */
-    @Column(name = "transaction_number")
+    @Column(name = "`transaction_number`")
     private String transactionNumber;
 
     /**
      * 提现时余额,单位(分)
      */
+    @Column(name = "`balance`")
     private Long balance;
 
     /**
      * 提现申请金额
      */
-    @Column(name = "withdrawal_amount")
+    @Column(name = "`withdrawal_amount`")
     private Long withdrawalAmount;
 
     /**
      * 提现手续费
      */
-    @Column(name = "withdrawal_charge")
-    private Integer withdrawalCharge;
+    @Column(name = "`withdrawal_charge`")
+    private Long withdrawalCharge;
 
     /**
      * 待处理，已处理
      */
-    @Column(name = "withdrawal_state")
+    @Column(name = "`withdrawal_state`")
     private Integer withdrawalState;
 
     /**
      * 提现申请时间
      */
-    @Column(name = "application_time")
+    @Column(name = "`application_time`")
     private Date applicationTime;
 
     /**
      * 提现完成时间
      */
-    @Column(name = "finish_time")
+    @Column(name = "`finish_time`")
     private Date finishTime;
 
     /**
-     * 银行卡id
+     * 银行卡号
      */
-    @Column(name = "bank_card_id")
-    private Long bankCardId;
+    @Column(name = "`card_number`")
+    private String cardNumber;
 
     /**
      * 提现人id
      */
-    @Column(name = "user_id")
+    @Column(name = "`user_id`")
     private Long userId;
 
     /**
@@ -139,7 +142,7 @@ public class Withdrawal {
      *
      * @return withdrawal_charge - 提现手续费
      */
-    public Integer getWithdrawalCharge() {
+    public Long getWithdrawalCharge() {
         return withdrawalCharge;
     }
 
@@ -148,7 +151,7 @@ public class Withdrawal {
      *
      * @param withdrawalCharge 提现手续费
      */
-    public void setWithdrawalCharge(Integer withdrawalCharge) {
+    public void setWithdrawalCharge(Long withdrawalCharge) {
         this.withdrawalCharge = withdrawalCharge;
     }
 
@@ -207,21 +210,21 @@ public class Withdrawal {
     }
 
     /**
-     * 获取银行卡id
+     * 获取银行卡号
      *
-     * @return bank_card_id - 银行卡id
+     * @return card_number - 银行卡号
      */
-    public Long getBankCardId() {
-        return bankCardId;
+    public String getCardNumber() {
+        return cardNumber;
     }
 
     /**
-     * 设置银行卡id
+     * 设置银行卡号
      *
-     * @param bankCardId 银行卡id
+     * @param cardNumber 银行卡号
      */
-    public void setBankCardId(Long bankCardId) {
-        this.bankCardId = bankCardId;
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
     }
 
     /**

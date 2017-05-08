@@ -6,42 +6,46 @@ import javax.persistence.*;
 /**
  * 由MyBatis Generator工具自动生成
  * 
- * This file was generated on 2017-04-28 21:44:28.
+ * This file was generated on 2017-05-08 12:46:19.
  */
+@Table(name = "`deposit`")
 public class Deposit {
     @Id
+    @Column(name = "`id`")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id")
+    @Column(name = "`user_id`")
     private Long userId;
 
     /**
      * 充值编号
      */
-    @Column(name = "deposite_number")
+    @Column(name = "`deposite_number`")
     private String depositeNumber;
 
     /**
      * 1:待付款,2:付款成功;3:付款失败
      */
+    @Column(name = "`status`")
     private Integer status;
 
     /**
      * 充值金额
      */
+    @Column(name = "`price`")
     private Long price;
 
     /**
      * 充值时间
      */
-    @Column(name = "deposite_time")
+    @Column(name = "`deposite_time`")
     private Date depositeTime;
 
     /**
      * 到帐时间
      */
-    @Column(name = "received_time")
+    @Column(name = "`received_time`")
     private Date receivedTime;
 
     /**

@@ -13,7 +13,7 @@
     <result column="withdrawal_state" jdbcType="INTEGER" property="withdrawalState" />
     <result column="application_time" jdbcType="TIMESTAMP" property="applicationTime" />
     <result column="finish_time" jdbcType="TIMESTAMP" property="finishTime" />
-    <result column="bank_card_id" jdbcType="BIGINT" property="bankCardId" />
+    <result column="card_number" jdbcType="VARCHAR" property="cardNumber" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -21,7 +21,7 @@
       WARNING - @mbg.generated
     -->
     id, transaction_number, balance, withdrawal_amount, withdrawal_charge, withdrawal_state, 
-    application_time, finish_time, bank_card_id, user_id
+    application_time, finish_time, card_number, user_id
   </sql>
   <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
     <!--
@@ -59,8 +59,8 @@
       <if test="finishTime != null">
         finish_time = #{finishTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="bankCardId != null">
-        bank_card_id = #{bankCardId,jdbcType=BIGINT},
+      <if test="cardNumber != null">
+        card_number = #{cardNumber,jdbcType=BIGINT},
       </if>
       <if test="userId != null">
         user_id = #{userId,jdbcType=BIGINT},

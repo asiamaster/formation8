@@ -20,6 +20,15 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
+    /**
+     * 提交订单
+     * @param order
+     * @return
+     */
+    @RequestMapping("submit.aspx")
+    public @ResponseBody BaseOutput<Order> submitOrder(Order order){
+        return orderService.submitOrder(order);
+    }
     @RequestMapping("/list")
     public String list(ModelMap modelMap, @ModelAttribute Order order) {
         modelMap.put("list", orderService.list(order));

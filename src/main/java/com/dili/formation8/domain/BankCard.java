@@ -6,61 +6,64 @@ import javax.persistence.*;
 /**
  * 由MyBatis Generator工具自动生成
  * 
- * This file was generated on 2017-04-27 10:56:44.
+ * This file was generated on 2017-05-08 12:46:19.
  */
-@Table(name = "bank_card")
+@Table(name = "`bank_card`")
 public class BankCard {
     @Id
+    @Column(name = "`id`")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
      * 用户ID
      */
-    @Column(name = "user_id")
+    @Column(name = "`user_id`")
     private Long userId;
 
     /**
      * 默认选中储蓄卡，目前仅“储蓄卡”一个项
      */
-    @Column(name = "card_type")
+    @Column(name = "`card_type`")
     private Integer cardType;
 
     /**
      * 法人银行账户：显示认证时填写的法人姓名，企业
      */
-    @Column(name = "account_name")
+    @Column(name = "`account_name`")
     private String accountName;
 
     /**
      * 法人银行账户：显示认证时填写的法人身份证号，
      */
-    @Column(name = "id_number")
+    @Column(name = "`id_number`")
     private String idNumber;
 
     /**
      * 选填，允许5-50位汉字、字母和数字，不允许特殊
      */
+    @Column(name = "`subbranch`")
     private String subbranch;
 
     /**
      * 允许填写8-30位纯数字
      */
-    @Column(name = "card_number")
+    @Column(name = "`card_number`")
     private String cardNumber;
 
     /**
      * 数据字典:中国银行，建设银行，招商银行
      */
+    @Column(name = "`bank`")
     private Integer bank;
 
     /**
      * 1:是, 0：否
      */
-    @Column(name = "is_default")
+    @Column(name = "`is_default`")
     private Integer isDefault;
 
-    @Column(name = "add_time")
+    @Column(name = "`add_time`")
     private Date addTime;
 
     /**

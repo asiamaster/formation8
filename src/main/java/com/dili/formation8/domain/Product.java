@@ -6,101 +6,109 @@ import javax.persistence.*;
 /**
  * 由MyBatis Generator工具自动生成
  * 
- * This file was generated on 2017-05-05 10:49:23.
+ * This file was generated on 2017-05-08 12:46:19.
  */
+@Table(name = "`product`")
 public class Product {
     @Id
+    @Column(name = "`id`")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
      * 名称
      */
+    @Column(name = "`name`")
     private String name;
 
     /**
      * 从数据字典值表的code取，字典编码为IMAGE_CODE
      */
+    @Column(name = "`image`")
     private String image;
 
     /**
      * 详情,富文本内容
      */
+    @Column(name = "`details`")
     private String details;
 
     /**
      * 文字说明，如:食品，电器，医疗等
      */
+    @Column(name = "`type`")
     private String type;
 
     /**
      * 简单处理，发布时间就是创建时间
      */
-    @Column(name = "publish_time")
+    @Column(name = "`publish_time`")
     private Date publishTime;
 
     /**
      * 众筹成功的截止时间
      */
-    @Column(name = "cutoff_time")
+    @Column(name = "`cutoff_time`")
     private Date cutoffTime;
 
     /**
      * 众筹成功要求的金额
      */
-    @Column(name = "success_amount")
+    @Column(name = "`success_amount`")
     private Long successAmount;
 
     /**
      * 已筹金额
      */
-    @Column(name = "current_amount")
+    @Column(name = "`current_amount`")
     private Long currentAmount;
 
     /**
      * 下架时间，下架时更新
      */
-    @Column(name = "drops_time")
+    @Column(name = "`drops_time`")
     private Date dropsTime;
 
     /**
      * 1:上架,2:过期下架,3:手动下架
      */
+    @Column(name = "`status`")
     private Integer status;
 
     /**
      * 项目发起人
      */
-    @Column(name = "seller_name")
+    @Column(name = "`seller_name`")
     private String sellerName;
 
     /**
      * 企业类型
      */
-    @Column(name = "company_desc")
+    @Column(name = "`company_desc`")
     private String companyDesc;
 
     /**
      * 赔偿费率百分比:如7天赔偿3%
      */
-    @Column(name = "refund_rate")
+    @Column(name = "`refund_rate`")
     private Integer refundRate;
 
     /**
      * 平台抽成比例百分比:如3即这3%
      */
-    @Column(name = "commission_rate")
+    @Column(name = "`commission_rate`")
     private Integer commissionRate;
 
     /**
      * 修改产品时更新
      */
-    @Column(name = "modify_time")
+    @Column(name = "`modify_time`")
     private Date modifyTime;
 
     /**
      * 0:删除,1:可用
      */
+    @Column(name = "`yn`")
     private Integer yn;
 
     /**
