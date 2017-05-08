@@ -25,3 +25,6 @@ INSERT INTO `data_dictionary_value` (`id`, `dd_id`, `sort`, `code`, `value`, `re
 insert into user
 (id, name, password, payment_code, referrer, balance, email, phone, type, referral_code,address)
 values(1, 'admin', 'fmt81234','fmt85678',null, 0, '','',3,'','')
+
+##产品
+INSERT INTO `product` (`id`, `name`, `image`, `details`, `type`, `publish_time`, `cutoff_time`, `success_amount`, `current_amount`, `drops_time`, `status`, `seller_name`, `company_desc`, `refund_rate`, `commission_rate`, `modify_time`, `yn`) VALUES (1, 'VR眼镜', NULL, 'VR眼镜Detail', '电器', '2017-05-08 09:11:26', '2017-06-08 09:11:32', 500000, 0, NULL, 1, '博瑞天辰科技', '博瑞天辰科技有限公司', 4, 2, '2017-05-08 09:14:00', 1);
