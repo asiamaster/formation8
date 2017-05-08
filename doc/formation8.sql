@@ -129,6 +129,30 @@ INSERT INTO `financial_transaction` (`id`, `transaction_number`, `transaction_ty
 	(1, 'TO20170504000000', 2, 1, 100, NULL, '2017-05-04 17:08:55', 1, 2);
 /*!40000 ALTER TABLE `financial_transaction` ENABLE KEYS */;
 
+-- 导出  函数 formation8.getParentReferrer 结构
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `getParentReferrer`(
+	`in_id` bigint,
+	`in_level` int
+) RETURNS bigint(20)
+BEGIN
+##返回值
+DECLARE result bigint;
+##临时id变量
+DECLARE temp bigint;
+##循环变量
+DECLARE i bigint;
+SET i=in_level;
+SELECT referrer INTO result FROM user WHERE id = in_id;
+WHILE i > 1 DO
+set temp = result;
+SELECT referrer INTO result FROM user WHERE id = temp;
+set i=i-1;
+END WHILE;
+RETURN result;
+END//
+DELIMITER ;
+
 -- 导出  表 formation8.order 结构
 CREATE TABLE IF NOT EXISTS `order` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -169,10 +193,12 @@ CREATE TABLE IF NOT EXISTS `product` (
   `modify_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改产品时更新',
   `yn` int(11) DEFAULT NULL COMMENT '0:删除,1:可用',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='反正是平台发布，卖家信息直接放这里了';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='反正是平台发布，卖家信息直接放这里了';
 
--- 正在导出表  formation8.product 的数据：~0 rows (大约)
+-- 正在导出表  formation8.product 的数据：~1 rows (大约)
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
+INSERT INTO `product` (`id`, `name`, `image`, `details`, `type`, `publish_time`, `cutoff_time`, `success_amount`, `current_amount`, `drops_time`, `status`, `seller_name`, `company_desc`, `refund_rate`, `commission_rate`, `modify_time`, `yn`) VALUES
+	(1, 'VR眼镜', NULL, 'VR眼镜Detail', '电器', '2017-05-08 09:11:26', '2017-06-08 09:11:32', 500000, 0, NULL, 1, '博瑞天辰科技', '博瑞天辰科技有限公司', 4, 2, '2017-05-08 09:14:00', 1);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 
 -- 导出  表 formation8.sku 结构
@@ -180,21 +206,25 @@ CREATE TABLE IF NOT EXISTS `sku` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `product_id` bigint(20) DEFAULT NULL COMMENT '商品id',
   `details` varchar(4095) DEFAULT NULL COMMENT '详情',
-  `price` datetime DEFAULT NULL COMMENT '价格',
-  `modify_time` datetime DEFAULT NULL COMMENT '修改产品时更新',
+  `price` bigint(20) DEFAULT NULL COMMENT '价格',
+  `modify_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改产品时更新',
   `yn` int(11) DEFAULT '1' COMMENT '0:删除,,1:可用',
   `quota` int(11) DEFAULT NULL COMMENT '最大购买份数(限额)',
-  `quantity` int(11) DEFAULT NULL COMMENT '当前已购买总份数',
+  `quantity` int(11) DEFAULT '0' COMMENT '当前已购买总份数',
   `daily_quota` int(11) DEFAULT NULL COMMENT '每日限额xxx份',
-  `daily_quantity` int(11) DEFAULT NULL COMMENT '每日购买xxx份',
+  `daily_quantity` int(11) DEFAULT '0' COMMENT '每日购买xxx份',
   `current_date` varchar(10) DEFAULT NULL COMMENT '当前购买日期串,用于计算每日购买份数,如:2017-05-05',
-  `freight` bigint(20) DEFAULT NULL COMMENT '配送费用',
+  `freight` bigint(20) DEFAULT '0' COMMENT '配送费用',
   `image_code` varchar(120) DEFAULT NULL COMMENT '只有一张图,从数据字典值表的code取，字典编码为IMAGE_CODE',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='最小销售单位';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='最小销售单位';
 
--- 正在导出表  formation8.sku 的数据：~0 rows (大约)
+-- 正在导出表  formation8.sku 的数据：~3 rows (大约)
 /*!40000 ALTER TABLE `sku` DISABLE KEYS */;
+INSERT INTO `sku` (`id`, `product_id`, `details`, `price`, `modify_time`, `yn`, `quota`, `quantity`, `daily_quota`, `daily_quantity`, `current_date`, `freight`, `image_code`) VALUES
+	(1, 1, '感谢您对博瑞的支持， 您可以获得VR手机眼镜一套 （由博瑞天辰发货）。', 200, '2017-05-08 09:20:01', 1, 50, 0, 10, 0, '2017-05-08', 0, NULL),
+	(2, 1, '感谢您对博瑞的支持， 您可以获得VR眼镜显示器一套 （由博瑞天辰发货）。', 4000, '2017-05-08 09:23:05', 1, 50, 0, 10, 0, '2017-05-08', 0, NULL),
+	(3, 1, '感谢您对博瑞的支持， 您可以获得VR顶配眼镜显示器一套 （由博瑞天辰发货）。', 6000, '2017-05-08 09:24:47', 1, 50, 0, 10, 0, '2017-05-08', 0, NULL);
 /*!40000 ALTER TABLE `sku` ENABLE KEYS */;
 
 -- 导出  表 formation8.system_config 结构
@@ -234,13 +264,15 @@ CREATE TABLE IF NOT EXISTS `user` (
   `referral_code` varchar(10) DEFAULT NULL COMMENT '推荐码,邀请码',
   `address` varchar(120) DEFAULT NULL COMMENT '收货地址',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- 正在导出表  formation8.user 的数据：~2 rows (大约)
+-- 正在导出表  formation8.user 的数据：~5 rows (大约)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` (`id`, `name`, `password`, `payment_code`, `referrer`, `balance`, `email`, `phone`, `type`, `referral_code`, `address`) VALUES
-	(1, 'wangmi', '123456', NULL, NULL, 50, NULL, NULL, 1, 'emUFVf', NULL),
-	(2, 'admin', '123456', NULL, NULL, 1000000, NULL, NULL, 1, NULL, NULL);
+	(1, 'admin', 'fmt81234', 'fmt85678', NULL, 1000000, NULL, NULL, 3, NULL, NULL),
+	(2, 'wangmi', '123456', NULL, 1, 50, NULL, NULL, 1, 'emUFVf', NULL),
+	(3, 'hujun', '123456', NULL, 2, 0, NULL, NULL, 1, NULL, NULL),
+	(4, 'laozhang', '123456', NULL, 3, 0, NULL, NULL, 1, NULL, NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 -- 导出  表 formation8.withdrawal 结构
