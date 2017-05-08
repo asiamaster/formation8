@@ -213,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `sku` (
   `quantity` int(11) DEFAULT '0' COMMENT '当前已购买总份数',
   `daily_quota` int(11) DEFAULT NULL COMMENT '每日限额xxx份',
   `daily_quantity` int(11) DEFAULT '0' COMMENT '每日购买xxx份',
-  `current_date` varchar(10) DEFAULT NULL COMMENT '当前购买日期串,用于计算每日购买份数,如:2017-05-05',
+  `current_date_str` varchar(10) DEFAULT NULL COMMENT '当前购买日期串,用于计算每日购买份数,如:2017-05-05',
   `freight` bigint(20) DEFAULT '0' COMMENT '配送费用',
   `image_code` varchar(120) DEFAULT NULL COMMENT '只有一张图,从数据字典值表的code取，字典编码为IMAGE_CODE',
   PRIMARY KEY (`id`)
@@ -221,7 +221,7 @@ CREATE TABLE IF NOT EXISTS `sku` (
 
 -- 正在导出表  formation8.sku 的数据：~3 rows (大约)
 /*!40000 ALTER TABLE `sku` DISABLE KEYS */;
-INSERT INTO `sku` (`id`, `product_id`, `details`, `price`, `modify_time`, `yn`, `quota`, `quantity`, `daily_quota`, `daily_quantity`, `current_date`, `freight`, `image_code`) VALUES
+INSERT INTO `sku` (`id`, `product_id`, `details`, `price`, `modify_time`, `yn`, `quota`, `quantity`, `daily_quota`, `daily_quantity`, `current_date_str`, `freight`, `image_code`) VALUES
 	(1, 1, '感谢您对博瑞的支持， 您可以获得VR手机眼镜一套 （由博瑞天辰发货）。', 200, '2017-05-08 09:20:01', 1, 50, 0, 10, 0, '2017-05-08', 0, NULL),
 	(2, 1, '感谢您对博瑞的支持， 您可以获得VR眼镜显示器一套 （由博瑞天辰发货）。', 4000, '2017-05-08 09:23:05', 1, 50, 0, 10, 0, '2017-05-08', 0, NULL),
 	(3, 1, '感谢您对博瑞的支持， 您可以获得VR顶配眼镜显示器一套 （由博瑞天辰发货）。', 6000, '2017-05-08 09:24:47', 1, 50, 0, 10, 0, '2017-05-08', 0, NULL);
