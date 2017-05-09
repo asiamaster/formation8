@@ -36,7 +36,7 @@ public class AlipayController {
      * 9. ookies、session等在此页面会失效，即无法获取这些数据；<br/>
      * 10.该方式的调试与运行必须在服务器上，即互联网上能访问；<br/>
      * 11.该方式的作用主要防止订单丢失，即页面跳转同步通知没有处理订单更新，它则去处理；<br/>
-     * 12.当商户收到服务器异步通知并打印出success时，服务器异步通知参数notify_id才会失效。也就是说在支付宝发送同一条异步通知时（包含商户并未成功打印出success导致支付宝重发数次通知），服务器异步通知参数notify_id是不变的
+     * 12.当商户收到服务器异步通知并打印出success时，服务器异步通知参数notify_id才会失效。也就是说在支付宝发送同一条异步通知时（包含商户并未成功打印出success导致支付宝重发数次通知），服务器异步通知参数notify_id是不变的<br/>
      * 参考:https://doc.open.alipay.com/docs/doc.htm?treeId=194&articleId=103296&docType=1
      */
     @RequestMapping(value = "/pay/notify", method = RequestMethod.POST)

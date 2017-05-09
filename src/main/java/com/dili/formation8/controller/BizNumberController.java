@@ -19,6 +19,7 @@ public class BizNumberController {
     @RequestMapping("/getDepositOrderCode")
     public String getDepositOrderCode(ModelMap modelMap) {
         long start = System.currentTimeMillis();
+        //测试10万条数据
         for(int i=0; i<100000; i++){
             bizNumberService.getDepositOrderCode();
         }
