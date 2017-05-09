@@ -64,6 +64,18 @@ public class UserController {
     }
 
     /**
+     * 查询指定层级的下级引领和引荐人列表<br/>
+     * @param userId 用户id
+     * @param level 查询的层级，如果为-1则查全部
+     * @return 返回值的第0位是引领人列表，第1位-第N位是引荐人层级1-N的列表。
+     */
+    @RequestMapping("/listSubReferrers.aspx")
+    public @ResponseBody BaseOutput listSubReferrers(Long userId, Integer level){
+        return BaseOutput.success().setData(userService.listSubReferrers(userId, level));
+    }
+
+
+    /**
      * url:http://localhost:8080/user/referralCode.aspx?str=1&width=320&height=240
      * 四个参数:
      * 二维码字符串str,

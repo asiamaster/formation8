@@ -10,17 +10,19 @@ import com.dili.formation8.utils.ShortUrlGenerator;
 import com.dili.formation8.vo.Formation8Constants;
 import com.dili.formation8.vo.UserVo;
 import com.dili.utils.base.BaseServiceImpl;
-import com.dili.utils.domain.BaseOutput;
-import com.google.common.collect.Maps;
+import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.type.IntegerTypeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 由MyBatis Generator工具自动生成
@@ -145,6 +147,57 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
     @Override
     public Long getParentReferrer(UserVo userVo) {
         return getActualDao().getParentReferrer(userVo);
+    }
+
+    @Override
+    public List<List<User>> listSubReferrers(Long id, Integer level) {
+        List<List<User>> users = new ArrayList<>();
+        listRecursiveReferrers(Lists.newArrayList(id), level, users);
+        return users;
+    }
+
+    /**
+     * 递归查询下级推荐人
+     * @param ids   要查的用户id列表
+     * @param level 指定查询的层级，如果<0则查所有下级推荐人
+     * @param users 递归查询结果对象
+     * @return
+     */
+    private void listRecursiveReferrers(List<Long> ids, Integer level, List<List<User>> users) {
+        if(level == 0) {
+            return;
+        }
+        List<User> referals = listOneLevelReferrers(ids);
+        if(!referals.isEmpty()) {
+            users.add(referals);
+        }
+        level--;
+        //如果层级没查完或者是level<0的情况下，继续往下查
+        if(level >0 || level < 0) {
+            //先获取当前推荐人的id列表
+            List<Long> referalIds = Lists.newArrayList();
+            for(User referal:referals){
+                referalIds.add(referal.getId());
+            }
+            //如果下级推荐人不为空，则继续往下查
+            if(!referalIds.isEmpty()) {
+                listRecursiveReferrers(referalIds, level, users);
+            }
+        }
+
+    }
+
+    /**
+     * 根据所有推荐人id列表向下查一级
+     * @param ids 推荐人id列表
+     * @return
+     */
+    private List<User> listOneLevelReferrers(List<Long> ids){
+        Example example = new Example(User.class);
+        example.createCriteria()
+        .andIn("referrer", ids);
+        example.orderBy("id").asc();
+        return getActualDao().selectByExample(example);
     }
 
     @Override
