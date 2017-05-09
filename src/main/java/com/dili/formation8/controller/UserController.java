@@ -33,7 +33,7 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/loginService.aspx", method = { RequestMethod.POST })
-    public @ResponseBody String doLogin(HttpServletRequest request, HttpServletResponse response,
+    public @ResponseBody BaseOutput doLogin(HttpServletRequest request, HttpServletResponse response,
                    @RequestParam(value="name", required=true) String name, @RequestParam(value="password", required=true) String password) {
         String checkResult = userService.loginPreCheck(name, password);
         if(checkResult != null){
@@ -44,9 +44,9 @@ public class UserController {
         user.setPassword(password);
         List<User> users =userService.list(user);
         if(users == null || users.isEmpty()){
-            throw new RuntimeException("用户名或密码错误");
+            BaseOutput.failure("用户名或密码错误");
         }
-        return "{\"result\":\"success\"}";
+        return BaseOutput.success("登录成功");
     }
 
     /**
@@ -59,7 +59,7 @@ public class UserController {
     public String insert(ModelMap modelMap, @ModelAttribute User user) {
         String checkResult = userService.loginPreCheck(user.getName(), user.getPassword());
         if(checkResult != null){
-            throw new RuntimeException("登录验证失败:"+checkResult);
+            throw new RuntimeException("注册验证失败:"+checkResult);
         }
         userService.insertSelective(user);
         return "user/insert";
@@ -72,7 +72,7 @@ public class UserController {
      * @param amount    转帐金额
      */
     @RequestMapping("/transfer.aspx")
-    public @ResponseBody BaseOutput<Boolean> transfer(Long sourceUserId, Long targetUserId, Long amount){
+    public @ResponseBody BaseOutput transfer(Long sourceUserId, Long targetUserId, Long amount){
         Boolean result = userService.transfer(sourceUserId, targetUserId, amount);
         return result?BaseOutput.success("转帐成功"):BaseOutput.failure("余额不足");
     }
