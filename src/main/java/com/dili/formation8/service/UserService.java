@@ -12,13 +12,19 @@ public interface UserService extends BaseService<User, Long> {
 
 
     /**
-     * 登录前验证
-     * 返回消息为验证不通过的提示信息
+     * 用户登录
      * @param username
      * @param password
      * @return
      */
-    public String loginPreCheck(String username, String password);
+    public String login(String username, String password);
+
+    /**
+     * 用户注册
+     * @param user
+     * @return
+     */
+    public String register(User user);
 
     /**
      *  转帐

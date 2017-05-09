@@ -10,6 +10,7 @@ import com.dili.formation8.utils.ShortUrlGenerator;
 import com.dili.formation8.vo.Formation8Constants;
 import com.dili.formation8.vo.UserVo;
 import com.dili.utils.base.BaseServiceImpl;
+import com.dili.utils.domain.BaseOutput;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,8 +39,14 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
         return (UserMapper)getDao();
     }
 
-    @Override
-    public String loginPreCheck(String username, String password) {
+    /**
+     * 登录前验证
+     * 返回消息为验证不通过的提示信息
+     * @param username
+     * @param password
+     * @return
+     */
+    private String loginPreCheck(String username, String password) {
         // 检查用户名
         if (StringUtils.isBlank(username)) {
             return "用户名不能为空";
@@ -52,6 +60,31 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
         if(password.length()>20){
             return "密码长度不能多于20个字符";
         }
+        return null;
+    }
+
+    @Override
+    public String login(String username, String password) {
+        String checkResult = loginPreCheck(username, password);
+        if(StringUtils.isNoneBlank(checkResult)){
+            return checkResult;
+        }
+        User user = new User();
+        user.setName(username);
+        user.setPassword(password);
+        List<User> users =list(user);
+        if(users == null || users.isEmpty()){
+            return "用户名或密码错误";
+        }
+        return null;
+    }
+
+    public String register(User user){
+        String checkResult = loginPreCheck(user.getName(), user.getPassword());
+        if(checkResult != null){
+            return checkResult;
+        }
+        insertSelective(user);
         return null;
     }
 

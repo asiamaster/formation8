@@ -35,18 +35,8 @@ public class UserController {
     @RequestMapping(value = "/loginService.aspx", method = { RequestMethod.POST })
     public @ResponseBody BaseOutput doLogin(HttpServletRequest request, HttpServletResponse response,
                    @RequestParam(value="name", required=true) String name, @RequestParam(value="password", required=true) String password) {
-        String checkResult = userService.loginPreCheck(name, password);
-        if(checkResult != null){
-            throw new RuntimeException("登录验证失败:"+checkResult);
-        }
-        User user = new User();
-        user.setName(name);
-        user.setPassword(password);
-        List<User> users =userService.list(user);
-        if(users == null || users.isEmpty()){
-            BaseOutput.failure("用户名或密码错误");
-        }
-        return BaseOutput.success("登录成功");
+        String msg = userService.login(name, password);
+        return msg == null ? BaseOutput.success("登录成功") : BaseOutput.failure(msg);
     }
 
     /**
@@ -56,13 +46,9 @@ public class UserController {
      * @return
      */
     @RequestMapping("/register.aspx")
-    public String insert(ModelMap modelMap, @ModelAttribute User user) {
-        String checkResult = userService.loginPreCheck(user.getName(), user.getPassword());
-        if(checkResult != null){
-            throw new RuntimeException("注册验证失败:"+checkResult);
-        }
-        userService.insertSelective(user);
-        return "user/insert";
+    public @ResponseBody BaseOutput insert(ModelMap modelMap, @ModelAttribute User user) {
+        String msg = userService.register(user);
+        return msg == null ? BaseOutput.success("注册成功") : BaseOutput.failure(msg);
     }
 
     /**
