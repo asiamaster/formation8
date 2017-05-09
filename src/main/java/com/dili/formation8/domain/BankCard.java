@@ -52,10 +52,10 @@ public class BankCard {
     private String cardNumber;
 
     /**
-     * 数据字典:中国银行，建设银行，招商银行
+     * 开户行:中国银行，建设银行，招商银行
      */
     @Column(name = "`bank`")
-    private Integer bank;
+    private String bank;
 
     /**
      * 1:是, 0：否
@@ -189,20 +189,20 @@ public class BankCard {
     }
 
     /**
-     * 获取数据字典:中国银行，建设银行，招商银行
+     * 获取开户行:中国银行，建设银行，招商银行
      *
-     * @return bank - 数据字典:中国银行，建设银行，招商银行
+     * @return bank - 开户行:中国银行，建设银行，招商银行
      */
-    public Integer getBank() {
+    public String getBank() {
         return bank;
     }
 
     /**
-     * 设置数据字典:中国银行，建设银行，招商银行
+     * 设置开户行:中国银行，建设银行，招商银行
      *
-     * @param bank 数据字典:中国银行，建设银行，招商银行
+     * @param bank 开户行:中国银行，建设银行，招商银行
      */
-    public void setBank(Integer bank) {
+    public void setBank(String bank) {
         this.bank = bank;
     }
 

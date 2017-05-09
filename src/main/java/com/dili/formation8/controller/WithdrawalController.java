@@ -20,6 +20,17 @@ public class WithdrawalController {
     @Autowired
     WithdrawalService withdrawalService;
 
+    /**
+     * 提现
+     * @param modelMap
+     * @param withdrawal
+     * @return
+     */
+    @RequestMapping("/withdrawal.aspx")
+    public @ResponseBody BaseOutput<Withdrawal> withdrawal(ModelMap modelMap, @ModelAttribute Withdrawal withdrawal) {
+        return withdrawalService.withdrawal(withdrawal);
+    }
+
     @RequestMapping("/list")
     public String list(ModelMap modelMap, @ModelAttribute Withdrawal withdrawal) {
         modelMap.put("list", withdrawalService.list(withdrawal));

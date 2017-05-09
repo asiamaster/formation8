@@ -1,14 +1,10 @@
 package com.dili.formation8.controller;
 
-import com.dili.formation8.domain.BizNumber;
 import com.dili.formation8.service.BizNumberService;
-import com.dili.utils.domain.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 由MyBatis Generator工具自动生成

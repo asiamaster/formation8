@@ -9,6 +9,13 @@ import com.dili.utils.base.BaseService;
  */
 public interface BizNumberService extends BaseService<BizNumber, Long> {
 
+
+    /**
+     * 获取提现订单编号
+     * @return
+     */
+    public String getWithdrawalOrderCode();
+
     /**
      * 获取充值订单号
      * @return

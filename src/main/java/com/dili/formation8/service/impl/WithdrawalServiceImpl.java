@@ -5,10 +5,7 @@ import com.dili.formation8.domain.BankCard;
 import com.dili.formation8.domain.SystemConfig;
 import com.dili.formation8.domain.User;
 import com.dili.formation8.domain.Withdrawal;
-import com.dili.formation8.service.BankCardService;
-import com.dili.formation8.service.SystemConfigService;
-import com.dili.formation8.service.UserService;
-import com.dili.formation8.service.WithdrawalService;
+import com.dili.formation8.service.*;
 import com.dili.formation8.vo.Formation8Constants;
 import com.dili.utils.base.BaseServiceImpl;
 import com.dili.utils.domain.BaseOutput;
@@ -31,10 +28,24 @@ public class WithdrawalServiceImpl extends BaseServiceImpl<Withdrawal, Long> imp
     private UserService userService;
     @Autowired
     private SystemConfigService systemConfigService;
+    @Autowired
+    private BizNumberService bizNumberService;
+
     public WithdrawalMapper getActualDao() {
         return (WithdrawalMapper)getDao();
     }
 
+    /**
+     * 提现流程:
+     * 1. 检查提现必填参数,用户ID和提现申请金额不能为空
+     * 2. 判断用户是否存在，用户是否绑定银行卡，用户余额是否充足,判断提现金额下限,记录提现时用户的余额
+     * 3. 设置提现手续费和提现编号
+     * 4. 插入提现记录
+     * 5. 扣除余额(提现金额-手续费)
+     * 6. 给平台打款手续费
+     * @param withdrawal
+     * @return
+     */
     @Override
     public BaseOutput<Withdrawal> withdrawal(Withdrawal withdrawal) {
         //检验提现参数
@@ -46,7 +57,9 @@ public class WithdrawalServiceImpl extends BaseServiceImpl<Withdrawal, Long> imp
         setWithdrawalParams(withdrawal);
         //插入提现记录
         getActualDao().insert(withdrawal);
-        //给平台打款
+        //扣除余额(提现金额-手续费)
+        userService.balanceAdjust(withdrawal.getUserId(), withdrawal.getWithdrawalAmount()-withdrawal.getWithdrawalCharge());
+        //给平台打款手续费
         userService.transfer(withdrawal.getUserId(), Formation8Constants.PLATFORM_USER_ID, withdrawal.getWithdrawalCharge());
         return output;
     }
@@ -115,6 +128,8 @@ public class WithdrawalServiceImpl extends BaseServiceImpl<Withdrawal, Long> imp
         //设置提现手续费
         String withdrawDepositRate = systemConfigs.get(0).getValue();
         withdrawal.setWithdrawalCharge(withdrawal.getWithdrawalAmount()*Long.parseLong(withdrawDepositRate)/100l);
+        //设置提现编号
+        withdrawal.setTransactionNumber(bizNumberService.getWithdrawalOrderCode());
     }
 
 
