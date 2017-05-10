@@ -26,7 +26,7 @@ public class CookieManager {
     @Value("${common-cookie-key}")
     private String COOKIE_ENCRYPT_KEY; 
     
-    public static final String DILI_AUTH_COOKIE_NAME       = "_dl_";
+    public static final String DILI_AUTH_COOKIE_NAME       = "_f8_";
     
     public static final String COOKIE_KEY_LOGIN_TIME       = "alt";
     

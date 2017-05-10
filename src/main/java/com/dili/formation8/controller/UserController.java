@@ -163,8 +163,6 @@ public class UserController {
         return "user/list";
     }
 
-
-
     @RequestMapping("/update.aspx")
     public String update(ModelMap modelMap, @ModelAttribute User user) {
         userService.update(user);
