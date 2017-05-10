@@ -1,7 +1,6 @@
 package com.dili.formation8.utils;
 
 import com.dili.formation8.service.TimeLimitService;
-import com.dili.formation8.vo.Formation8Constants;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
