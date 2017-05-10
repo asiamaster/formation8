@@ -6,7 +6,7 @@ import com.dili.formation8.domain.SystemConfig;
 import com.dili.formation8.domain.User;
 import com.dili.formation8.domain.Withdrawal;
 import com.dili.formation8.service.*;
-import com.dili.formation8.vo.Formation8Constants;
+import com.dili.formation8.utils.Formation8Constants;
 import com.dili.utils.base.BaseServiceImpl;
 import com.dili.utils.domain.BaseOutput;
 import org.springframework.beans.factory.annotation.Autowired;

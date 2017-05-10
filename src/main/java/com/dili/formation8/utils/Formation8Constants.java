@@ -1,4 +1,4 @@
-package com.dili.formation8.vo;
+package com.dili.formation8.utils;
 
 /**
  * Formation8常量和枚举
@@ -15,8 +15,20 @@ public class Formation8Constants {
     public static final String SYSTEM_CONFIG_WITHDRAW_DEPOSIT_RATE = "WITHDRAW_DEPOSIT_RATE";
 //    平台用户id
     public static final Long PLATFORM_USER_ID = 1l;
+//    平台域名
+    public static final String WEBSITE_DOMAINS="formation8";
+//    平台passport域名
+    public static final String PASSPORT_DOMAINS = "passport.formation8.com";
+//    平台主站域名
+    public static final String WWW_DOMAIN = "http://www.formation8.com";
+    //平台cookies域名
+    public static final String cookieDomain = ".formation8.com";
 
 
+    //用户信息编码
+    public static final String USER_DATA_ENCODING = "UTF-16LE";
+    //用户信息过期时间
+    public static long EXPIRED_TIME = 2592000000L;
     /**
      * 是否可用
      */

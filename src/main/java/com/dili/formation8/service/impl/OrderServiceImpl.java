@@ -4,7 +4,7 @@ import com.dili.formation8.dao.OrderMapper;
 import com.dili.formation8.domain.*;
 import com.dili.formation8.service.*;
 import com.dili.formation8.utils.DateUtils;
-import com.dili.formation8.vo.Formation8Constants;
+import com.dili.formation8.utils.Formation8Constants;
 import com.dili.formation8.vo.UserVo;
 import com.dili.utils.base.BaseServiceImpl;
 import com.dili.utils.domain.BaseOutput;

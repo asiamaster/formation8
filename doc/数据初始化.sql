@@ -25,9 +25,12 @@ INSERT INTO `data_dictionary_value` (`id`, `dd_id`, `sort`, `code`, `value`, `re
 
 ##用户
 INSERT INTO `user` (`id`, `name`, `password`, `payment_code`, `referrer`, `balance`, `email`, `phone`, `type`, `referral_code`, `address`) VALUES (1, 'admin', 'fmt81234', 'fmt85678', NULL, 100000000, NULL, NULL, 3, NULL, NULL);
-INSERT INTO `user` (`id`, `name`, `password`, `payment_code`, `referrer`, `balance`, `email`, `phone`, `type`, `referral_code`, `address`) VALUES (2, 'wangmi', '123456', NULL, 1, 1000000, NULL, NULL, 1, 'emUFVf', NULL);
-INSERT INTO `user` (`id`, `name`, `password`, `payment_code`, `referrer`, `balance`, `email`, `phone`, `type`, `referral_code`, `address`) VALUES (3, 'hujun', '123456', NULL, 2, 1000000, NULL, NULL, 1, NULL, NULL);
-INSERT INTO `user` (`id`, `name`, `password`, `payment_code`, `referrer`, `balance`, `email`, `phone`, `type`, `referral_code`, `address`) VALUES (4, 'laozhang', '123456', NULL, 3, 1000000, NULL, NULL, 1, NULL, NULL);
+INSERT INTO `user` (`id`, `name`, `password`, `payment_code`, `referrer`, `balance`, `email`, `phone`, `type`, `referral_code`, `address`) VALUES (2, 'wangmi', '123456', NULL, 1, 1000000, NULL, NULL, 4, 'emUFVf', NULL);
+INSERT INTO `user` (`id`, `name`, `password`, `payment_code`, `referrer`, `balance`, `email`, `phone`, `type`, `referral_code`, `address`) VALUES (5, 'tester1', '123456', NULL, 2, 0, NULL, NULL, 1, NULL, NULL);
+INSERT INTO `user` (`id`, `name`, `password`, `payment_code`, `referrer`, `balance`, `email`, `phone`, `type`, `referral_code`, `address`) VALUES (7, 'tester3', '123456', NULL, 4, 0, NULL, NULL, 1, NULL, NULL);
+INSERT INTO `user` (`id`, `name`, `password`, `payment_code`, `referrer`, `balance`, `email`, `phone`, `type`, `referral_code`, `address`) VALUES (3, 'hujun', '123456', NULL, 2, 1000000, NULL, NULL, 4, NULL, NULL);
+INSERT INTO `user` (`id`, `name`, `password`, `payment_code`, `referrer`, `balance`, `email`, `phone`, `type`, `referral_code`, `address`) VALUES (4, 'laozhang', '123456', NULL, 3, 1000000, NULL, NULL, 4, NULL, NULL);
+INSERT INTO `user` (`id`, `name`, `password`, `payment_code`, `referrer`, `balance`, `email`, `phone`, `type`, `referral_code`, `address`) VALUES (6, 'tester2', '123456', NULL, 3, 0, NULL, NULL, 1, NULL, NULL);
 
 ##银行卡
 INSERT INTO `bank_card` (`id`, `user_id`, `card_type`, `account_name`, `id_number`, `subbranch`, `card_number`, `bank`, `is_default`, `add_time`) VALUES (1, 2, 1, 'wm', '510105198806132018', '建设支行', '6225221208715611', '招行', 1, '2017-05-08 21:14:10');
