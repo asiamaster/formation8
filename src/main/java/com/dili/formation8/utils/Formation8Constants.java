@@ -22,7 +22,7 @@ public class Formation8Constants {
 //    平台主站域名
     public static final String WWW_DOMAIN = "http://www.formation8.com";
     //平台cookies域名
-    public static final String cookieDomain = ".formation8.com";
+    public static final String cookieDomain = "formation8.com";
 
 
     //用户信息编码

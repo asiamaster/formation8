@@ -39,7 +39,8 @@ public class CookieManager {
     public static int LOGIN_USERNAME_COOKIE_EXPIRY = 60 * 60 * 24 * 30;
     
     public static int LOGIN_RETURN_URL_EXPIRY = 60 * 3;
-    
+
+    //一个月
     public static int REMEMBER_ME_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 30;
 
     @Resource
@@ -141,7 +142,7 @@ public class CookieManager {
             DateFormat df = new SimpleDateFormat("EEE, d-MMM-yyyy HH:mm:ss z", Locale.US);
             df.setTimeZone(TimeZone.getTimeZone("GMT"));
             String expires = df.format(cal.getTime());
-            if (cookieMaxAge == 0) { //���cookie
+            if (cookieMaxAge == 0) { //cookie
                 expires = "Thu, 01-Jan-1970 00:00:10 GMT";
             }
             rawCookie.append(" Expires=").append(expires).append(";");
@@ -151,7 +152,7 @@ public class CookieManager {
             rawCookie.append(";");
             rawCookie.append(" HttpOnly");
         }
-        newCookie(response, "_dl_remember_", cookieMaxAge + "", -1, CookieDomain, false);
+        newCookie(response, "_f8_remember_", cookieMaxAge + "", -1, CookieDomain, false);
         response.addHeader("Set-Cookie", rawCookie.toString());
     }
 

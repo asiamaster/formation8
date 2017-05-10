@@ -3,6 +3,7 @@ package com.dili.formation8.service;
 import com.dili.formation8.domain.User;
 import com.dili.formation8.vo.UserVo;
 import com.dili.utils.base.BaseService;
+import com.dili.utils.domain.BaseOutput;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface UserService extends BaseService<User, Long> {
      * @param password
      * @return
      */
-    public String login(String username, String password);
+    public BaseOutput<User> login(String username, String password);
 
     /**
      * 用户注册

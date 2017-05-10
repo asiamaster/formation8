@@ -4,14 +4,16 @@ import com.dili.formation8.utils.security.Base32;
 import com.dili.formation8.utils.security.DESCoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 
 
+@Component
 public class CookieCipherTools {
     private static final Logger log = LoggerFactory.getLogger(CookieCipherTools.class);
-    private String charsetName;
+    private String charsetName = "UTF-8";
     
     public String encrypt(String value, String key) {
       try {

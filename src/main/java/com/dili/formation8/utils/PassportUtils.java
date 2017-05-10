@@ -1,6 +1,5 @@
 package com.dili.formation8.utils;
 
-import com.dili.formation8.vo.Formation8Constants;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

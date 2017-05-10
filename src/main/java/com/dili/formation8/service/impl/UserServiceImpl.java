@@ -5,11 +5,13 @@ import com.dili.formation8.dao.UserMapper;
 import com.dili.formation8.domain.FinancialTransaction;
 import com.dili.formation8.domain.User;
 import com.dili.formation8.service.BizNumberService;
+import com.dili.formation8.service.TimeLimitService;
 import com.dili.formation8.service.UserService;
 import com.dili.formation8.utils.Formation8Constants;
 import com.dili.formation8.utils.ShortUrlGenerator;
 import com.dili.formation8.vo.UserVo;
 import com.dili.utils.base.BaseServiceImpl;
+import com.dili.utils.domain.BaseOutput;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
 
     @Autowired
     private FinancialTransactionMapper financialTransactionMapper;
+
+    @Autowired
+    TimeLimitService timeLimitService;
 
     @Autowired
     private BizNumberService bizNumberService;
@@ -64,17 +69,37 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
     }
 
     @Override
-    public String login(String username, String password) {
+    public BaseOutput<User> login(String username, String password) {
         String checkResult = loginPreCheck(username, password);
         if(StringUtils.isNoneBlank(checkResult)){
-            return checkResult;
+            return BaseOutput.failure(checkResult);
         }
         User user = new User();
         user.setName(username);
         user.setPassword(password);
         List<User> users =list(user);
         if(users == null || users.isEmpty()){
-            return "用户名或密码错误";
+            String msg = checkLockCondition(username);
+            return msg == null ? BaseOutput.failure("用户名或密码错误"): BaseOutput.failure(msg);
+        }
+        return BaseOutput.success().setData(users.get(0));
+    }
+
+    /**
+     * 检查是否被锁定，密码错误给出相应提示
+     * @param name
+     * @return
+     */
+    private String checkLockCondition(String name) {
+        long idLoginTimes = timeLimitService.getUserLoginFailTime(name);
+        if(idLoginTimes == TimeLimitService.LOGIN_FAIL_NEED_LOCK - 2){
+            return "密码错误，还可以输入两次";
+        }else if(idLoginTimes == TimeLimitService.LOGIN_FAIL_NEED_LOCK - 1){
+            return "密码错误，还可以输入一次";
+        }else if(idLoginTimes >= TimeLimitService.LOGIN_FAIL_NEED_LOCK){
+//            登录超过一定次数后，锁定用户一段时间
+            timeLimitService.lockUserLogin(name);
+            return "密码错误次数超限，请" + TimeLimitService.USER_LOGIN_FAIL_TIME_LIMIT / 60 + "分钟后重试";
         }
         return null;
     }

@@ -2,11 +2,13 @@ package com.dili.formation8.service;
 
 
 import com.dili.formation8.component.CacheControlManager;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+@Component
 public class TimeLimitService {
    
     public static int IP_REGISTER_TIME_LIMIT = 10*60; //10分钟
