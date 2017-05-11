@@ -1,5 +1,7 @@
 package com.dili.formation8.utils;
 
+import com.dili.formation8.passport.Encrypt;
+
 /**
  * 短网址生成器
  * Created by asiam on 2017/5/2 0002.

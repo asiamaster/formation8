@@ -1,10 +1,13 @@
 package com.dili.formation8.service;
 
 import com.dili.formation8.domain.User;
+import com.dili.formation8.passport.UserLoginData;
 import com.dili.formation8.vo.UserVo;
 import com.dili.utils.base.BaseService;
 import com.dili.utils.domain.BaseOutput;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -18,9 +21,11 @@ public interface UserService extends BaseService<User, Long> {
      * 用户登录
      * @param username
      * @param password
+     * @param request
+     * @param response
      * @return
      */
-    public BaseOutput<User> login(String username, String password);
+    public BaseOutput<UserLoginData> login(String username, String password, String rememberMe, HttpServletRequest request, HttpServletResponse response);
 
     /**
      * 用户注册

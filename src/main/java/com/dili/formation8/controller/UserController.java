@@ -1,13 +1,9 @@
 package com.dili.formation8.controller;
 
 import com.dili.formation8.domain.User;
-import com.dili.formation8.service.TimeLimitService;
 import com.dili.formation8.service.UserService;
-import com.dili.formation8.utils.*;
-import com.dili.formation8.vo.UserData;
-import com.dili.formation8.vo.UserLoginData;
+import com.dili.formation8.utils.ZxingUtils;
 import com.dili.utils.domain.BaseOutput;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,71 +25,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @Autowired
-    CookieManager cookieManager;
-
-    @Autowired
-    TimeLimitService timeLimitService;
-
-    @Autowired
-    CookieEncryptUtil cookieEncryptUtil;
-
     protected static final Logger log = LoggerFactory.getLogger(UserController.class);
-
-    /**
-     * 登录接口
-     * @param request
-     * @param response
-     * @param name
-     * @param password
-     * @return
-     */
-    @RequestMapping(value = "/loginService.aspx", method = { RequestMethod.POST })
-    public @ResponseBody BaseOutput doLogin(HttpServletRequest request, HttpServletResponse response,
-                   @RequestParam(value="name", required=true) String name,
-                   @RequestParam(value="password", required=true) String password,
-                   @RequestParam(value="rememberMe", required=false) String rememberMe) {
-        BaseOutput<User> output = userService.login(name, password);
-        //登录失败则添加登录失败次数
-        if(!output.isSuccess()){
-            cookieManager.addLoginTimes(request, response);
-            return BaseOutput.failure(output.getResult());
-        }
-        //写入cookie
-        try {
-            String cookieValue = cookieEncryptUtil.generateCookieString(getUserData(output.getData()));
-            //登录成功后，清除cookies登录次数和ip登录次数
-            cookieManager.setCookieLoginTimes(request, response, -1);
-            timeLimitService.removeUserLoginFailTime(PassportUtils.getRemoteIP(request));
-            if (StringUtils.isNotBlank(rememberMe) && "checked".equalsIgnoreCase(rememberMe)) {
-                cookieManager.newAuthCookies(response, CookieManager.DILI_AUTH_COOKIE_NAME, cookieValue, CookieManager.REMEMBER_ME_EXPIRE_TIME, true);
-            } else {
-                cookieManager.newAuthCookies(response, CookieManager.DILI_AUTH_COOKIE_NAME, cookieValue, -1, true);
-            }
-            log.info("---用户 [" + output.getData().getName() + " | " + PassportUtils.getRemoteIP(request) + "] 登录Login Success---");
-
-        }catch(Exception e){
-            cookieManager.addLoginTimes(request, response);
-            return BaseOutput.failure(e.getMessage());
-        }
-        UserLoginData userLoginData = BeanConverter.copeBean(output.getData(), UserLoginData.class);
-        userLoginData.setReturnUrl(PassportUtils.getReturnUrl(request));
-        userLoginData.setIp(PassportUtils.getRemoteIP(request));
-        return BaseOutput.success("登录成功").setData(userLoginData);
-    }
-
-    private UserData getUserData(User user) {
-        UserData userData = new UserData();
-        userData.setUserName(user.getName());
-        userData.setReferer(user.getReferrer());
-        userData.setReferralCode(user.getReferralCode());
-        userData.setUid(user.getId());//UserId
-        userData.setUserType(user.getType());
-        userData.setVersion(1);
-        return userData;
-    }
-
-
 
     /**
      * 注册

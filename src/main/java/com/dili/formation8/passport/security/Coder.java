@@ -1,4 +1,4 @@
-package com.dili.formation8.utils.security;
+package com.dili.formation8.passport.security;
 
 import org.apache.commons.codec.binary.Base64;
 

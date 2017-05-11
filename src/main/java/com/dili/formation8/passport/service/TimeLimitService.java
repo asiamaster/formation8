@@ -1,7 +1,6 @@
-package com.dili.formation8.service;
+package com.dili.formation8.passport.service;
 
 
-import com.dili.formation8.component.CacheControlManager;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

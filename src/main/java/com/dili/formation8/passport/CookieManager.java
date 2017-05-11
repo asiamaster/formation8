@@ -1,8 +1,8 @@
-package com.dili.formation8.utils;
+package com.dili.formation8.passport;
 
-import com.dili.formation8.service.TimeLimitService;
+import com.dili.formation8.passport.service.TimeLimitService;
+import com.dili.formation8.utils.Formation8Constants;
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,22 +22,22 @@ public class CookieManager {
    
     @Resource
     private CookieCipherTools cookieCipherTools;
-    
+
     @Value("${common-cookie-key}")
-    private String COOKIE_ENCRYPT_KEY; 
-    
+    private String COOKIE_ENCRYPT_KEY;
+
     public static final String DILI_AUTH_COOKIE_NAME       = "_f8_";
-    
+
     public static final String COOKIE_KEY_LOGIN_TIME       = "alt";
-    
+
     public static final String COOKIE_KEY_USERNAME         = "pin";
-    
+
     public static final String COOKIE_KEY_RETURN_URL         = "returnURL";
-    
+
     public static int LOGIN_TIME_COOKIE_EXPIRY    = 60 * 10;
-    
+
     public static int LOGIN_USERNAME_COOKIE_EXPIRY = 60 * 60 * 24 * 30;
-    
+
     public static int LOGIN_RETURN_URL_EXPIRY = 60 * 3;
 
     //一个月
@@ -45,10 +45,6 @@ public class CookieManager {
 
     @Resource
     private TimeLimitService timeLimitService;
-    
-    @Autowired
-    private CookieManager cookieManager;
-
 
     /**
      * 获得cookie中登录次数
@@ -58,20 +54,20 @@ public class CookieManager {
         String ip = PassportUtils.getRemoteIP(request);
         return timeLimitService.getUserLoginFailTime(ip);
     }
-    
+
     /**
      * 获得cookie中登录次数
      * @return
      */
     public int getLoginTimes(HttpServletRequest request){
         int loginTimes = -1;
-        
+
         String loginTimesCookie = getWebCookieValue(request, COOKIE_KEY_LOGIN_TIME);// get value from cookie
         if (loginTimesCookie != null){
             String rawStringDec = new String(Base64.decodeBase64(loginTimesCookie));
             loginTimes = Integer.parseInt(cookieCipherTools.decrypt(rawStringDec, COOKIE_ENCRYPT_KEY));
         }
-        
+
         return loginTimes;
     }
 
@@ -79,24 +75,24 @@ public class CookieManager {
         String rawStringEnc = cookieCipherTools.encrypt(String.valueOf((loginTimes)), COOKIE_ENCRYPT_KEY);
         newCookie(response, COOKIE_KEY_LOGIN_TIME, new String(Base64.encodeBase64(rawStringEnc.getBytes())), LOGIN_TIME_COOKIE_EXPIRY, Formation8Constants.PASSPORT_DOMAINS, true);
     }
-    
+
     public void addLoginTimes(HttpServletRequest request, HttpServletResponse response) {
         /**
          * 增加cookie中登录次数
          * @return
          */
         int loginTimes = 1;
-        
+
         String loginTimesCookie = getWebCookieValue(request, COOKIE_KEY_LOGIN_TIME);// get value from cookie
-        
+
         if (loginTimesCookie != null){
             String rawStringDec = new String(Base64.decodeBase64(loginTimesCookie));
             loginTimes = Integer.parseInt(cookieCipherTools.decrypt(rawStringDec, COOKIE_ENCRYPT_KEY));
         }
-        
+
         String rawStringEnc = cookieCipherTools.encrypt(String.valueOf((loginTimes + 1)), COOKIE_ENCRYPT_KEY);
         newCookie(response, COOKIE_KEY_LOGIN_TIME, new String(Base64.encodeBase64(rawStringEnc.getBytes())), LOGIN_TIME_COOKIE_EXPIRY,Formation8Constants.PASSPORT_DOMAINS, true);
-        
+
         timeLimitService.incrementUserLoginFailTime(PassportUtils.getRemoteIP(request));
     }
     

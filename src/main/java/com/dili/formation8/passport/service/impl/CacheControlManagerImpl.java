@@ -1,6 +1,6 @@
-package com.dili.formation8.component.impl;
+package com.dili.formation8.passport.service.impl;
 
-import com.dili.formation8.component.CacheControlManager;
+import com.dili.formation8.passport.service.CacheControlManager;
 import com.dili.utils.RedisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

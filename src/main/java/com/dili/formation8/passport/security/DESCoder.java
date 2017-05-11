@@ -1,4 +1,4 @@
-package com.dili.formation8.utils.security;
+package com.dili.formation8.passport.security;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;

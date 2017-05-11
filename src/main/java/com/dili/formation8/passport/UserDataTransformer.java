@@ -1,5 +1,6 @@
-package com.dili.formation8.utils;
+package com.dili.formation8.passport;
 
+import com.dili.formation8.utils.Formation8Constants;
 import com.dili.formation8.vo.UserData;
 
 import java.io.UnsupportedEncodingException;

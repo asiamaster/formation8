@@ -1,15 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <title>登录</title>
-</head>
-<body>
-<form action="${contextPath}/user/loginService.aspx" method="post">
-    用户名:<input name="name" /><br/>
-    密码:<input name="password"/><br/>
-    记住我:<input type="checkbox" name="rememberMe"/><br/>
-    <input type="submit" value="登录"/>
+<#body>
+<form action="${contextPath}/login/loginService.aspx" method="post">
+    用户名:<input name="name" id="name" /><br/>
+    密码:<input name="password" id="password"/><br/>
+    记住我:<input type="checkbox" id="rememberMe" name="rememberMe"/><br/>
+    <a href="javascript:void(0);" id="login_btn">登录</a>
 </form>
-</body>
-</html>
+<script type="text/javascript">
+    var contextPath = '${contextPath}';
+    var init =function () {
+        _bindEvent();
+    };
+    var _bindEvent = function() {
+        $("#login_btn").click(function (e) {
+            this.blur();
+//            不再派发事件。
+            e.stopPropagation();
+//            防止链接打开 URL
+            e.preventDefault();
+
+            login();
+        });
+    };
+    var _unBindEvent = function(){
+        $("#login_btn").unbind("click");
+    };
+    var login = function(){
+        var loginUrl = contextPath+"/login/loginService.aspx";
+        var name = $("#name") ;
+        var password = $("#password");
+        //验证表单...
+
+        _unBindEvent();
+        jQuery.ajax({
+            type: "POST",
+            url: loginUrl + "?r=" + Math.random() + "&" + location.search.substring(1),
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            datatype: "json",
+            timeout: 30000,
+            data: {
+                name: name.val(),
+                password: password.val(),
+                rememberMe: $("input[name=rememberMe]").val()
+            },
+            error: function (xhr, obj, msg) {
+                $("#login_btn").html("登录");
+                alert("网络超时，请稍后再试");
+                _bindEvent();
+            },
+            success: function (output) {
+                if(output.code=='200'){
+                    alert("登录成功");
+                    window.location=output.data.returnUrl;
+                }else{
+                    alert('登录失败:'+output.result);
+                    _bindEvent();
+                }
+            }
+        });
+    }
+    $(function() {
+        init();
+    });
+
+</script>
+</#body>

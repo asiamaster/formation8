@@ -1,7 +1,7 @@
-package com.dili.formation8.utils;
+package com.dili.formation8.passport;
 
-import com.dili.formation8.utils.security.Base32;
-import com.dili.formation8.utils.security.DESCoder;
+import com.dili.formation8.passport.security.Base32;
+import com.dili.formation8.passport.security.DESCoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

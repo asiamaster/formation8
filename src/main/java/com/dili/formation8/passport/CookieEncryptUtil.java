@@ -1,9 +1,7 @@
-package com.dili.formation8.utils;
+package com.dili.formation8.passport;
 
 
-import com.dili.formation8.vo.AuthTicket;
 import com.dili.formation8.vo.UserData;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

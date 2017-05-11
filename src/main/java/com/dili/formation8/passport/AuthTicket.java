@@ -1,4 +1,4 @@
-package com.dili.formation8.vo;
+package com.dili.formation8.passport;
 
 import java.util.Date;
 
@@ -126,7 +126,9 @@ public class AuthTicket {
         this.cookieValue = cookieValue;
     }
 
-
+    public boolean isExpired() {
+        return new Date().after(this._expires);
+    }
 
 
 }

@@ -1,6 +1,4 @@
-package com.dili.formation8.utils;
-
-import com.dili.formation8.vo.AuthTicket;
+package com.dili.formation8.passport;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;

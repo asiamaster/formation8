@@ -1,4 +1,4 @@
-package com.dili.formation8.vo;
+package com.dili.formation8.passport;
 
 import com.dili.formation8.domain.User;
 

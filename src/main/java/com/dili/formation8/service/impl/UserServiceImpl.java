@@ -4,22 +4,31 @@ import com.dili.formation8.dao.FinancialTransactionMapper;
 import com.dili.formation8.dao.UserMapper;
 import com.dili.formation8.domain.FinancialTransaction;
 import com.dili.formation8.domain.User;
+import com.dili.formation8.passport.CookieEncryptUtil;
+import com.dili.formation8.passport.CookieManager;
+import com.dili.formation8.passport.PassportUtils;
+import com.dili.formation8.passport.service.TimeLimitService;
 import com.dili.formation8.service.BizNumberService;
-import com.dili.formation8.service.TimeLimitService;
 import com.dili.formation8.service.UserService;
-import com.dili.formation8.utils.Formation8Constants;
-import com.dili.formation8.utils.ShortUrlGenerator;
+import com.dili.formation8.utils.*;
+import com.dili.formation8.vo.UserData;
+import com.dili.formation8.passport.UserLoginData;
 import com.dili.formation8.vo.UserVo;
+import com.dili.utils.BeanConver;
 import com.dili.utils.base.BaseServiceImpl;
 import com.dili.utils.domain.BaseOutput;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +47,15 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
     TimeLimitService timeLimitService;
 
     @Autowired
+    CookieManager cookieManager;
+
+    @Autowired
+    CookieEncryptUtil cookieEncryptUtil;
+
+    @Autowired
     private BizNumberService bizNumberService;
+
+    protected static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     public UserMapper getActualDao() {
         return (UserMapper)getDao();
@@ -65,11 +82,25 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
         if(password.length()>20){
             return "密码长度不能多于20个字符";
         }
+        // 检查同个用户名输入错误密码登陆次数，若20分钟6次输错，冻结此账号20分钟
+        long idLoginTimes = 0;
+        try {
+            idLoginTimes = timeLimitService.getUserLoginFailTime(username); // get value from memcache
+        } catch (Exception e) {
+            idLoginTimes = 0;
+        }
+
+        if (idLoginTimes >= TimeLimitService.LOGIN_FAIL_NEED_LOCK) {
+            return "密码错误次数超限，请" + TimeLimitService.USER_LOGIN_FAIL_TIME_LIMIT / 60 + "分钟后重试";
+        }
         return null;
     }
 
     @Override
-    public BaseOutput<User> login(String username, String password) {
+    public BaseOutput<UserLoginData> login(String username, String password, String rememberMe, HttpServletRequest request, HttpServletResponse response) {
+//        if (cookieManager.getLoginTimes(request) >= TimeLimitService.LOGIN_TIME_NEED_AUTHCODE ||  cookieManager.getLoginTimesByIp(request) >= TimeLimitService.LOGIN_TIME_NEED_AUTHCODE){
+//            needAuthCode = true;
+//        }
         String checkResult = loginPreCheck(username, password);
         if(StringUtils.isNoneBlank(checkResult)){
             return BaseOutput.failure(checkResult);
@@ -80,9 +111,62 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
         List<User> users =list(user);
         if(users == null || users.isEmpty()){
             String msg = checkLockCondition(username);
+            //登录失败则添加cookie和ip登录失败次数，用于显示验证码
+//            cookieManager.addLoginTimes(request, response);
+            //增加redis中用户和ip登录失败次数
+            addUserLoginFailTimes(username, PassportUtils.getRemoteIP(request));
             return msg == null ? BaseOutput.failure("用户名或密码错误"): BaseOutput.failure(msg);
         }
-        return BaseOutput.success().setData(users.get(0));
+
+        //检查是否需要验证码 同时需要检查对应的IP登录次数
+//        int cookieTimes = cookieManager.getLoginTimes(request);
+//        int ipTimes = cookieManager.getLoginTimesByIp(request);
+//        boolean showAuthCode = cookieManager.getLoginTimes(request) >= TimeLimitService.LOGIN_TIME_NEED_AUTHCODE ||  cookieManager.getLoginTimesByIp(request) >= TimeLimitService.LOGIN_TIME_NEED_AUTHCODE;
+
+        //登录成功流程.................................
+        user = users.get(0);
+        //写入cookie
+        try {
+            String cookieValue = cookieEncryptUtil.generateCookieString(getUserData(user));
+            //登录成功后，清除cookies登录次数和ip登录次数
+//            cookieManager.setCookieLoginTimes(request, response, -1);
+            timeLimitService.removeUserLoginFailTime(PassportUtils.getRemoteIP(request));
+            if (StringUtils.isNotBlank(rememberMe) /**&& "checked".equalsIgnoreCase(rememberMe)*/) {
+                cookieManager.newAuthCookies(response, CookieManager.DILI_AUTH_COOKIE_NAME, cookieValue, CookieManager.REMEMBER_ME_EXPIRE_TIME, true);
+            } else {
+                cookieManager.newAuthCookies(response, CookieManager.DILI_AUTH_COOKIE_NAME, cookieValue, -1, true);
+            }
+            log.info("---用户 [" + user.getName() + " | " + PassportUtils.getRemoteIP(request) + "] 登录Login Success---");
+
+        }catch(Exception e){
+//            cookieManager.addLoginTimes(request, response);
+            //增加redis中用户和ip登录失败次数
+            addUserLoginFailTimes(username, PassportUtils.getRemoteIP(request));
+            return BaseOutput.failure(e.getMessage());
+        }
+        UserLoginData userLoginData = BeanConver.copeBean(user, UserLoginData.class);
+        userLoginData.setReturnUrl(PassportUtils.getReturnUrl(request));
+        userLoginData.setIp(PassportUtils.getRemoteIP(request));
+        return BaseOutput.success("登录成功").setData(userLoginData);
+    }
+
+    private UserData getUserData(User user) {
+        UserData userData = new UserData();
+        userData.setUserName(user.getName());
+        userData.setReferer(user.getReferrer());
+        userData.setReferralCode(user.getReferralCode());
+        userData.setUid(user.getId());//UserId
+        userData.setUserType(user.getType());
+        userData.setVersion(1);
+        return userData;
+    }
+
+    /**
+     * 增加用户登录失败次数
+     */
+    private void addUserLoginFailTimes(String name , String ip) {
+        timeLimitService.incrementUserLoginFailTime(name);
+        timeLimitService.incrementUserLoginFailTime(ip);
     }
 
     /**
@@ -91,13 +175,14 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
      * @return
      */
     private String checkLockCondition(String name) {
+//        获取redis登录失败次数，没有则返回0
         long idLoginTimes = timeLimitService.getUserLoginFailTime(name);
         if(idLoginTimes == TimeLimitService.LOGIN_FAIL_NEED_LOCK - 2){
             return "密码错误，还可以输入两次";
         }else if(idLoginTimes == TimeLimitService.LOGIN_FAIL_NEED_LOCK - 1){
             return "密码错误，还可以输入一次";
         }else if(idLoginTimes >= TimeLimitService.LOGIN_FAIL_NEED_LOCK){
-//            登录超过一定次数后，锁定用户一段时间
+//            登录超过一定次数后，redis锁定用户一段时间
             timeLimitService.lockUserLogin(name);
             return "密码错误次数超限，请" + TimeLimitService.USER_LOGIN_FAIL_TIME_LIMIT / 60 + "分钟后重试";
         }
