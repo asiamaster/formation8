@@ -1,7 +1,9 @@
 <#body>
     登录成功!<br/>
-    用户名:${ticket._userName}<br/>
+    用户名:${ticket._userName!"空值"}<br/>
     用户类型:${ticket.~_userType}<br/>
     邀请码:${ticket._referralCode}<br/>
-
+    过期时间:${ticket._expires,dateFormat="yyyy-MM-dd HH:mm:ss"}<br/>
+    引领人:${getById(ticket._referer, "user", "name")}<br/>
+    测试分转元函数:${centToYuan(12010)}元
 </#body>

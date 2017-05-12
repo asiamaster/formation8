@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 //@EnableScheduling
 @EnableTransactionManagement
 @EnableAutoConfiguration(exclude = {ThymeleafAutoConfiguration.class, VelocityAutoConfiguration.class})
-@MapperScan(basePackages = "com.dili.formation8.dao", markerInterface = MyMapper.class)
+@MapperScan(basePackages = "com.dili.formation8.dao" /**, markerInterface = MyMapper.class */)
 //@ImportResource(locations = "classpath:applicationContext.xml")
 @ComponentScan(basePackages={"com.dili.utils","com.dili.formation8"})
 //@EnableEncryptableProperties
