@@ -31,6 +31,32 @@ js,css, image等静态状态放`resources/static`目录下，建议再建一级�
 beetl总配置文件:`resources/beetl.properties`
 beetl全局变量:`resources/beetlSharedVars.properties`
 上下文路径全局变量:contextPath
+
+**函数:**
+    1). getById
+```
+    /**
+     * 根据ID查询指定表下的指定属性
+     * @param table 表名
+     * @param id 主键
+     * @param attr 属性名
+     * @return
+     */
+     示例:
+    ${getById(ticket._referer, "user", "name")}
+```
+    2). centToYuan
+```
+    /**
+     * 分转元
+     * @param table 表名
+     * @param id 主键
+     * @param attr 属性名
+     * @return
+     */
+     示例:
+     ${centToYuan(12010)}元
+```
 ### 7.mysql使用说明
 mysql支持三种查询方法
 1. 所有Mapper接口(即DAO)均须继承MyMapper接口
