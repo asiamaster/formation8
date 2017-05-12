@@ -112,6 +112,11 @@ public class Product {
     private Integer yn;
 
     /**
+     * 周期(天)
+     */
+    private Integer period;
+
+    /**
      * @return id
      */
     public Long getId() {
@@ -411,5 +416,21 @@ public class Product {
      */
     public void setYn(Integer yn) {
         this.yn = yn;
+    }
+
+    /**
+     * 获取周期(天)
+     * @return 周期(天)
+     */
+    public Integer getPeriod() {
+        return period;
+    }
+
+    /**
+     * 设置周期(天)
+     * @param period 周期(天)
+     */
+    public void setPeriod(Integer period) {
+        this.period = period;
     }
 }

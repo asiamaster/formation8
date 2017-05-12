@@ -96,7 +96,17 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
         return output;
     }
 
-//    向平台用户转帐
+    @Override
+    public List<Order> selectEndOrder() {
+        return getActualDao().selectEndOrder();
+    }
+
+    @Override
+    public int updateEndingOrderStatus() {
+        return getActualDao().updateEndingOrderStatus();
+    }
+
+    //    向平台用户转帐
     private void transferToPlatform(Order order){
         //查询平台抽成比率
         Integer commissionRate = productService.get(order.getProductId()).getCommissionRate();
@@ -144,8 +154,6 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
         order.setOrderNumber(bizNumberService.getProductOrderCode());
 //        设置订单状态为1:众筹中
         order.setStatus(Formation8Constants.OrderStatus.PROGRESSING.getCode());
-//        设置下单时间
-        order.setStartTime(new Date());
         getActualDao().insert(order);
         return order;
     }
@@ -203,6 +211,11 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
         productService.update(product);
         //设置订单产品id
         order.setProductId(sku.getProductId());
+//        设置下单时间
+        Long startTime = System.currentTimeMillis();
+        order.setStartTime(new Date(startTime));
+//        设置结束时间为:开始时间+产品周期(天)
+        order.setEndTime(new Date(startTime+product.getPeriod()*86400000));
         return BaseOutput.success();
     }
 }

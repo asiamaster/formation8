@@ -70,6 +70,17 @@ public class Order {
     private Date endTime;
 
     /**
+     * 用户提款时间
+     */
+    @Column(name = "`withdraw_time`")
+    private Date withdrawTime;
+    /**
+     * 订单完成时间
+     */
+    @Column(name = "`finish_time`")
+    private Date finishTime;
+
+    /**
      * @return id
      */
     public Long getId() {
@@ -253,5 +264,37 @@ public class Order {
      */
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    /**
+     * 获取用户提款时间
+     * @return 用户提款时间
+     */
+    public Date getWithdrawTime() {
+        return withdrawTime;
+    }
+
+    /**
+     * 设置用户提款时间
+     * @param withdrawTime 用户提款时间
+     */
+    public void setWithdrawTime(Date withdrawTime) {
+        this.withdrawTime = withdrawTime;
+    }
+
+    /**
+     * 获取订单完成时间
+     * @return
+     */
+    public Date getFinishTime() {
+        return finishTime;
+    }
+
+    /**
+     * 设置订单完成时间
+     * @param finishTime 订单完成时间
+     */
+    public void setFinishTime(Date finishTime) {
+        this.finishTime = finishTime;
     }
 }

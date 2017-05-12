@@ -172,11 +172,15 @@ CREATE TABLE IF NOT EXISTS `order` (
   `transaction_type` int(11) DEFAULT NULL COMMENT '1:钱;2:产品;  众筹成功后可以选产品',
   `start_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '下单时间',
   `end_time` datetime DEFAULT NULL COMMENT '结束时间',
+  `withdraw_time` datetime DEFAULT NULL COMMENT '用户提款时间',
+  `finish_time` datetime DEFAULT NULL COMMENT '完成时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- 正在导出表  formation8.order 的数据：~0 rows (大约)
+-- 正在导出表  formation8.order 的数据：~1 rows (大约)
 /*!40000 ALTER TABLE `order` DISABLE KEYS */;
+INSERT INTO `order` (`id`, `user_id`, `sku_id`, `product_id`, `count`, `order_number`, `status`, `price`, `transaction_type`, `start_time`, `end_time`, `withdraw_time`, `finish_time`) VALUES
+	(1, 2, 1, 1, 1, '', 2, 0, 1, '2017-05-12 15:48:23', '2017-05-12 15:38:24', NULL, NULL);
 /*!40000 ALTER TABLE `order` ENABLE KEYS */;
 
 -- 导出  表 formation8.product 结构
@@ -188,6 +192,7 @@ CREATE TABLE IF NOT EXISTS `product` (
   `type` varchar(40) DEFAULT NULL COMMENT '文字说明，如:食品，电器，医疗等',
   `publish_time` datetime DEFAULT NULL COMMENT '简单处理，发布时间就是创建时间',
   `cutoff_time` datetime DEFAULT NULL COMMENT '众筹成功的截止时间',
+  `period` int(8) DEFAULT NULL COMMENT '产品周期(天)',
   `success_amount` bigint(20) DEFAULT NULL COMMENT '众筹成功要求的金额',
   `current_amount` bigint(20) DEFAULT NULL COMMENT '已筹金额',
   `drops_time` datetime DEFAULT NULL COMMENT '下架时间，下架时更新',
@@ -201,11 +206,38 @@ CREATE TABLE IF NOT EXISTS `product` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='反正是平台发布，卖家信息直接放这里了';
 
--- 正在导出表  formation8.product 的数据：~0 rows (大约)
+-- 正在导出表  formation8.product 的数据：~1 rows (大约)
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` (`id`, `name`, `image`, `details`, `type`, `publish_time`, `cutoff_time`, `success_amount`, `current_amount`, `drops_time`, `status`, `seller_name`, `company_desc`, `refund_rate`, `commission_rate`, `modify_time`, `yn`) VALUES
-	(1, 'VR眼镜', NULL, 'VR眼镜Detail', '电器', '2017-05-08 09:11:26', '2017-06-08 09:11:32', 500000, 40000, NULL, 1, '博瑞天辰科技', '博瑞天辰科技有限公司', 4, 2, '2017-05-08 09:14:00', 1);
+INSERT INTO `product` (`id`, `name`, `image`, `details`, `type`, `publish_time`, `cutoff_time`, `period`, `success_amount`, `current_amount`, `drops_time`, `status`, `seller_name`, `company_desc`, `refund_rate`, `commission_rate`, `modify_time`, `yn`) VALUES
+	(1, 'VR眼镜', NULL, 'VR眼镜Detail', '电器', '2017-05-08 09:11:26', '2017-06-08 09:11:32', 7, 500000, 40000, NULL, 1, '博瑞天辰科技', '博瑞天辰科技有限公司', 4, 2, '2017-05-12 15:23:18', 1);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
+
+-- 导出  表 formation8.schedule_job 结构
+CREATE TABLE IF NOT EXISTS `schedule_job` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `created` datetime DEFAULT CURRENT_TIMESTAMP,
+  `modified` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `job_name` varchar(40) DEFAULT NULL,
+  `job_group` varchar(40) DEFAULT NULL,
+  `job_status` int(11) DEFAULT NULL COMMENT '是否启动任务,1:运行中,0:停止',
+  `job_data` varchar(1000) DEFAULT NULL COMMENT 'json',
+  `cron_expression` varchar(40) DEFAULT NULL,
+  `repeat_interval` int(11) DEFAULT NULL COMMENT '简单调度，默认以秒为单位',
+  `start_delay` int(11) DEFAULT NULL COMMENT '启动调度器后，多少秒开始执行调度',
+  `description` varchar(200) DEFAULT NULL COMMENT '调度器描述',
+  `bean_class` varchar(100) DEFAULT NULL COMMENT '任务执行时调用类的全名，用于反射',
+  `spring_id` varchar(40) DEFAULT NULL COMMENT 'spring的beanId，直接从spring中获取',
+  `url` varchar(100) DEFAULT NULL COMMENT '支持远程调用restful url',
+  `is_concurrent` int(11) DEFAULT NULL COMMENT '1：并发; 0:同步',
+  `method_name` varchar(40) DEFAULT NULL COMMENT 'bean_class和spring_id需要配置方法名',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- 正在导出表  formation8.schedule_job 的数据：~1 rows (大约)
+/*!40000 ALTER TABLE `schedule_job` DISABLE KEYS */;
+INSERT INTO `schedule_job` (`id`, `created`, `modified`, `job_name`, `job_group`, `job_status`, `job_data`, `cron_expression`, `repeat_interval`, `start_delay`, `description`, `bean_class`, `spring_id`, `url`, `is_concurrent`, `method_name`) VALUES
+	(1, '2017-05-12 15:08:17', '2017-05-12 17:09:33', 'order_scan_job', 'formation8', 0, NULL, '0 0/1 17 * * ?', NULL, NULL, '订单后台扫描', NULL, 'orderScanComponent', NULL, 0, 'scan');
+/*!40000 ALTER TABLE `schedule_job` ENABLE KEYS */;
 
 -- 导出  表 formation8.sku 结构
 CREATE TABLE IF NOT EXISTS `sku` (

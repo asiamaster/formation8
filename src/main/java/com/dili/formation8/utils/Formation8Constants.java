@@ -320,7 +320,9 @@ public class Formation8Constants {
     public enum OrderStatus{
         PROGRESSING(1,"众筹中"),
         SUCCEED(2,"众筹成功"),
-        FAILURE(3,"众筹失败");
+        FAILURE(3,"众筹失败"),
+        WITHDRAWING(4,"众筹失败"),
+        FINISHED(5, "已提款");
         private Integer code ;
         private String desc;
 

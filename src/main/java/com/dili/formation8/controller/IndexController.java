@@ -21,9 +21,11 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("")
 public class IndexController {
 
-    @Autowired
-    UserService userService;
-
+    /**
+     * 跳转到首页
+     * @param request
+     * @return
+     */
     @RequestMapping()
     public String index(HttpServletRequest request){
         //获取登录凭证

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mapper.OrderMapper">
+<mapper namespace="com.dili.formation8.dao.OrderMapper">
   <resultMap id="BaseResultMap" type="com.dili.formation8.domain.Order">
     <!--
       WARNING - @mbg.generated
@@ -16,23 +16,35 @@
     <result column="transaction_type" jdbcType="INTEGER" property="transactionType" />
     <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
     <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="withdraw_time" jdbcType="TIMESTAMP" property="withdrawTime" />
+    <result column="finish_time" jdbcType="TIMESTAMP" property="finishTime" />
+
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
     id, user_id, sku_id, product_id, count, order_number, status, price, transaction_type, 
-    start_time, end_time
+    start_time, end_time, withdraw_time, finish_time
   </sql>
-  <select id="selectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    <!--
-      WARNING - @mbg.generated
-    -->
+  <select id="selectEndOrder" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from order
-    where id = #{id,jdbcType=BIGINT}
+    from `order`
+    <![CDATA[
+    where end_time <= now()
+    and status = 1
+    ]]>
   </select>
+
+  <update id="updateEndingOrderStatus">
+    update `order` set `status`=2
+    <![CDATA[
+      where `end_time` <= now()
+    ]]>
+    and `status` = 1
+  </update>
+
   <update id="updateBy" parameterType="com.dili.formation8.domain.Order">
     <!--
       WARNING - @mbg.generated
@@ -69,6 +81,13 @@
       <if test="endTime != null">
         end_time = #{endTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="withdrawTime != null">
+        withdraw_time = #{withdrawTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishTime != null">
+        finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
