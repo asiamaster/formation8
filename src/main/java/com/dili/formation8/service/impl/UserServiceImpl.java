@@ -61,41 +61,6 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
         return (UserMapper)getDao();
     }
 
-    /**
-     * 登录前验证
-     * 返回消息为验证不通过的提示信息
-     * @param username
-     * @param password
-     * @return
-     */
-    private String loginPreCheck(String username, String password) {
-        // 检查用户名
-        if (StringUtils.isBlank(username)) {
-            return "用户名不能为空";
-        }
-        if (StringUtils.isBlank(password)) {
-            return "密码不能为空";
-        }
-        if(username.length()>20){
-            return "用户名长度不能多于20个字符";
-        }
-        if(password.length()>20){
-            return "密码长度不能多于20个字符";
-        }
-        // 检查同个用户名输入错误密码登陆次数，若20分钟6次输错，冻结此账号20分钟
-        long idLoginTimes = 0;
-        try {
-            idLoginTimes = timeLimitService.getUserLoginFailTime(username); // get value from memcache
-        } catch (Exception e) {
-            idLoginTimes = 0;
-        }
-
-        if (idLoginTimes >= TimeLimitService.LOGIN_FAIL_NEED_LOCK) {
-            return "密码错误次数超限，请" + TimeLimitService.USER_LOGIN_FAIL_TIME_LIMIT / 60 + "分钟后重试";
-        }
-        return null;
-    }
-
     @Override
     public BaseOutput<UserLoginData> login(String username, String password, String rememberMe, HttpServletRequest request, HttpServletResponse response) {
 //        if (cookieManager.getLoginTimes(request) >= TimeLimitService.LOGIN_TIME_NEED_AUTHCODE ||  cookieManager.getLoginTimesByIp(request) >= TimeLimitService.LOGIN_TIME_NEED_AUTHCODE){
@@ -150,47 +115,8 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
         return BaseOutput.success("登录成功").setData(userLoginData);
     }
 
-    private UserData getUserData(User user) {
-        UserData userData = new UserData();
-        userData.setUserName(user.getName());
-        userData.setReferer(user.getReferrer());
-        userData.setReferralCode(user.getReferralCode());
-        userData.setUid(user.getId());//UserId
-        userData.setUserType(user.getType());
-        userData.setVersion(1);
-        return userData;
-    }
-
-    /**
-     * 增加用户登录失败次数
-     */
-    private void addUserLoginFailTimes(String name , String ip) {
-        timeLimitService.incrementUserLoginFailTime(name);
-        timeLimitService.incrementUserLoginFailTime(ip);
-    }
-
-    /**
-     * 检查是否被锁定，密码错误给出相应提示
-     * @param name
-     * @return
-     */
-    private String checkLockCondition(String name) {
-//        获取redis登录失败次数，没有则返回0
-        long idLoginTimes = timeLimitService.getUserLoginFailTime(name);
-        if(idLoginTimes == TimeLimitService.LOGIN_FAIL_NEED_LOCK - 2){
-            return "密码错误，还可以输入两次";
-        }else if(idLoginTimes == TimeLimitService.LOGIN_FAIL_NEED_LOCK - 1){
-            return "密码错误，还可以输入一次";
-        }else if(idLoginTimes >= TimeLimitService.LOGIN_FAIL_NEED_LOCK){
-//            登录超过一定次数后，redis锁定用户一段时间
-            timeLimitService.lockUserLogin(name);
-            return "密码错误次数超限，请" + TimeLimitService.USER_LOGIN_FAIL_TIME_LIMIT / 60 + "分钟后重试";
-        }
-        return null;
-    }
-
     public String register(User user){
-        String checkResult = loginPreCheck(user.getName(), user.getPassword());
+        String checkResult = registerPreCheck(user.getName(), user.getPassword());
         if(checkResult != null){
             return checkResult;
         }
@@ -264,6 +190,45 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
         return users;
     }
 
+    private UserData getUserData(User user) {
+        UserData userData = new UserData();
+        userData.setUserName(user.getName());
+        userData.setReferer(user.getReferrer());
+        userData.setReferralCode(user.getReferralCode());
+        userData.setUid(user.getId());//UserId
+        userData.setUserType(user.getType());
+        userData.setVersion(1);
+        return userData;
+    }
+
+    /**
+     * 增加用户登录失败次数
+     */
+    private void addUserLoginFailTimes(String name , String ip) {
+        timeLimitService.incrementUserLoginFailTime(name);
+        timeLimitService.incrementUserLoginFailTime(ip);
+    }
+
+    /**
+     * 检查是否被锁定，密码错误给出相应提示
+     * @param name
+     * @return
+     */
+    private String checkLockCondition(String name) {
+//        获取redis登录失败次数，没有则返回0
+        long idLoginTimes = timeLimitService.getUserLoginFailTime(name);
+        if(idLoginTimes == TimeLimitService.LOGIN_FAIL_NEED_LOCK - 2){
+            return "密码错误，还可以输入两次";
+        }else if(idLoginTimes == TimeLimitService.LOGIN_FAIL_NEED_LOCK - 1){
+            return "密码错误，还可以输入一次";
+        }else if(idLoginTimes >= TimeLimitService.LOGIN_FAIL_NEED_LOCK){
+//            登录超过一定次数后，redis锁定用户一段时间
+            timeLimitService.lockUserLogin(name);
+            return "密码错误次数超限，请" + TimeLimitService.USER_LOGIN_FAIL_TIME_LIMIT / 60 + "分钟后重试";
+        }
+        return null;
+    }
+
     /**
      * 递归查询下级推荐人
      * @param ids   要查的用户id列表
@@ -312,6 +277,68 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
     public int insertSelective(User user) {
         user.setReferralCode(ShortUrlGenerator.shortUrl(user.getName())[0]);
         return super.insertSelective(user);
+    }
+
+    /**
+     * 登录前验证
+     * 返回消息为验证不通过的提示信息
+     * @param username
+     * @param password
+     * @return
+     */
+    private String loginPreCheck(String username, String password) {
+        // 检查用户名
+        if (StringUtils.isBlank(username)) {
+            return "用户名不能为空";
+        }
+        if (StringUtils.isBlank(password)) {
+            return "密码不能为空";
+        }
+        if(username.length()>20){
+            return "用户名长度不能多于20个字符";
+        }
+        if(password.length()>20){
+            return "密码长度不能多于20个字符";
+        }
+        // 检查同个用户名输入错误密码登陆次数，若20分钟6次输错，冻结此账号20分钟
+        long idLoginTimes = 0;
+        try {
+            idLoginTimes = timeLimitService.getUserLoginFailTime(username); // get value from memcache
+        } catch (Exception e) {
+            idLoginTimes = 0;
+        }
+
+        if (idLoginTimes >= TimeLimitService.LOGIN_FAIL_NEED_LOCK) {
+            return "密码错误次数超限，请" + TimeLimitService.USER_LOGIN_FAIL_TIME_LIMIT / 60 + "分钟后重试";
+        }
+        return null;
+    }
+
+    /**
+     * 注册前验证
+     * 返回消息为验证不通过的提示信息
+     * @param username
+     * @param password
+     * @return
+     */
+    private String registerPreCheck(String username, String password) {
+        // 检查用户名
+        if (StringUtils.isBlank(username)) {
+            return "用户名不能为空";
+        }
+        if (StringUtils.isBlank(password)) {
+            return "密码不能为空";
+        }
+        if(username.length()>20){
+            return "用户名长度不能多于20个字符";
+        }
+        if(password.length()>20){
+            return "密码长度不能多于20个字符";
+        }
+        User user = new User();
+        user.setName(username);
+        int count = getActualDao().selectCount(user);
+        return count>0?"用户名已存在":null;
     }
 
 }

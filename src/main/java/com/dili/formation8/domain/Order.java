@@ -6,7 +6,7 @@ import javax.persistence.*;
 /**
  * 由MyBatis Generator工具自动生成
  * 
- * This file was generated on 2017-05-08 12:46:19.
+ * This file was generated on 2017-05-12 21:28:28.
  */
 @Table(name = "`order`")
 public class Order {
@@ -74,8 +74,9 @@ public class Order {
      */
     @Column(name = "`withdraw_time`")
     private Date withdrawTime;
+
     /**
-     * 订单完成时间
+     * 完成时间
      */
     @Column(name = "`finish_time`")
     private Date finishTime;
@@ -268,7 +269,8 @@ public class Order {
 
     /**
      * 获取用户提款时间
-     * @return 用户提款时间
+     *
+     * @return withdraw_time - 用户提款时间
      */
     public Date getWithdrawTime() {
         return withdrawTime;
@@ -276,6 +278,7 @@ public class Order {
 
     /**
      * 设置用户提款时间
+     *
      * @param withdrawTime 用户提款时间
      */
     public void setWithdrawTime(Date withdrawTime) {
@@ -283,16 +286,18 @@ public class Order {
     }
 
     /**
-     * 获取订单完成时间
-     * @return
+     * 获取完成时间
+     *
+     * @return finish_time - 完成时间
      */
     public Date getFinishTime() {
         return finishTime;
     }
 
     /**
-     * 设置订单完成时间
-     * @param finishTime 订单完成时间
+     * 设置完成时间
+     *
+     * @param finishTime 完成时间
      */
     public void setFinishTime(Date finishTime) {
         this.finishTime = finishTime;

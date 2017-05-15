@@ -83,7 +83,7 @@
             <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
         <!-- 生成指定表模型 -->
-        <table tableName="withdrawal">
+        <table tableName="order">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
 
