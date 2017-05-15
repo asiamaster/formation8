@@ -31,14 +31,7 @@ CREATE TABLE IF NOT EXISTS `bank_card` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
--- 正在导出表  formation8.bank_card 的数据：~3 rows (大约)
-/*!40000 ALTER TABLE `bank_card` DISABLE KEYS */;
-INSERT INTO `bank_card` (`id`, `user_id`, `card_type`, `account_name`, `id_number`, `subbranch`, `card_number`, `bank`, `is_default`, `add_time`) VALUES
-	(1, 2, 1, 'wm', '510105198806132018', '建设支行', '6225221208715611', '招行', 1, '2017-05-08 21:14:10'),
-	(2, 3, 1, 'hj', '510102198111110216', '建设支行', '6225221208715612', '建行', 1, '2017-05-08 21:14:35'),
-	(3, 4, 1, 'zxh', '510102198111110216', '建设支行', '6225221208715613', '中行', 1, '2017-05-08 21:15:06');
-/*!40000 ALTER TABLE `bank_card` ENABLE KEYS */;
-
+-- 数据导出被取消选择。
 -- 导出  表 formation8.biz_number 结构
 CREATE TABLE IF NOT EXISTS `biz_number` (
   `id` bigint(20) NOT NULL,
@@ -49,15 +42,7 @@ CREATE TABLE IF NOT EXISTS `biz_number` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  formation8.biz_number 的数据：~2 rows (大约)
-/*!40000 ALTER TABLE `biz_number` DISABLE KEYS */;
-INSERT INTO `biz_number` (`id`, `type`, `value`, `memo`, `version`) VALUES
-	(1, 'DEPOSIT_ORDER_CODE', 20170428105350, '充值订单编号', 1),
-	(2, 'PRODUCT_ORDER_CODE', 20170508000250, '产品订单编号', 1),
-	(3, 'TRANSFER_ORDER_CODE', 20170509000050, '转帐订单编号', 1),
-	(4, 'WITHDRAWAL_ORDER_CODE', 20170509000050, '提现订单编号', 1);
-/*!40000 ALTER TABLE `biz_number` ENABLE KEYS */;
-
+-- 数据导出被取消选择。
 -- 导出  表 formation8.data_dictionary 结构
 CREATE TABLE IF NOT EXISTS `data_dictionary` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -70,12 +55,7 @@ CREATE TABLE IF NOT EXISTS `data_dictionary` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='数据字典\r\n例:\r\n系统图片:IMAGE_CODE';
 
--- 正在导出表  formation8.data_dictionary 的数据：~0 rows (大约)
-/*!40000 ALTER TABLE `data_dictionary` DISABLE KEYS */;
-INSERT INTO `data_dictionary` (`id`, `code`, `name`, `remark`, `created`, `modified`, `yn`) VALUES
-	(1, 'IMAGE_CODE', '图片编码', '图片编码', '2017-05-03 10:45:59', '2017-05-03 10:46:01', 1);
-/*!40000 ALTER TABLE `data_dictionary` ENABLE KEYS */;
-
+-- 数据导出被取消选择。
 -- 导出  表 formation8.data_dictionary_value 结构
 CREATE TABLE IF NOT EXISTS `data_dictionary_value` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -92,12 +72,7 @@ CREATE TABLE IF NOT EXISTS `data_dictionary_value` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='数据字典值';
 
--- 正在导出表  formation8.data_dictionary_value 的数据：~0 rows (大约)
-/*!40000 ALTER TABLE `data_dictionary_value` DISABLE KEYS */;
-INSERT INTO `data_dictionary_value` (`id`, `dd_id`, `sort`, `code`, `value`, `remark`, `period_begin`, `period_end`, `created`, `modified`, `yn`) VALUES
-	(1, 1, 1, 'default_head', '/images/default_head.png', '用户默认头像', NULL, NULL, '2017-05-03 11:00:51', '2017-05-03 11:00:52', 1);
-/*!40000 ALTER TABLE `data_dictionary_value` ENABLE KEYS */;
-
+-- 数据导出被取消选择。
 -- 导出  表 formation8.deposit 结构
 CREATE TABLE IF NOT EXISTS `deposit` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -110,10 +85,7 @@ CREATE TABLE IF NOT EXISTS `deposit` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='充值必须要记录订单，用于支付宝回调验证订单号';
 
--- 正在导出表  formation8.deposit 的数据：~0 rows (大约)
-/*!40000 ALTER TABLE `deposit` DISABLE KEYS */;
-/*!40000 ALTER TABLE `deposit` ENABLE KEYS */;
-
+-- 数据导出被取消选择。
 -- 导出  表 formation8.financial_transaction 结构
 CREATE TABLE IF NOT EXISTS `financial_transaction` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -126,15 +98,9 @@ CREATE TABLE IF NOT EXISTS `financial_transaction` (
   `payment_pattern` int(2) DEFAULT NULL COMMENT '支付方式: 1:支付宝;2:微信',
   `target_user_id` bigint(20) DEFAULT NULL COMMENT '目标用户id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='交易流水记录表';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='交易流水记录表';
 
--- 正在导出表  formation8.financial_transaction 的数据：~0 rows (大约)
-/*!40000 ALTER TABLE `financial_transaction` DISABLE KEYS */;
-INSERT INTO `financial_transaction` (`id`, `transaction_number`, `transaction_type`, `user_id`, `transaction_amount`, `balance`, `payment_time`, `payment_pattern`, `target_user_id`) VALUES
-	(1, 'TO20170508000000', 2, 2, 30, NULL, '2017-05-08 21:50:03', 1, 1),
-	(2, 'TO20170509000000', 2, 2, 300, NULL, '2017-05-09 09:29:44', 1, 1);
-/*!40000 ALTER TABLE `financial_transaction` ENABLE KEYS */;
-
+-- 数据导出被取消选择。
 -- 导出  函数 formation8.getParentReferrer 结构
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` FUNCTION `getParentReferrer`(
@@ -177,12 +143,7 @@ CREATE TABLE IF NOT EXISTS `order` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- 正在导出表  formation8.order 的数据：~1 rows (大约)
-/*!40000 ALTER TABLE `order` DISABLE KEYS */;
-INSERT INTO `order` (`id`, `user_id`, `sku_id`, `product_id`, `count`, `order_number`, `status`, `price`, `transaction_type`, `start_time`, `end_time`, `withdraw_time`, `finish_time`) VALUES
-	(1, 2, 1, 1, 1, '', 2, 0, 1, '2017-05-12 15:48:23', '2017-05-12 15:38:24', NULL, NULL);
-/*!40000 ALTER TABLE `order` ENABLE KEYS */;
-
+-- 数据导出被取消选择。
 -- 导出  表 formation8.product 结构
 CREATE TABLE IF NOT EXISTS `product` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -206,12 +167,7 @@ CREATE TABLE IF NOT EXISTS `product` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='反正是平台发布，卖家信息直接放这里了';
 
--- 正在导出表  formation8.product 的数据：~1 rows (大约)
-/*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` (`id`, `name`, `image`, `details`, `type`, `publish_time`, `cutoff_time`, `period`, `success_amount`, `current_amount`, `drops_time`, `status`, `seller_name`, `company_desc`, `refund_rate`, `commission_rate`, `modify_time`, `yn`) VALUES
-	(1, 'VR眼镜', NULL, 'VR眼镜Detail', '电器', '2017-05-08 09:11:26', '2017-06-08 09:11:32', 7, 500000, 40000, NULL, 1, '博瑞天辰科技', '博瑞天辰科技有限公司', 4, 2, '2017-05-12 15:23:18', 1);
-/*!40000 ALTER TABLE `product` ENABLE KEYS */;
-
+-- 数据导出被取消选择。
 -- 导出  表 formation8.schedule_job 结构
 CREATE TABLE IF NOT EXISTS `schedule_job` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -231,14 +187,9 @@ CREATE TABLE IF NOT EXISTS `schedule_job` (
   `is_concurrent` int(11) DEFAULT NULL COMMENT '1：并发; 0:同步',
   `method_name` varchar(40) DEFAULT NULL COMMENT 'bean_class和spring_id需要配置方法名',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
--- 正在导出表  formation8.schedule_job 的数据：~1 rows (大约)
-/*!40000 ALTER TABLE `schedule_job` DISABLE KEYS */;
-INSERT INTO `schedule_job` (`id`, `created`, `modified`, `job_name`, `job_group`, `job_status`, `job_data`, `cron_expression`, `repeat_interval`, `start_delay`, `description`, `bean_class`, `spring_id`, `url`, `is_concurrent`, `method_name`) VALUES
-	(1, '2017-05-12 15:08:17', '2017-05-12 17:09:33', 'order_scan_job', 'formation8', 0, NULL, '0 0/1 17 * * ?', NULL, NULL, '订单后台扫描', NULL, 'orderScanComponent', NULL, 0, 'scan');
-/*!40000 ALTER TABLE `schedule_job` ENABLE KEYS */;
-
+-- 数据导出被取消选择。
 -- 导出  表 formation8.sku 结构
 CREATE TABLE IF NOT EXISTS `sku` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -257,14 +208,7 @@ CREATE TABLE IF NOT EXISTS `sku` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='最小销售单位';
 
--- 正在导出表  formation8.sku 的数据：~3 rows (大约)
-/*!40000 ALTER TABLE `sku` DISABLE KEYS */;
-INSERT INTO `sku` (`id`, `product_id`, `details`, `price`, `modify_time`, `yn`, `quota`, `quantity`, `daily_quota`, `daily_quantity`, `current_date_str`, `freight`, `image_code`) VALUES
-	(1, 1, '感谢您对博瑞的支持， 您可以获得VR手机眼镜一套 （由博瑞天辰发货）。', 200, '2017-05-08 09:20:01', 1, 50, 0, 10, 0, '2017-05-08', 0, NULL),
-	(2, 1, '感谢您对博瑞的支持， 您可以获得VR眼镜显示器一套 （由博瑞天辰发货）。', 4000, '2017-05-08 16:01:23', 1, 50, 0, 10, 0, '2017-05-08', 0, NULL),
-	(3, 1, '感谢您对博瑞的支持， 您可以获得VR顶配眼镜显示器一套 （由博瑞天辰发货）。', 6000, '2017-05-08 09:24:47', 1, 50, 0, 10, 0, '2017-05-08', 0, NULL);
-/*!40000 ALTER TABLE `sku` ENABLE KEYS */;
-
+-- 数据导出被取消选择。
 -- 导出  表 formation8.system_config 结构
 CREATE TABLE IF NOT EXISTS `system_config` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -278,16 +222,7 @@ CREATE TABLE IF NOT EXISTS `system_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='配置系统变量,\r\n系统配置一般是随系统启动时加载一次，修改后需要重启系统。当然部分属性可以按客户需求动态调整。';
 
--- 正在导出表  formation8.system_config 的数据：~4 rows (大约)
-/*!40000 ALTER TABLE `system_config` DISABLE KEYS */;
-INSERT INTO `system_config` (`id`, `name`, `code`, `value`, `desc`, `created`, `modified`, `yn`) VALUES
-	(1, '提现费率', 'WITHDRAW_DEPOSIT_RATE', '3', '提现费率百分比', '2017-05-03 15:20:46', '2017-05-03 15:20:46', 1),
-	(2, '提现金额下限', 'WITHDRAW_DEPOSIT_AMOUNT_FLOOR', '10000', '提现金额下限', '2017-05-03 15:24:08', '2017-05-09 09:22:22', 1),
-	(3, '引领费率', 'REFERRAL_RATE1', '8', '引领反钱费率百分比', '2017-05-03 15:29:25', '2017-05-03 15:29:25', 1),
-	(4, '引荐1费率', 'REFERRAL_RATE2', '4', '引荐1反钱费率百分比', '2017-05-03 15:29:25', '2017-05-03 15:29:25', 1),
-	(5, '引荐2费率', 'REFERRAL_RATE3', '5', '引荐2反钱费率百分比', '2017-05-03 15:29:25', '2017-05-03 15:29:25', 1);
-/*!40000 ALTER TABLE `system_config` ENABLE KEYS */;
-
+-- 数据导出被取消选择。
 -- 导出  表 formation8.user 结构
 CREATE TABLE IF NOT EXISTS `user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -302,22 +237,9 @@ CREATE TABLE IF NOT EXISTS `user` (
   `referral_code` varchar(10) DEFAULT NULL COMMENT '推荐码,邀请码',
   `address` varchar(120) DEFAULT NULL COMMENT '收货地址',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
--- 正在导出表  formation8.user 的数据：~9 rows (大约)
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` (`id`, `name`, `password`, `payment_code`, `referrer`, `balance`, `email`, `phone`, `type`, `referral_code`, `address`) VALUES
-	(1, 'admin', 'fmt81234', 'fmt85678', NULL, 100000000, NULL, NULL, 3, NULL, NULL),
-	(2, 'wangmi', '123456', NULL, 1, 1000000, NULL, NULL, 4, 'emUFVf', NULL),
-	(3, 'hujun', '123456', NULL, 2, 1000000, NULL, NULL, 4, NULL, NULL),
-	(4, 'laozhang', '123456', NULL, 3, 1000000, NULL, NULL, 4, NULL, NULL),
-	(5, 'tester1', '123456', NULL, 2, 0, NULL, NULL, 1, NULL, NULL),
-	(6, 'tester2', '123456', NULL, 3, 0, NULL, NULL, 1, NULL, NULL),
-	(7, 'tester3', '123456', NULL, 4, 0, NULL, NULL, 1, NULL, NULL),
-	(8, 'wangmi', '123456', NULL, NULL, 0, NULL, NULL, 1, 'emUFVf', NULL),
-	(9, 'wangmi', '123456', NULL, NULL, 0, NULL, NULL, 1, 'emUFVf', NULL);
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-
+-- 数据导出被取消选择。
 -- 导出  表 formation8.withdrawal 结构
 CREATE TABLE IF NOT EXISTS `withdrawal` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -333,10 +255,7 @@ CREATE TABLE IF NOT EXISTS `withdrawal` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  formation8.withdrawal 的数据：~1 rows (大约)
-/*!40000 ALTER TABLE `withdrawal` DISABLE KEYS */;
-/*!40000 ALTER TABLE `withdrawal` ENABLE KEYS */;
-
+-- 数据导出被取消选择。
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
