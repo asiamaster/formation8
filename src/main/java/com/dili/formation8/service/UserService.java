@@ -72,5 +72,8 @@ public interface UserService extends BaseService<User, Long> {
      */
     public List<List<User>> listSubReferrers(Long id, Integer level);
 
-
+    /**
+     * 向股东转帐
+     */
+    public void transferToShareholder();
 }

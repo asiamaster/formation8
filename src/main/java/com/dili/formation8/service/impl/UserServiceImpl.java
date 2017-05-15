@@ -341,4 +341,12 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
         return count>0?"用户名已存在":null;
     }
 
+    @Transactional(propagation= Propagation.REQUIRED,rollbackFor=Exception.class)
+    public void transferToShareholder(){
+        User platform = get(Formation8Constants.PLATFORM_USER_ID);
+        transfer(Formation8Constants.PLATFORM_USER_ID, Formation8Constants.LAOZHANG_USER_ID, platform.getBalance()/2);
+        transfer(Formation8Constants.PLATFORM_USER_ID, Formation8Constants.LAOHU_USER_ID, platform.getBalance()/4);
+        transfer(Formation8Constants.PLATFORM_USER_ID, Formation8Constants.LAOWANG_USER_ID, platform.getBalance()/4);
+    }
+
 }

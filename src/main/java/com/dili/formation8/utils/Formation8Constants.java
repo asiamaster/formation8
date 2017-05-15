@@ -15,6 +15,13 @@ public class Formation8Constants {
     public static final String SYSTEM_CONFIG_WITHDRAW_DEPOSIT_RATE = "WITHDRAW_DEPOSIT_RATE";
 //    平台用户id
     public static final Long PLATFORM_USER_ID = 1l;
+    //    老张id
+    public static final Long LAOZHANG_USER_ID = 4l;
+    //    老胡id
+    public static final Long LAOHU_USER_ID = 3l;
+    //    老王id
+    public static final Long LAOWANG_USER_ID = 2l;
+
 //    平台域名
     public static final String WEBSITE_DOMAINS="formation8";
 //    平台passport域名

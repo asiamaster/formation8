@@ -33,7 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 订单后台扫描组件
+ * 订单后台扫描组件，可以考虑配置为每分钟扫一次
  * Created by asiam on 2017/5/12 0012.
  */
 @Component
@@ -43,11 +43,6 @@ public class OrderScanComponent implements ApplicationListener<ContextRefreshedE
 
     @Autowired
     private OrderService orderService;
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private SystemConfigService systemConfigService;
 
     @Autowired
     private ScheduleJobMapper scheduleJobMapper;
@@ -73,10 +68,6 @@ public class OrderScanComponent implements ApplicationListener<ContextRefreshedE
         }
     }
 
-    public String getServerName(){
-        return serverName;
-    }
-
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         if (contextRefreshedEvent.getApplicationContext().getParent() == null) {
@@ -98,7 +89,7 @@ public class OrderScanComponent implements ApplicationListener<ContextRefreshedE
      */
     //    @Scheduled(fixedRate = 5000)
     public void scan(ScheduleMessage scheduleMessage) {
-        System.out.println("线程:"+Thread.currentThread().getName()+",当前调度Job:"+scheduleMessage.getJobGroup()+scheduleMessage.getJobName()+"运行第"+scheduleMessage.getSheduelTimes()+"次.");
+        System.out.println("serverName:"+serverName+",线程:"+Thread.currentThread().getName()+",当前调度Job:"+scheduleMessage.getJobGroup()+scheduleMessage.getJobName()+"运行第"+scheduleMessage.getSheduelTimes()+"次.");
         try {
             log.debug(serverName + "[OrderScan]扫描待执行消息...");
             orderService.orderComplete(scheduleMessage);
