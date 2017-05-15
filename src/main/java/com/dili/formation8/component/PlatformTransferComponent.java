@@ -1,12 +1,7 @@
 package com.dili.formation8.component;
 
 import com.dili.formation8.dao.ScheduleJobMapper;
-import com.dili.formation8.domain.Order;
-import com.dili.formation8.domain.SystemConfig;
-import com.dili.formation8.domain.User;
-import com.dili.formation8.service.SystemConfigService;
 import com.dili.formation8.service.UserService;
-import com.dili.formation8.utils.Formation8Constants;
 import com.dili.utils.quartz.domain.ScheduleMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -19,7 +14,7 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 
 /**
- * 平台给股东打款，可以考虑配置为每天凌晨0点打款, cron:"0 0 0 * * ?"
+ * 平台给股东打款扫描组件，可以考虑配置为每天凌晨0点打款, cron:"0 0 0 * * ?"
  * Created by asiam on 2017/5/15 0015.
  */
 @Component
