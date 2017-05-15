@@ -123,6 +123,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
         userVo.setLevel(1);
         userVo.setId(order.getUserId());
         Long referrerId = userService.getParentReferrer(userVo);
+        if(referrerId == null || referrerId <=0) return;
         //查询引领人的所有正在投资中的订单
         Order orderCondition = new Order();
         orderCondition.setUserId(referrerId);
@@ -135,6 +136,8 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
         }
         //根据木桶原则获得可用于返款计算的金额
         amount = amount>order.getPrice() ? order.getPrice():amount;
+        //如果引领人没投资，则直接返回了
+        if(amount == 0l) return;
         SystemConfig systemConfigCondition = new SystemConfig();
         systemConfigCondition.setCode(Formation8Constants.SYSTEM_CONFIG_REFERRAL_RATE1);
         String referralRate1 = systemConfigService.list(systemConfigCondition).get(0).getValue();

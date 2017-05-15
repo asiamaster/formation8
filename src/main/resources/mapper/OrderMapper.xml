@@ -24,16 +24,16 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, user_id, sku_id, product_id, count, order_number, status, price, transaction_type, 
-    start_time, end_time, withdraw_time, finish_time
+    id, user_id, sku_id, product_id, `count`, order_number, `status`, price, transaction_type,
+    `start_time`, `end_time`, withdraw_time, finish_time
   </sql>
   <select id="selectEndOrder" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from `order`
     <![CDATA[
-    where end_time <= now()
-    and status = 1
+    where `end_time` <= now()
+    and `status` = 1
     ]]>
   </select>
 

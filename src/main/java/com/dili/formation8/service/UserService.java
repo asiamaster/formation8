@@ -71,4 +71,6 @@ public interface UserService extends BaseService<User, Long> {
      * @return 返回值的第0位是引领人列表，第1位-第N位是引荐人层级1-N的列表。
      */
     public List<List<User>> listSubReferrers(Long id, Integer level);
+
+
 }
