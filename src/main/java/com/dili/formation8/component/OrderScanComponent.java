@@ -73,6 +73,10 @@ public class OrderScanComponent implements ApplicationListener<ContextRefreshedE
         }
     }
 
+    public String getServerName(){
+        return serverName;
+    }
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         if (contextRefreshedEvent.getApplicationContext().getParent() == null) {
@@ -93,71 +97,17 @@ public class OrderScanComponent implements ApplicationListener<ContextRefreshedE
      * @param scheduleMessage
      */
     //    @Scheduled(fixedRate = 5000)
-    @Transactional(propagation = Propagation.REQUIRED)
     public void scan(ScheduleMessage scheduleMessage) {
         System.out.println("线程:"+Thread.currentThread().getName()+",当前调度Job:"+scheduleMessage.getJobGroup()+scheduleMessage.getJobName()+"运行第"+scheduleMessage.getSheduelTimes()+"次.");
         try {
             log.debug(serverName + "[OrderScan]扫描待执行消息...");
-            //先找出结束的订单
-            List<Order> endOrders = orderService.selectEndOrder();
-            if(endOrders == null || endOrders.isEmpty()){
-                log.debug(serverName + "[OrderScan]执行订单数：0条");
-                return;
-            }
-            for(Order endOrder:endOrders){
-                endOrder.setEndTime(new Date());
-                endOrder.setStatus(Formation8Constants.OrderStatus.SUCCEED.getCode());
-            }
-            //再更新结束的订单状态为2,众筹成功，不一步更新的原因是需要查出订单做给引荐打款
-            int updatedCount= orderService.batchUpdate(endOrders);
-            //直接更新结束的订单状态为2,众筹成功
-//            int updatedCount= orderService.updateEndingOrderStatus();
-            //给引荐人打款
-            for(Order endOrder : endOrders){
-                referralBalanceAdjust(endOrder.getUserId(), endOrder.getPrice());
-            }
-
-            log.debug(serverName + "[OrderScan]执行订单数：" + updatedCount + "条");
+            orderService.orderComplete(scheduleMessage);
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         } finally {
         }
     }
 
-    /**
-     * 根据推荐人id和订单金额增加引荐人余额
-     * @param userId
-     * @param price
-     */
-    private void referralBalanceAdjust(Long userId, Long price){
-        //查询引荐人
-        UserVo userVo = new UserVo();
-        userVo.setLevel(2);
-        userVo.setId(userId);
-        Long referrerId = userService.getParentReferrer(userVo);
-        if(referrerId == null || referrerId <=0) return;
-        //查询引荐人的所有正在投资中的订单
-        Order orderCondition = new Order();
-        orderCondition.setUserId(referrerId);
-        orderCondition.setStatus(Formation8Constants.OrderStatus.PROGRESSING.getCode());
-        List<Order> orders = orderService.list(orderCondition);
-        //统计引领人的投资金额
-        Long amount = 0l;
-        for(Order o : orders){
-            amount += o.getPrice();
-        }
-        //根据木桶原则获得可用于返款计算的金额
-        amount = amount>price ? price:amount;
-        //如果引荐人没投资，则直接返回了
-        if(amount == 0l) return;
-        SystemConfig systemConfigCondition = new SystemConfig();
-        systemConfigCondition.setCode(Formation8Constants.SYSTEM_CONFIG_REFERRAL_RATE2);
-        String referralRate2 = systemConfigService.list(systemConfigCondition).get(0).getValue();
-        //计算出引领费
-        Long referralPrice = amount*Long.parseLong(referralRate2)/100;
-//        增加引荐人的余额
-        userService.balanceAdjust(referrerId, referralPrice);
-    }
+
 }

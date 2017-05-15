@@ -8,6 +8,9 @@ import com.dili.formation8.utils.Formation8Constants;
 import com.dili.formation8.vo.UserVo;
 import com.dili.utils.base.BaseServiceImpl;
 import com.dili.utils.domain.BaseOutput;
+import com.dili.utils.quartz.domain.ScheduleMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -26,6 +29,8 @@ import java.util.List;
  */
 @Service
 public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements OrderService {
+
+    protected Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private BizNumberService bizNumberService;
@@ -104,6 +109,73 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
     @Override
     public int updateEndingOrderStatus() {
         return getActualDao().updateEndingOrderStatus();
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void orderComplete(ScheduleMessage scheduleMessage){
+        try {
+            //先找出结束的订单
+            List<Order> endOrders = selectEndOrder();
+            if(endOrders == null || endOrders.isEmpty()){
+                log.debug( "[OrderScan]执行订单数：0条");
+                return;
+            }
+            for(Order endOrder : endOrders){
+                endOrder.setEndTime(new Date());
+                endOrder.setStatus(Formation8Constants.OrderStatus.SUCCEED.getCode());
+            }
+            //再更新结束的订单状态为2,众筹成功，不一步更新的原因是需要查出订单做给引荐打款
+            int updatedCount= batchUpdate(endOrders);
+            //直接更新结束的订单状态为2,众筹成功
+//            int updatedCount= orderService.updateEndingOrderStatus();
+            //给引荐人打款
+            for(Order endOrder : endOrders){
+                referralBalanceAdjust(endOrder.getUserId(), endOrder.getPrice());
+            }
+            log.debug("[OrderScan]执行订单数：" + updatedCount + "条");
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+    }
+
+    //============================  私有方法分割  ================================================
+
+    /**
+     * 根据推荐人id和订单金额增加引荐人余额
+     * @param userId
+     * @param price
+     */
+    private void referralBalanceAdjust(Long userId, Long price){
+        //查询引荐人
+        UserVo userVo = new UserVo();
+        userVo.setLevel(2);
+        userVo.setId(userId);
+        Long referrerId = userService.getParentReferrer(userVo);
+        if(referrerId == null || referrerId <=0) return;
+        //查询引荐人的所有正在投资中的订单
+        Order orderCondition = new Order();
+        orderCondition.setUserId(referrerId);
+        orderCondition.setStatus(Formation8Constants.OrderStatus.PROGRESSING.getCode());
+        List<Order> orders = list(orderCondition);
+        //统计引领人的投资金额
+        Long amount = 0l;
+        for(Order o : orders){
+            amount += o.getPrice();
+        }
+        //根据木桶原则获得可用于返款计算的金额
+        amount = amount>price ? price:amount;
+        //如果引荐人没投资，则直接返回了
+        if(amount == 0l) return;
+        SystemConfig systemConfigCondition = new SystemConfig();
+        systemConfigCondition.setCode(Formation8Constants.SYSTEM_CONFIG_REFERRAL_RATE2);
+        String referralRate2 = systemConfigService.list(systemConfigCondition).get(0).getValue();
+        //计算出引领费
+        Long referralPrice = amount*Long.parseLong(referralRate2)/100;
+//        增加引荐人的余额
+        userService.balanceAdjust(referrerId, referralPrice);
     }
 
     //    向平台用户转帐

@@ -3,6 +3,7 @@ package com.dili.formation8.service;
 import com.dili.formation8.domain.Order;
 import com.dili.utils.base.BaseService;
 import com.dili.utils.domain.BaseOutput;
+import com.dili.utils.quartz.domain.ScheduleMessage;
 
 import java.util.List;
 
@@ -30,4 +31,11 @@ public interface OrderService extends BaseService<Order, Long> {
      * @return
      */
     public int updateEndingOrderStatus();
+
+    /**
+     * 扫描订单众筹成功
+     * @param scheduleMessage
+     */
+    public void orderComplete(ScheduleMessage scheduleMessage);
+
 }
